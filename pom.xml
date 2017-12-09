@@ -39,14 +39,19 @@ under the License.
   <description>A component to programmatically invoke Maven.</description>
 
   <scm>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/maven/shared/trunk/maven-invoker</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/maven/shared/trunk/maven-invoker</developerConnection>
-    <url>http://svn.apache.org/viewvc/maven/shared/trunk/maven-invoker</url>
+    <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-invoker.git</connection>
+    <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-invoker.git</developerConnection>
+    <url>https://github.com/apache/maven-invoker/tree/${project.scm.tag}</url>
+    <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
     <url>https://issues.apache.org/jira/browse/MSHARED/component/12326433</url>
   </issueManagement>
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://builds.apache.org/job/maven-box/job/maven-invoker/</url>
+  </ciManagement>
   <distributionManagement>
     <site>
       <id>apache.website</id>
