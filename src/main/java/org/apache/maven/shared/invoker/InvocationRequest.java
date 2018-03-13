@@ -334,7 +334,7 @@ public interface InvocationRequest
 
         private String longOption;
 
-        private ReactorFailureBehavior( String shortOption, String longOption )
+        ReactorFailureBehavior( String shortOption, String longOption )
         {
             this.shortOption = shortOption;
             this.longOption = longOption;
