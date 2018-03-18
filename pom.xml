@@ -29,6 +29,7 @@ under the License.
     <relativePath>../../pom/maven/maven-shared-components/pom.xml</relativePath>
   </parent>
 
+
   <artifactId>maven-invoker</artifactId>
   <!--
   https://issues.apache.org/jira/browse/MSHARED-625
@@ -75,12 +76,8 @@ under the License.
       <version>3.2.0</version>
     </dependency>
     <dependency>
-      <!--
-        ! Can be removed if update to maven-shared-components parent to version 31
-      -->
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-component-annotations</artifactId>
-      <version>1.7</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -112,10 +109,6 @@ under the License.
       <plugin>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-component-metadata</artifactId>
-        <!--
-          ! Can be removed if update to maven-shared-components parent to version 31
-        -->
-        <version>1.7.1</version>
         <executions>
           <execution>
             <id>create-component-descriptor</id>
