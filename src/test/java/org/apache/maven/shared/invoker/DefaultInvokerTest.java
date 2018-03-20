@@ -88,6 +88,32 @@ public class DefaultInvokerTest
     }
 
     @Test
+    public void testBuildShouldTimeout()
+            throws IOException, MavenInvocationException, URISyntaxException
+    {
+        File basedir = getBasedirForBuild();
+
+        Invoker invoker = newInvoker();
+
+        InvocationRequest request = new DefaultInvocationRequest();
+        request.setBaseDirectory( basedir );
+        request.setDebug( true );
+        request.setGoals( Arrays.asList( "clean", "package" ) );
+
+        if ( !System.getProperty( "java.version" ).startsWith( "1." ) )
+        {
+            Properties properties = new Properties();
+            properties.put( "maven.compiler.source", "1.6" );
+            properties.put( "maven.compiler.target", "1.6" );
+            request.setProperties( properties );
+        }
+
+        InvocationResult result = invoker.execute( request, 10 );
+
+        assertEquals( 1, result.getExitCode() );
+    }
+
+    @Test
     public void testSpacePom()
         throws Exception
     {
