@@ -39,6 +39,8 @@ public class DefaultInvoker
 
     public static final String ROLE_HINT = "default";
 
+    private static final int NO_TIMEOUT = 0;
+
     private static final InvokerLogger DEFAULT_LOGGER = new SystemOutLogger();
 
     private static final InvocationOutputHandler DEFAULT_OUTPUT_HANDLER = new SystemOutHandler();
@@ -60,6 +62,12 @@ public class DefaultInvoker
     private InvocationOutputHandler errorHandler = DEFAULT_OUTPUT_HANDLER;
 
     public InvocationResult execute( InvocationRequest request )
+            throws MavenInvocationException
+    {
+        return this.execute( request , NO_TIMEOUT );
+    }
+
+    public InvocationResult execute( InvocationRequest request, int timeoutInSeconds )
         throws MavenInvocationException
     {
         MavenCommandLineBuilder cliBuilder = new MavenCommandLineBuilder();
@@ -108,7 +116,7 @@ public class DefaultInvoker
 
         try
         {
-            int exitCode = executeCommandLine( cli, request );
+            int exitCode = executeCommandLine( cli, request, timeoutInSeconds );
 
             result.setExitCode( exitCode );
         }
@@ -120,7 +128,7 @@ public class DefaultInvoker
         return result;
     }
 
-    private int executeCommandLine( Commandline cli, InvocationRequest request )
+    private int executeCommandLine( Commandline cli, InvocationRequest request, int timeoutInSeconds )
         throws CommandLineException
     {
         int result = Integer.MIN_VALUE;
@@ -141,7 +149,7 @@ public class DefaultInvoker
                 getLogger().info( "Executing in batch mode. The configured input stream will be ignored." );
             }
 
-            result = CommandLineUtils.executeCommandLine( cli, outputHandler, errorHandler );
+            result = CommandLineUtils.executeCommandLine( cli, outputHandler, errorHandler, timeoutInSeconds );
         }
         else
         {
@@ -150,11 +158,12 @@ public class DefaultInvoker
                 getLogger().warn( "Maven will be executed in interactive mode"
                     + ", but no input stream has been configured for this MavenInvoker instance." );
 
-                result = CommandLineUtils.executeCommandLine( cli, outputHandler, errorHandler );
+                result = CommandLineUtils.executeCommandLine( cli, outputHandler, errorHandler, timeoutInSeconds );
             }
             else
             {
-                result = CommandLineUtils.executeCommandLine( cli, inputStream, outputHandler, errorHandler );
+                result = CommandLineUtils.executeCommandLine( cli, inputStream, outputHandler, errorHandler,
+                        timeoutInSeconds );
             }
         }
 
