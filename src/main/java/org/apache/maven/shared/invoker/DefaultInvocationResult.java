@@ -23,8 +23,7 @@ import org.apache.maven.shared.utils.cli.CommandLineException;
 
 /**
  * Describes the result of a Maven invocation.
- * 
- * @version $Id$
+ *
  */
 public final class DefaultInvocationResult
     implements InvocationResult

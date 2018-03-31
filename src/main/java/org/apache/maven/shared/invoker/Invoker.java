@@ -24,8 +24,7 @@ import java.io.InputStream;
 
 /**
  * Provides a facade to invoke Maven.
- * 
- * @version $Id$
+ *
  */
 public interface Invoker
 {

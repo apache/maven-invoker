@@ -35,7 +35,7 @@ import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.cli.Commandline;
 
 /**
- * @version $Id$
+ *
  */
 public class MavenCommandLineBuilder
 {

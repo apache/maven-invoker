@@ -24,7 +24,6 @@ import org.apache.maven.shared.utils.cli.StreamConsumer;
 /**
  * Receives the standard/error output from a Maven invocation.
  *
- * @version $Id$
  */
 public interface InvocationOutputHandler
     extends StreamConsumer

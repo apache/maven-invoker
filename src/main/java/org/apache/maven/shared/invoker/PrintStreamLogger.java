@@ -26,7 +26,6 @@ import java.io.StringWriter;
 /**
  * Offers a logger that writes to a print stream like {@link System#out}.
  * 
- * @version $Id$
  * @since 2.0.9
  */
 public class PrintStreamLogger

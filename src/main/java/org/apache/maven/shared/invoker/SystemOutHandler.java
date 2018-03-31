@@ -21,8 +21,7 @@ package org.apache.maven.shared.invoker;
 
 /**
  * Offers an output handler that writes to {@link System#out}.
- * 
- * @version $Id$
+ *
  */
 public class SystemOutHandler
     extends PrintStreamHandler

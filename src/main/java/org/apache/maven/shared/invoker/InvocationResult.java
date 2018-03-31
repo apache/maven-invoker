@@ -25,7 +25,6 @@ import org.apache.maven.shared.utils.cli.CommandLineException;
  * Describes the result of a Maven invocation.
  *
  * @author jdcasey
- * @version $Id$
  */
 public interface InvocationResult
 {

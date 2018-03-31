@@ -27,8 +27,7 @@ import java.util.Properties;
 
 /**
  * Specifies the parameters used to control a Maven invocation.
- * 
- * @version $Id$
+ *
  */
 public interface InvocationRequest
 {

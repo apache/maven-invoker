@@ -21,8 +21,7 @@ package org.apache.maven.shared.invoker;
 
 /**
  * Signals an error during the construction of the command line used to invoke Maven.
- * 
- * @version $Id$
+ *
  */
 public class CommandLineConfigurationException
     extends Exception

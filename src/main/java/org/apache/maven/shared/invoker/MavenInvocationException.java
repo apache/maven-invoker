@@ -25,7 +25,7 @@ package org.apache.maven.shared.invoker;
  * non-zero exit code.
  * 
  * @see InvocationResult#getExitCode()
- * @version $Id$
+ *
  */
 public class MavenInvocationException
     extends Exception
