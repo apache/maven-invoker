@@ -104,6 +104,8 @@ public class DefaultInvocationRequest
 
     private String builderId;
 
+    private int timeoutInSeconds = NO_TIMEOUT;
+
     public File getBaseDirectory()
     {
         return basedir;
@@ -584,4 +586,16 @@ public class DefaultInvocationRequest
         return this.builderId;
     }
 
+
+    @Override
+    public int getTimeoutInSeconds()
+    {
+        return timeoutInSeconds;
+    }
+
+    @Override
+    public void setTimeoutInSeconds( int timeoutInSeconds )
+    {
+        this.timeoutInSeconds = timeoutInSeconds;
+    }
 }

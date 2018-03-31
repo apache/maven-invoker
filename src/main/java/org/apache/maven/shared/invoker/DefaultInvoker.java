@@ -39,8 +39,6 @@ public class DefaultInvoker
 
     public static final String ROLE_HINT = "default";
 
-    private static final int NO_TIMEOUT = 0;
-
     private static final InvokerLogger DEFAULT_LOGGER = new SystemOutLogger();
 
     private static final InvocationOutputHandler DEFAULT_OUTPUT_HANDLER = new SystemOutHandler();
@@ -62,12 +60,6 @@ public class DefaultInvoker
     private InvocationOutputHandler errorHandler = DEFAULT_OUTPUT_HANDLER;
 
     public InvocationResult execute( InvocationRequest request )
-            throws MavenInvocationException
-    {
-        return this.execute( request , NO_TIMEOUT );
-    }
-
-    public InvocationResult execute( InvocationRequest request, int timeoutInSeconds )
         throws MavenInvocationException
     {
         MavenCommandLineBuilder cliBuilder = new MavenCommandLineBuilder();
@@ -116,7 +108,7 @@ public class DefaultInvoker
 
         try
         {
-            int exitCode = executeCommandLine( cli, request, timeoutInSeconds );
+            int exitCode = executeCommandLine( cli, request, request.getTimeoutInSeconds() );
 
             result.setExitCode( exitCode );
         }

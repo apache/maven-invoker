@@ -48,19 +48,6 @@ public interface Invoker
         throws MavenInvocationException;
 
     /**
-     * Executes Maven using the parameters specified by the given invocation request. Parameters not specified by the
-     * invocation request will be derived from the state of this invoker instance. In case both the invoker instance and
-     * the invocation request provide a value for a particular option, the value from the invocation request dominates.
-     *
-     * @param request The invocation request to execute, must not be <code>null</code>.
-     * @param timeoutInSeconds If a value > 0 is specified, the goal might be interrupted after the timeout is reached.
-     * @return The result of the Maven invocation, never <code>null</code>.
-     * @throws MavenInvocationException
-     */
-    InvocationResult execute( InvocationRequest request, int timeoutInSeconds )
-            throws MavenInvocationException;
-
-    /**
      * Gets the path to the base directory of the local repository to use for the Maven invocation.
      * 
      * @return The path to the base directory of the local repository or <code>null</code> to use the location from

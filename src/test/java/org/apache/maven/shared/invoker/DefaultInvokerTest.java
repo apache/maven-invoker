@@ -99,6 +99,7 @@ public class DefaultInvokerTest
         request.setBaseDirectory( basedir );
         request.setDebug( true );
         request.setGoals( Arrays.asList( "clean", "package" ) );
+        request.setTimeoutInSeconds( 4 );
 
         if ( !System.getProperty( "java.version" ).startsWith( "1." ) )
         {
@@ -108,7 +109,7 @@ public class DefaultInvokerTest
             request.setProperties( properties );
         }
 
-        InvocationResult result = invoker.execute( request, 10 );
+        InvocationResult result = invoker.execute( request );
 
         assertEquals( 1, result.getExitCode() );
     }

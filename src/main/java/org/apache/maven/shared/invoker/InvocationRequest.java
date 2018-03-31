@@ -722,4 +722,17 @@ public interface InvocationRequest
      */
     String getBuilder();
 
+    int NO_TIMEOUT = 0;
+    /**
+     * @since 3.0.1
+     * @return the timeout in seconds to execute the project
+     */
+    int getTimeoutInSeconds();
+
+    /**
+     * @since 3.0.1
+     * @param timeoutInSeconds the timeout in seconds to execute the project
+     */
+    void setTimeoutInSeconds( int timeoutInSeconds );
+
 }
