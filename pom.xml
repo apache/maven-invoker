@@ -31,9 +31,6 @@ under the License.
 
 
   <artifactId>maven-invoker</artifactId>
-  <!--
-  https://issues.apache.org/jira/browse/MSHARED-625
-  -->
   <version>3.0.1-SNAPSHOT</version>
 
   <name>Apache Maven Invoker</name>
