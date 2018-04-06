@@ -66,6 +66,10 @@ under the License.
     </contributor>
   </contributors>
 
+  <properties>
+    <surefire.version>2.21.0</surefire.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
