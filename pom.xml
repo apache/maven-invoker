@@ -31,7 +31,7 @@ under the License.
 
 
   <artifactId>maven-invoker</artifactId>
-  <version>3.0.1-SNAPSHOT</version>
+  <version>3.0.1</version>
 
   <name>Apache Maven Invoker</name>
   <description>A component to programmatically invoke Maven.</description>
@@ -40,7 +40,7 @@ under the License.
     <connection>scm:git:https://gitbox.apache.org/repos/asf/maven-invoker.git</connection>
     <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/maven-invoker.git</developerConnection>
     <url>https://github.com/apache/maven-invoker/tree/${project.scm.tag}</url>
-    <tag>HEAD</tag>
+    <tag>maven-invoker-3.0.1</tag>
   </scm>
   <issueManagement>
     <system>jira</system>
