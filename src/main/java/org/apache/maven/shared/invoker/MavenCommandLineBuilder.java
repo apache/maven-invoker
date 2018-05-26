@@ -21,7 +21,6 @@ package org.apache.maven.shared.invoker;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -270,10 +269,8 @@ public class MavenCommandLineBuilder
 
         if ( properties != null )
         {
-            for ( Iterator<Entry<Object, Object>> it = properties.entrySet().iterator(); it.hasNext(); )
+            for ( Entry<Object, Object> entry : properties.entrySet() )
             {
-                Entry<Object, Object> entry = it.next();
-
                 String key = (String) entry.getKey();
                 String value = (String) entry.getValue();
 
