@@ -151,21 +151,24 @@ public interface InvocationRequest
     /**
      * Gets the input stream used to provide input for the invoked Maven build. This is in particular useful when
      * invoking Maven in interactive mode.
-     * 
+     *
+     * @param defaultStream the default {@link InputStream} to use
      * @return The input stream used to provide input for the invoked Maven build or <code>null</code> if not set.
      */
     InputStream getInputStream( InputStream defaultStream );
 
     /**
      * Gets the handler used to capture the standard output from the Maven build.
-     * 
+     *
+     * @param defaultHandler the default {@link InvocationOutputHandler} to use
      * @return The output handler or <code>null</code> if not set.
      */
     InvocationOutputHandler getOutputHandler( InvocationOutputHandler defaultHandler );
 
     /**
      * Gets the handler used to capture the error output from the Maven build.
-     * 
+     *
+     * @param defaultHandler the default {@link InvocationOutputHandler} to use
      * @return The error handler or <code>null</code> if not set.
      */
     InvocationOutputHandler getErrorHandler( InvocationOutputHandler defaultHandler );
@@ -609,7 +612,9 @@ public interface InvocationRequest
     /**
      * Specifies whether Maven should check for plugin updates.
      * <p>
-     * Equivalent of {@code -npu} or {@code --no-plugin-updates}<br/>
+     * Equivalent of {@code -npu} or {@code --no-plugin-updates}
+     * </p>
+     * <p>
      * <strong>note: </strong>Ineffective with Maven3, only kept for backward compatibility
      * </p>
      * 

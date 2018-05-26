@@ -41,7 +41,7 @@ public interface Invoker
      * 
      * @param request The invocation request to execute, must not be <code>null</code>.
      * @return The result of the Maven invocation, never <code>null</code>.
-     * @throws MavenInvocationException
+     * @throws MavenInvocationException if cannot configure correctly execution parameters
      */
     InvocationResult execute( InvocationRequest request )
         throws MavenInvocationException;
