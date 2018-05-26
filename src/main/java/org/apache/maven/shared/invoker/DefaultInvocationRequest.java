@@ -19,8 +19,6 @@ package org.apache.maven.shared.invoker;
  * under the License.
  */
 
-import org.apache.maven.shared.utils.cli.Commandline;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collections;
