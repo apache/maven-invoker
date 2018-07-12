@@ -125,7 +125,7 @@ public class MavenCommandLineBuilder
             {
                 throw new IllegalStateException( "Maven application directory was not "
                     + "specified, and ${maven.home} is not provided in the system "
-                    + "properties. Please specify at least on of these." );
+                    + "properties. Specify at least one of these." );
             }
         }
     }
