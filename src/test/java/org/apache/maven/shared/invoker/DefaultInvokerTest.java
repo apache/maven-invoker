@@ -48,14 +48,7 @@ public class DefaultInvokerTest
         request.setBaseDirectory( basedir );
         request.setDebug( true );
         request.setGoals( Arrays.asList( "clean", "package" ) );
-
-        if ( !System.getProperty( "java.version" ).startsWith( "1." ) )
-        {
-            Properties properties = new Properties();
-            properties.put( "maven.compiler.source", "1.6" );
-            properties.put( "maven.compiler.target", "1.6" );
-            request.setProperties( properties );
-        }
+        request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
 
@@ -74,14 +67,8 @@ public class DefaultInvokerTest
         request.setBaseDirectory( basedir );
         request.setDebug( true );
         request.setGoals( Arrays.asList( "clean", "package" ) );
+        request.setProperties( getProperties() );
 
-        if ( !System.getProperty( "java.version" ).startsWith( "1." ) )
-        {
-            Properties properties = new Properties();
-            properties.put( "maven.compiler.source", "1.6" );
-            properties.put( "maven.compiler.target", "1.6" );
-            request.setProperties( properties );
-        }
         InvocationResult result = invoker.execute( request );
 
         assertEquals( 1, result.getExitCode() );
@@ -100,14 +87,7 @@ public class DefaultInvokerTest
         request.setDebug( true );
         request.setGoals( Arrays.asList( "clean", "package" ) );
         request.setTimeoutInSeconds( 4 );
-
-        if ( !System.getProperty( "java.version" ).startsWith( "1." ) )
-        {
-            Properties properties = new Properties();
-            properties.put( "maven.compiler.source", "1.6" );
-            properties.put( "maven.compiler.target", "1.6" );
-            request.setProperties( properties );
-        }
+        request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
 
@@ -134,7 +114,8 @@ public class DefaultInvokerTest
         request.setPomFileName( "pom with spaces.xml" );
         request.setDebug( true );
         request.setGoals( Arrays.asList( "clean" ) );
-
+        request.setProperties( getProperties() );
+        
         InvocationResult result = invoker.execute( request );
 
         assertEquals( 0, result.getExitCode() );
@@ -155,6 +136,7 @@ public class DefaultInvokerTest
         request.setPomFileName( "pom with spaces & special char.xml" );
         request.setDebug( true );
         request.setGoals( Arrays.asList( "clean" ) );
+        request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
 
@@ -176,6 +158,7 @@ public class DefaultInvokerTest
         request.setUserSettingsFile( new File( basedir, "settings with spaces.xml" ) );
         request.setDebug( true );
         request.setGoals( Arrays.asList( "validate" ) );
+        request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
 
@@ -197,6 +180,7 @@ public class DefaultInvokerTest
         request.setLocalRepositoryDirectory( new File( basedir, "repo with spaces" ) );
         request.setDebug( true );
         request.setGoals( Arrays.asList( "validate" ) );
+        request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
 
@@ -216,7 +200,7 @@ public class DefaultInvokerTest
         InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory( basedir );
 
-        Properties props = new Properties();
+        Properties props = getProperties();
         props.setProperty( "key", "value with spaces" );
         props.setProperty( "key with spaces", "value" );
         request.setProperties( props );
@@ -303,5 +287,21 @@ public class DefaultInvokerTest
 
         System.out.println( "Starting: " + element.getMethodName() );
     }
-
+    
+    private Properties getProperties()
+    {
+        Properties properties = new Properties();
+        if ( !System.getProperty( "java.version" ).startsWith( "1." ) )
+        {
+            properties.put( "maven.compiler.source", "1.7" );
+            properties.put( "maven.compiler.target", "1.7" );
+        }
+        
+        String httpProtocols = System.getProperty( "https.protocols" );
+        if ( httpProtocols != null )
+        {
+            properties.put( "https.protocols", httpProtocols );
+        }
+        return properties;
+    }
 }
