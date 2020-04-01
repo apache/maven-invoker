@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.shared</groupId>
     <artifactId>maven-shared-components</artifactId>
-    <version>31</version>
+    <version>34</version>
     <relativePath>../../pom/maven/maven-shared-components/pom.xml</relativePath>
   </parent>
 
@@ -67,7 +67,7 @@ under the License.
   </contributors>
 
   <properties>
-    <surefire.version>2.21.0</surefire.version>
+    <surefire.version>2.22.2</surefire.version>
     <javaVersion>7</javaVersion>
   </properties>
 
@@ -84,7 +84,7 @@ under the License.
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.13</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
