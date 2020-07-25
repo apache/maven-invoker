@@ -38,7 +38,6 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -53,54 +52,68 @@ public class MavenCommandLineBuilderTest
 {
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
-    
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     private Properties sysProps;
+    private File lrd;
+    private TestCommandLineBuilder tcb = new TestCommandLineBuilder();
+    private Commandline cli = new Commandline();
 
+    @Before
+    public void setUp() throws IOException
+    {
+        sysProps = System.getProperties();
+        Properties p = new Properties( sysProps );
+
+        System.setProperties( p );
+        
+        lrd = temporaryFolder.newFile();
+
+    }
+
+    @After
+    public void tearDown()
+        throws IOException
+    {
+        System.setProperties( sysProps );
+    }
+
+    
     @Test
     public void testShouldFailToSetLocalRepoLocationGloballyWhenItIsAFile()
         throws Exception
     {
-        expectedException.expect( IllegalArgumentException.class );
-        File lrd = temporaryFolder.newFile();
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setLocalRepositoryDirectory( lrd );
 
-        Commandline cli = new Commandline();
-
-        tcb.setEnvironmentPaths( newRequest(), cli );
-        fail( "Should not set local repo location to point to a file." );
+        try
+        {
+            tcb.setEnvironmentPaths( newRequest(), cli );
+            fail( "Should not set local repo location to point to a file." );
+        }
+        catch ( IllegalArgumentException expected )
+        {
+        }
     }
 
     @Test
     public void testShouldFailToSetLocalRepoLocationFromRequestWhenItIsAFile()
         throws IOException
     {
-        expectedException.expect( IllegalArgumentException.class );
-        File lrd = temporaryFolder.newFile();
-
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-
-        Commandline cli = new Commandline();
-
-        tcb.setEnvironmentPaths( newRequest().setLocalRepositoryDirectory( lrd ), cli );
-        fail( "Should not set local repo location to point to a file." );
+        try
+        {
+            tcb.setEnvironmentPaths( newRequest().setLocalRepositoryDirectory( lrd ), cli );
+            fail( "Should not set local repo location to point to a file." );
+        }
+        catch ( IllegalArgumentException expected )
+        {
+        }
     }
 
     @Test
-    public void testShouldSetLocalRepoLocationGlobally()
-        throws Exception
+    public void testShouldSetLocalRepoLocationGlobally() throws IOException
     {
         File lrd = temporaryFolder.newFolder( "workdir" ).getCanonicalFile();
-
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setLocalRepositoryDirectory( lrd );
-
-        Commandline cli = new Commandline();
-
         tcb.setEnvironmentPaths( newRequest(), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "maven.repo.local=" + lrd.getPath() );
@@ -111,11 +124,6 @@ public class MavenCommandLineBuilderTest
         throws Exception
     {
         File lrd = temporaryFolder.newFolder( "workdir" ).getCanonicalFile();
-
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-
-        Commandline cli = new Commandline();
-
         tcb.setEnvironmentPaths( newRequest().setLocalRepositoryDirectory( lrd ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "maven.repo.local=" + lrd.getPath() );
@@ -128,11 +136,7 @@ public class MavenCommandLineBuilderTest
         File lrd = temporaryFolder.newFolder( "workdir" ).getCanonicalFile();
         File glrd = temporaryFolder.newFolder( "global-workdir" ).getCanonicalFile();
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setLocalRepositoryDirectory( glrd );
-
-        Commandline cli = new Commandline();
-
         tcb.setEnvironmentPaths( newRequest().setLocalRepositoryDirectory( lrd ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "maven.repo.local=" + lrd.getPath() );
@@ -143,12 +147,7 @@ public class MavenCommandLineBuilderTest
         throws Exception
     {
         File wd = temporaryFolder.newFolder( "workdir" );
-
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setWorkingDirectory( wd );
-
-        Commandline cli = new Commandline();
-
         tcb.setEnvironmentPaths( newRequest(), cli );
 
         assertEquals( cli.getWorkingDirectory(), wd.getCanonicalFile() );
@@ -160,11 +159,9 @@ public class MavenCommandLineBuilderTest
     {
         File wd = temporaryFolder.newFolder( "workdir" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         InvocationRequest req = newRequest();
         req.setBaseDirectory( wd );
 
-        Commandline cli = new Commandline();
 
         tcb.setEnvironmentPaths( req, cli );
 
@@ -178,13 +175,11 @@ public class MavenCommandLineBuilderTest
         File wd = temporaryFolder.newFolder( "workdir" );
         File gwd = temporaryFolder.newFolder( "global-workdir" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setWorkingDirectory( gwd );
 
         InvocationRequest req = newRequest();
         req.setBaseDirectory( wd );
 
-        Commandline cli = new Commandline();
 
         tcb.setEnvironmentPaths( req, cli );
 
@@ -240,12 +235,17 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldFailIfLoggerSetToNull() throws Exception
     {
-        expectedException.expect( IllegalStateException.class );
         TestCommandLineBuilder tclb = new TestCommandLineBuilder();
         tclb.setLogger( null );
 
-        tclb.checkRequiredState();
-        fail( "Should not allow execution to proceed when logger is missing." );
+        try
+        {
+            tclb.checkRequiredState();
+            fail( "Should not allow execution to proceed when logger is missing." );
+        }
+        catch ( IllegalStateException expected )
+        {
+        }
     }
 
     @Test
@@ -264,7 +264,6 @@ public class MavenCommandLineBuilderTest
             check = createDummyFile( dummyMavenHomeBin, "mvn" );
         }
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setMavenHome( dummyMavenHomeBin.getParentFile() );
 
         File mavenExe = tcb.findMavenExecutable();
@@ -275,8 +274,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetBatchModeFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setBatchMode( true ), cli );
 
@@ -286,8 +283,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetOfflineFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setOffline( true ), cli );
 
@@ -297,8 +292,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetUpdateSnapshotsFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setUpdateSnapshots( true ), cli );
 
@@ -308,8 +301,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetDebugFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setDebug( true ), cli );
 
@@ -319,8 +310,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetErrorFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setShowErrors( true ), cli );
 
@@ -330,8 +319,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testDebugOptionShouldMaskShowErrorsOption()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setDebug( true ).setShowErrors( true ), cli );
 
@@ -342,8 +329,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testAlsoMake()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setAlsoMake( true ), cli );
 
@@ -354,8 +339,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testProjectsAndAlsoMake()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setProjects( Collections.singletonList( "proj1" ) ).setAlsoMake( true ),
                                 cli );
@@ -366,8 +349,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testAlsoMakeDependents()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setAlsoMakeDependents( true ), cli );
 
@@ -378,8 +359,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testProjectsAndAlsoMakeDependents()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setProjects( Collections.singletonList( "proj1" ) ).setAlsoMakeDependents( true ),
                                 cli );
@@ -390,8 +369,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testProjectsAndAlsoMakeAndAlsoMakeDependents()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setProjects( Collections.singletonList( "proj1" ) ).setAlsoMake( true ).setAlsoMakeDependents( true ),
                                 cli );
@@ -402,8 +379,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetResumeFrom()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setResumeFrom( ":module3" ), cli );
 
@@ -413,8 +388,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetStrictChecksumPolityFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setGlobalChecksumPolicy( InvocationRequest.CheckSumPolicy.Fail ), cli );
 
@@ -424,8 +397,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetLaxChecksumPolicyFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setFlags( newRequest().setGlobalChecksumPolicy( InvocationRequest.CheckSumPolicy.Warn ), cli );
 
@@ -435,8 +406,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetFailAtEndFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setReactorFailureBehavior( InvocationRequest.ReactorFailureBehavior.FailAtEnd ),
                                 cli );
@@ -447,8 +416,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetFailNeverFlagFromRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setReactorFailureBehavior( InvocationRequest.ReactorFailureBehavior.FailNever ),
                                 cli );
@@ -459,8 +426,6 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldUseDefaultOfFailFastWhenSpecifiedInRequest()
     {
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
-        Commandline cli = new Commandline();
 
         tcb.setReactorBehavior( newRequest().setReactorFailureBehavior( InvocationRequest.ReactorFailureBehavior.FailFast ),
                                 cli );
@@ -480,11 +445,9 @@ public class MavenCommandLineBuilderTest
 
         File pomFile = createDummyFile( projectDir, "non-standard-pom.xml" ).getCanonicalFile();
 
-        Commandline cli = new Commandline();
 
         InvocationRequest req = newRequest().setPomFile( pomFile );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setEnvironmentPaths( req, cli );
         tcb.setPomLocation( req, cli );
 
@@ -505,11 +468,9 @@ public class MavenCommandLineBuilderTest
 
         File basedir = createDummyFile( projectDir, "non-standard-pom.xml" ).getCanonicalFile();
 
-        Commandline cli = new Commandline();
 
         InvocationRequest req = newRequest().setBaseDirectory( basedir );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setEnvironmentPaths( req, cli );
         tcb.setPomLocation( req, cli );
 
@@ -530,11 +491,9 @@ public class MavenCommandLineBuilderTest
 
         File pomFile = createDummyFile( projectDir, "pom.xml" ).getCanonicalFile();
 
-        Commandline cli = new Commandline();
 
         InvocationRequest req = newRequest().setPomFile( pomFile );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setEnvironmentPaths( req, cli );
         tcb.setPomLocation( req, cli );
 
@@ -555,11 +514,9 @@ public class MavenCommandLineBuilderTest
 
         File basedir = createDummyFile( projectDir, "pom.xml" ).getCanonicalFile();
 
-        Commandline cli = new Commandline();
 
         InvocationRequest req = newRequest().setBaseDirectory( basedir );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setEnvironmentPaths( req, cli );
         tcb.setPomLocation( req, cli );
 
@@ -578,11 +535,9 @@ public class MavenCommandLineBuilderTest
     {
         File projectDir = temporaryFolder.newFolder( "invoker-tests", "std-basedir-no-pom-filename" );
 
-        Commandline cli = new Commandline();
 
         InvocationRequest req = newRequest().setBaseDirectory( projectDir );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setEnvironmentPaths( req, cli );
         tcb.setPomLocation( req, cli );
 
@@ -601,11 +556,9 @@ public class MavenCommandLineBuilderTest
     {
         File projectDir = temporaryFolder.newFolder( "invoker-tests", "std-basedir-with-pom-filename" );
 
-        Commandline cli = new Commandline();
 
         InvocationRequest req = newRequest().setBaseDirectory( projectDir ).setPomFileName( "non-standard-pom.xml" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setEnvironmentPaths( req, cli );
         tcb.setPomLocation( req, cli );
 
@@ -626,9 +579,7 @@ public class MavenCommandLineBuilderTest
 
         File settingsFile = createDummyFile( projectDir, "settings.xml" );
 
-        Commandline cli = new Commandline();
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setSettingsLocation( newRequest().setUserSettingsFile( settingsFile ), cli );
 
         Set<String> args = new HashSet<String>();
@@ -646,9 +597,7 @@ public class MavenCommandLineBuilderTest
 
         File settingsFile = createDummyFile( projectDir, "settings.xml" );
 
-        Commandline cli = new Commandline();
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setSettingsLocation( newRequest().setGlobalSettingsFile( settingsFile ), cli );
 
         Set<String> args = new HashSet<String>();
@@ -666,9 +615,7 @@ public class MavenCommandLineBuilderTest
 
         File toolchainsFile = createDummyFile( projectDir, "toolchains.xml" );
 
-        Commandline cli = new Commandline();
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setToolchainsLocation( newRequest().setToolchainsFile( toolchainsFile ), cli );
 
         Set<String> args = new HashSet<String>();
@@ -682,12 +629,10 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyCustomPropertyFromRequest()
         throws IOException
     {
-        Commandline cli = new Commandline();
 
         Properties properties = new Properties();
         properties.setProperty( "key", "value" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setProperties( newRequest().setProperties( properties ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "key=value" );
@@ -697,12 +642,10 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyCustomPropertyWithSpacesInValueFromRequest()
         throws IOException
     {
-        Commandline cli = new Commandline();
 
         Properties properties = new Properties();
         properties.setProperty( "key", "value with spaces" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setProperties( newRequest().setProperties( properties ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "key=value with spaces" );
@@ -712,12 +655,10 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyCustomPropertyWithSpacesInKeyFromRequest()
         throws IOException
     {
-        Commandline cli = new Commandline();
 
         Properties properties = new Properties();
         properties.setProperty( "key with spaces", "value with spaces" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setProperties( newRequest().setProperties( properties ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "key with spaces=value with spaces" );
@@ -727,12 +668,10 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifySingleGoalFromRequest()
         throws IOException
     {
-        Commandline cli = new Commandline();
 
         List<String> goals = new ArrayList<String>();
         goals.add( "test" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setGoals( newRequest().setGoals( goals ), cli );
 
         assertArgumentsPresent( cli, Collections.singleton( "test" ) );
@@ -742,13 +681,10 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyTwoGoalsFromRequest()
         throws IOException
     {
-        Commandline cli = new Commandline();
-
         List<String> goals = new ArrayList<String>();
         goals.add( "test" );
         goals.add( "clean" );
 
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setGoals( newRequest().setGoals( goals ), cli );
 
         assertArgumentsPresent( cli, new HashSet<String>( goals ) );
@@ -759,9 +695,6 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyThreadsFromRequest()
         throws IOException
     {
-        Commandline cli = new Commandline();
-
-        TestCommandLineBuilder tcb = new TestCommandLineBuilder();
         tcb.setThreads( newRequest().setThreads( "2.0C" ), cli );
 
         assertArgumentsPresentInOrder( cli, "-T", "2.0C" );
@@ -960,23 +893,6 @@ public class MavenCommandLineBuilderTest
 
         assertEnvironmentVariablePresent( commandline, envVar1Name, envVar1Value );
         assertEnvironmentVariablePresent( commandline, envVar2Name, envVar2Value );
-    }
-
-    @Before
-    public void setUp()
-    {
-        sysProps = System.getProperties();
-
-        Properties p = new Properties( sysProps );
-
-        System.setProperties( p );
-    }
-
-    @After
-    public void tearDown()
-        throws IOException
-    {
-        System.setProperties( sysProps );
     }
 
     private void assertEnvironmentVariablePresent( Commandline cli, String varName, String varValue )
