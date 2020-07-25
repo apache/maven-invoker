@@ -67,7 +67,6 @@ under the License.
   </contributors>
 
   <properties>
-    <surefire.version>2.22.2</surefire.version>
     <javaVersion>7</javaVersion>
   </properties>
 
