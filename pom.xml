@@ -67,7 +67,6 @@ under the License.
   </contributors>
 
   <properties>
-    <surefire.version>2.21.0</surefire.version>
     <javaVersion>7</javaVersion>
     <project.build.outputTimestamp>2020-04-04T09:03:59Z</project.build.outputTimestamp>
   </properties>
