@@ -501,6 +501,11 @@ public class MavenCommandLineBuilder
         {
             cli.createArg().setValue( request.getBuilder() );
         }
+
+        if ( request.isQuiet() )
+        {
+            cli.createArg().setValue( "-q" );
+        }
     }
 
     protected void setThreads( InvocationRequest request, Commandline cli )

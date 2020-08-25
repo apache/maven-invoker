@@ -105,6 +105,8 @@ public class DefaultInvocationRequest
 
     private int timeoutInSeconds = NO_TIMEOUT;
 
+    private boolean quiet;
+
     public File getBaseDirectory()
     {
         return basedir;
@@ -596,5 +598,22 @@ public class DefaultInvocationRequest
     public void setTimeoutInSeconds( int timeoutInSeconds )
     {
         this.timeoutInSeconds = timeoutInSeconds;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean isQuiet()
+    {
+        return quiet;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public InvocationRequest setQuiet( boolean quiet )
+    {
+        this.quiet = quiet;
+        return this;
     }
 }
