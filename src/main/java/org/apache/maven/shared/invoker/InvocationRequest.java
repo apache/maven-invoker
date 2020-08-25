@@ -310,6 +310,14 @@ public interface InvocationRequest
      */
     String getThreads();
 
+    /**
+     * Gets the quiet mode of the Maven invocation. By default, Maven is executed in normal mode.
+     *
+     * @return <code>true</code> if Maven should be executed in quiet mode, <code>false</code> if normal mode should
+     *         be used.
+     */
+    boolean isQuiet();
+
     // ----------------------------------------------------------------------
     // Reactor Failure Mode
     // ----------------------------------------------------------------------
@@ -716,6 +724,15 @@ public interface InvocationRequest
      * @since 3.0.0
      */
     InvocationRequest setBuilder( String id );
+
+    /**
+     * Sets the quiet mode of the Maven invocation. Equivalent of {@code -q} and {@code --quiet}
+     *
+     * @param quiet <code>true</code> if Maven should be executed in quiet mode, <code>false</code> if the normal mode
+     *            should be used.
+     * @return This invocation request.
+     */
+    InvocationRequest setQuiet( boolean quiet );
 
     /**
      * Get the current set builder strategy id equivalent of {@code --builder id}. <b>Note. This is available since

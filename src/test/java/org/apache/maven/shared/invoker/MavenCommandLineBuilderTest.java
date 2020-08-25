@@ -317,6 +317,15 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
+    public void testShouldSetQuietFlagFromRequest()
+    {
+
+        tcb.setFlags( newRequest().setQuiet( true ), cli );
+
+        assertArgumentsPresent( cli, Collections.singleton( "-q" ));
+    }
+
+    @Test
     public void testDebugOptionShouldMaskShowErrorsOption()
     {
 
