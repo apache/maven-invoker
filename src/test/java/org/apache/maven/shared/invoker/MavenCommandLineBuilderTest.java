@@ -665,8 +665,7 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
-    public void testShouldSpecifySingleGoalFromRequest()
-        throws IOException
+    public void testShouldSpecifySingleGoalFromRequest() throws CommandLineConfigurationException
     {
 
         List<String> goals = new ArrayList<String>();
@@ -678,8 +677,7 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
-    public void testShouldSpecifyTwoGoalsFromRequest()
-        throws IOException
+    public void testShouldSpecifyTwoGoalsFromRequest() throws CommandLineConfigurationException
     {
         List<String> goals = new ArrayList<String>();
         goals.add( "test" );
@@ -989,7 +987,7 @@ public class MavenCommandLineBuilderTest
             super.setFlags( request, cli );
         }
 
-        public void setGoals( InvocationRequest request, Commandline cli )
+        public void setGoals( InvocationRequest request, Commandline cli ) throws CommandLineConfigurationException
         {
             super.setGoals( request, cli );
         }

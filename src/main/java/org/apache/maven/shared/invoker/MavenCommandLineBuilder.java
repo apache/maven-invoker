@@ -30,6 +30,7 @@ import org.apache.maven.shared.invoker.InvocationRequest.CheckSumPolicy;
 import org.apache.maven.shared.invoker.InvocationRequest.ReactorFailureBehavior;
 import org.apache.maven.shared.utils.Os;
 import org.apache.maven.shared.utils.StringUtils;
+import org.apache.maven.shared.utils.cli.CommandLineException;
 import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.cli.Commandline;
 
@@ -253,13 +254,20 @@ public class MavenCommandLineBuilder
 
     }
 
-    protected void setGoals( InvocationRequest request, Commandline cli )
+    protected void setGoals( InvocationRequest request, Commandline cli ) throws CommandLineConfigurationException
     {
         List<String> goals = request.getGoals();
 
         if ( ( goals != null ) && !goals.isEmpty() )
         {
-            cli.createArg().setLine( StringUtils.join( goals.iterator(), " " ) );
+            try
+            {
+                cli.createArg().setLine( StringUtils.join( goals.iterator(), " " ) );
+            }
+            catch ( CommandLineException e )
+            {
+                throw new CommandLineConfigurationException( "Problem to set goals: " + e.getMessage(), e );
+            }
         }
     }
 
