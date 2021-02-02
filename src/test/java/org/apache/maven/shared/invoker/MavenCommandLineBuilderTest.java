@@ -31,7 +31,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.maven.shared.utils.Os;
-import org.apache.maven.shared.utils.cli.CommandLineException;
 import org.apache.maven.shared.utils.cli.Commandline;
 import org.junit.After;
 import org.junit.Assume;
@@ -72,7 +71,6 @@ public class MavenCommandLineBuilderTest
 
     @After
     public void tearDown()
-        throws IOException
     {
         System.setProperties( sysProps );
     }
@@ -80,7 +78,6 @@ public class MavenCommandLineBuilderTest
     
     @Test
     public void testShouldFailToSetLocalRepoLocationGloballyWhenItIsAFile()
-        throws Exception
     {
 
         tcb.setLocalRepositoryDirectory( lrd );
@@ -97,7 +94,6 @@ public class MavenCommandLineBuilderTest
 
     @Test
     public void testShouldFailToSetLocalRepoLocationFromRequestWhenItIsAFile()
-        throws IOException
     {
         try
         {
@@ -201,7 +197,7 @@ public class MavenCommandLineBuilderTest
     {
         String mavenHome = System.getProperty( "maven.home" );
 
-        File appDir = null;
+        File appDir;
 
         if ( forceDummy || ( mavenHome == null ) || !new File( mavenHome ).exists() )
         {
@@ -430,7 +426,7 @@ public class MavenCommandLineBuilderTest
         tcb.setReactorBehavior( newRequest().setReactorFailureBehavior( InvocationRequest.ReactorFailureBehavior.FailFast ),
                                 cli );
 
-        Set<String> banned = new HashSet<String>();
+        Set<String> banned = new HashSet<>();
         banned.add( "-fae" );
         banned.add( "-fn" );
 
@@ -453,7 +449,7 @@ public class MavenCommandLineBuilderTest
 
         assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "non-standard-pom.xml" );
 
@@ -476,7 +472,7 @@ public class MavenCommandLineBuilderTest
 
         assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "non-standard-pom.xml" );
 
@@ -499,7 +495,7 @@ public class MavenCommandLineBuilderTest
 
         assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "pom.xml" );
 
@@ -522,7 +518,7 @@ public class MavenCommandLineBuilderTest
 
         assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "pom.xml" );
 
@@ -543,7 +539,7 @@ public class MavenCommandLineBuilderTest
 
         assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "pom.xml" );
 
@@ -564,7 +560,7 @@ public class MavenCommandLineBuilderTest
 
         assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "non-standard-pom.xml" );
 
@@ -582,7 +578,7 @@ public class MavenCommandLineBuilderTest
 
         tcb.setSettingsLocation( newRequest().setUserSettingsFile( settingsFile ), cli );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-s" );
         args.add( settingsFile.getCanonicalPath() );
 
@@ -600,7 +596,7 @@ public class MavenCommandLineBuilderTest
 
         tcb.setSettingsLocation( newRequest().setGlobalSettingsFile( settingsFile ), cli );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-gs" );
         args.add( settingsFile.getCanonicalPath() );
 
@@ -618,7 +614,7 @@ public class MavenCommandLineBuilderTest
 
         tcb.setToolchainsLocation( newRequest().setToolchainsFile( toolchainsFile ), cli );
 
-        Set<String> args = new HashSet<String>();
+        Set<String> args = new HashSet<>();
         args.add( "-t" );
         args.add( toolchainsFile.getCanonicalPath() );
 
@@ -627,7 +623,6 @@ public class MavenCommandLineBuilderTest
 
     @Test
     public void testShouldSpecifyCustomPropertyFromRequest()
-        throws IOException
     {
 
         Properties properties = new Properties();
@@ -640,7 +635,6 @@ public class MavenCommandLineBuilderTest
 
     @Test
     public void testShouldSpecifyCustomPropertyWithSpacesInValueFromRequest()
-        throws IOException
     {
 
         Properties properties = new Properties();
@@ -653,7 +647,6 @@ public class MavenCommandLineBuilderTest
 
     @Test
     public void testShouldSpecifyCustomPropertyWithSpacesInKeyFromRequest()
-        throws IOException
     {
 
         Properties properties = new Properties();
@@ -668,7 +661,7 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifySingleGoalFromRequest() throws CommandLineConfigurationException
     {
 
-        List<String> goals = new ArrayList<String>();
+        List<String> goals = new ArrayList<>();
         goals.add( "test" );
 
         tcb.setGoals( newRequest().setGoals( goals ), cli );
@@ -679,19 +672,18 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSpecifyTwoGoalsFromRequest() throws CommandLineConfigurationException
     {
-        List<String> goals = new ArrayList<String>();
+        List<String> goals = new ArrayList<>();
         goals.add( "test" );
         goals.add( "clean" );
 
         tcb.setGoals( newRequest().setGoals( goals ), cli );
 
-        assertArgumentsPresent( cli, new HashSet<String>( goals ) );
+        assertArgumentsPresent( cli, new HashSet<>( goals ) );
         assertArgumentsPresentInOrder( cli, goals );
     }
 
     @Test
     public void testShouldSpecifyThreadsFromRequest()
-        throws IOException
     {
         tcb.setThreads( newRequest().setThreads( "2.0C" ), cli );
 
@@ -710,8 +702,8 @@ public class MavenCommandLineBuilderTest
 
         request.setBaseDirectory( projectDir );
 
-        Set<String> expectedArgs = new HashSet<String>();
-        Set<String> bannedArgs = new HashSet<String>();
+        Set<String> expectedArgs = new HashSet<>();
+        Set<String> bannedArgs = new HashSet<>();
 
         createDummyFile( projectDir, "pom.xml" );
 
@@ -730,7 +722,7 @@ public class MavenCommandLineBuilderTest
 
         expectedArgs.add( "-o" );
 
-        List<String> goals = new ArrayList<String>();
+        List<String> goals = new ArrayList<>();
 
         goals.add( "post-clean" );
         goals.add( "deploy" );
@@ -748,7 +740,7 @@ public class MavenCommandLineBuilderTest
 
         String executable = commandline.getExecutable();
 
-        assertTrue( executable.indexOf( new File( mavenDir, "bin/mvn" ).getCanonicalPath() ) > -1 );
+        assertTrue( executable.contains( new File( mavenDir, "bin/mvn" ).getCanonicalPath() ) );
         assertEquals( projectDir.getCanonicalPath(), commandline.getWorkingDirectory().getCanonicalPath() );
     }
 
@@ -766,7 +758,7 @@ public class MavenCommandLineBuilderTest
 
         createDummyFile( projectDir, "pom.xml" );
 
-        List<String> goals = new ArrayList<String>();
+        List<String> goals = new ArrayList<>();
 
         goals.add( "clean" );
         request.setGoals( goals );
@@ -777,9 +769,8 @@ public class MavenCommandLineBuilderTest
 
         String[] environmentVariables = commandline.getEnvironmentVariables();
         String envVarMavenTerminateCmd = null;
-        for ( int i = 0; i < environmentVariables.length; i++ )
+        for ( String envVar : environmentVariables )
         {
-            String envVar = environmentVariables[i];
             if ( envVar.startsWith( "MAVEN_TERMINATE_CMD=" ) )
             {
                 envVarMavenTerminateCmd = envVar;
@@ -801,7 +792,7 @@ public class MavenCommandLineBuilderTest
 
         InvocationRequest request = newRequest();
 
-        List<String> profiles = new ArrayList<String>();
+        List<String> profiles = new ArrayList<>();
         profiles.add( profile1 );
         profiles.add( profile2 );
 
@@ -830,7 +821,7 @@ public class MavenCommandLineBuilderTest
 
         createDummyFile( projectDir, "pom.xml" );
 
-        List<String> goals = new ArrayList<String>();
+        List<String> goals = new ArrayList<>();
 
         goals.add( "clean" );
         request.setGoals( goals );
@@ -843,9 +834,8 @@ public class MavenCommandLineBuilderTest
 
         String[] environmentVariables = commandline.getEnvironmentVariables();
         String m2Home = null;
-        for ( int i = 0; i < environmentVariables.length; i++ )
+        for ( String envVar : environmentVariables )
         {
-            String envVar = environmentVariables[i];
             if ( envVar.startsWith( "M2_HOME=" ) )
             {
                 m2Home = envVar;
@@ -894,13 +884,12 @@ public class MavenCommandLineBuilderTest
     }
 
     private void assertEnvironmentVariablePresent( Commandline cli, String varName, String varValue )
-        throws CommandLineException
     {
         List<String> environmentVariables = Arrays.asList( cli.getEnvironmentVariables() );
 
         String expectedDeclaration = varName + "=" + varValue;
 
-        assertTrue( "Environment variable setting: \'" + expectedDeclaration + "\' is mssing in "
+        assertTrue( "Environment variable setting: '" + expectedDeclaration + "' is mssing in "
             + environmentVariables, environmentVariables.contains( expectedDeclaration ) );
     }
 
@@ -915,9 +904,9 @@ public class MavenCommandLineBuilderTest
 
         int expectedCounter = 0;
 
-        for ( int i = 0; i < arguments.length; i++ )
+        for ( String argument : arguments )
         {
-            if ( arguments[i].equals( expected.get( expectedCounter ) ) )
+            if ( argument.equals( expected.get( expectedCounter ) ) )
             {
                 expectedCounter++;
             }
@@ -934,7 +923,7 @@ public class MavenCommandLineBuilderTest
 
         for ( String arg : requiredArgs )
         {
-            assertTrue( "Command-line argument: \'" + arg + "\' is missing in " + args, args.contains( arg ) );
+            assertTrue( "Command-line argument: '" + arg + "' is missing in " + args, args.contains( arg ) );
         }
     }
 
@@ -945,7 +934,7 @@ public class MavenCommandLineBuilderTest
 
         for ( String arg : bannedArgs )
         {
-            assertFalse( "Command-line argument: \'" + arg + "\' should not be present.", args.contains( arg ) );
+            assertFalse( "Command-line argument: '" + arg + "' should not be present.", args.contains( arg ) );
         }
     }
 
@@ -954,7 +943,7 @@ public class MavenCommandLineBuilderTest
     {
         File dummyFile = new File( directory, filename );
         
-        try ( FileWriter writer = new FileWriter( dummyFile ); )
+        try ( FileWriter writer = new FileWriter( dummyFile ) )
         {
             writer.write( "This is a dummy file." );
         }

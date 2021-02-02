@@ -87,7 +87,7 @@ public class PrintStreamLogger
             return;
         }
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
 
         switch ( level )
         {

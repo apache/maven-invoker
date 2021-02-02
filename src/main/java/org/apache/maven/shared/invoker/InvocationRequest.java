@@ -371,7 +371,7 @@ public interface InvocationRequest
             throw new IllegalArgumentException( "The string '" + longOption
                 + "' can not be converted to enumeration." );
         }
-    };
+    }
 
     // ----------------------------------------------------------------------
     // Artifact repository policies

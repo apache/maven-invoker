@@ -65,7 +65,7 @@ public class MavenCommandLineBuilder
         {
             throw new CommandLineConfigurationException( e.getMessage(), e );
         }
-        File mvn = null;
+        File mvn;
         try
         {
             mvn = findMavenExecutable();
@@ -139,8 +139,7 @@ public class MavenCommandLineBuilder
         {
             try
             {
-                File canSet = userSettingsFile.getCanonicalFile();
-                userSettingsFile = canSet;
+                userSettingsFile = userSettingsFile.getCanonicalFile();
             }
             catch ( IOException e )
             {
@@ -158,8 +157,7 @@ public class MavenCommandLineBuilder
         {
             try
             {
-                File canSet = globalSettingsFile.getCanonicalFile();
-                globalSettingsFile = canSet;
+                globalSettingsFile = globalSettingsFile.getCanonicalFile();
             }
             catch ( IOException e )
             {
@@ -181,8 +179,7 @@ public class MavenCommandLineBuilder
         {
             try
             {
-                File canSet = toolchainsFile.getCanonicalFile();
-                toolchainsFile = canSet;
+                toolchainsFile = toolchainsFile.getCanonicalFile();
             }
             catch ( IOException e )
             {
@@ -208,21 +205,14 @@ public class MavenCommandLineBuilder
                 // proper value
                 cli.addEnvironment( "M2_HOME", getMavenHome().getAbsolutePath() );
             }
+            catch ( RuntimeException e )
+            {
+                throw e;
+            }
             catch ( Exception e )
             {
-                if ( e instanceof RuntimeException )
-                {
-                    throw (RuntimeException) e;
-                }
-                else
-                {
-                    IllegalStateException error =
-                        new IllegalStateException( "Unknown error retrieving shell environment variables. Reason: "
-                            + e.getMessage() );
-                    error.initCause( e );
-
-                    throw error;
-                }
+                throw new IllegalStateException(
+                        "Unknown error retrieving shell environment variables. Reason: " + e.getMessage(), e );
             }
         }
 
@@ -329,8 +319,7 @@ public class MavenCommandLineBuilder
         {
             try
             {
-                File canPom = pom.getCanonicalFile();
-                pom = canPom;
+                pom = pom.getCanonicalFile();
             }
             catch ( IOException e )
             {
@@ -339,8 +328,8 @@ public class MavenCommandLineBuilder
 
             if ( !"pom.xml".equals( pom.getName() ) )
             {
-                logger.debug( "Specified POM file is not named \'pom.xml\'. "
-                    + "Using the \'-f\' command-line option to accommodate non-standard filename..." );
+                logger.debug( "Specified POM file is not named 'pom.xml'. "
+                    + "Using the '-f' command-line option to accommodate non-standard filename..." );
 
                 cli.createArg().setValue( "-f" );
                 cli.createArg().setValue( pom.getName() );
@@ -395,8 +384,7 @@ public class MavenCommandLineBuilder
         {
             try
             {
-                File canLRD = localRepositoryDirectory.getCanonicalFile();
-                localRepositoryDirectory = canLRD;
+                localRepositoryDirectory = localRepositoryDirectory.getCanonicalFile();
             }
             catch ( IOException e )
             {
@@ -406,8 +394,8 @@ public class MavenCommandLineBuilder
 
             if ( !localRepositoryDirectory.isDirectory() )
             {
-                throw new IllegalArgumentException( "Local repository location: \'" + localRepositoryDirectory
-                    + "\' is NOT a directory." );
+                throw new IllegalArgumentException( "Local repository location: '" + localRepositoryDirectory
+                    + "' is NOT a directory." );
             }
 
             cli.createArg().setValue( "-D" );
@@ -546,8 +534,8 @@ public class MavenCommandLineBuilder
                     }
                     else
                     {
-                        throw new IllegalStateException( "${maven.home} is not specified as a directory: \'"
-                            + mavenHomeProperty + "\'." );
+                        throw new IllegalStateException( "${maven.home} is not specified as a directory: '"
+                            + mavenHomeProperty + "'." );
                     }
                 }
             }
@@ -558,7 +546,7 @@ public class MavenCommandLineBuilder
             }
         }
 
-        logger.debug( "Using ${maven.home} of: \'" + mavenHome + "\'." );
+        logger.debug( "Using ${maven.home} of: '" + mavenHome + "'." );
 
         if ( mavenExecutable == null || !mavenExecutable.isAbsolute() )
         {
@@ -587,8 +575,7 @@ public class MavenCommandLineBuilder
 
             try
             {
-                File canonicalMvn = mavenExecutable.getCanonicalFile();
-                mavenExecutable = canonicalMvn;
+                mavenExecutable = mavenExecutable.getCanonicalFile();
             }
             catch ( IOException e )
             {
@@ -605,7 +592,6 @@ public class MavenCommandLineBuilder
     }
 
     private Properties getSystemEnvVars()
-        throws IOException
     {
         if ( this.systemEnvVars == null )
         {

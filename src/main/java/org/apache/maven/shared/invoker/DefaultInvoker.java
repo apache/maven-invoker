@@ -125,7 +125,7 @@ public class DefaultInvoker
     private int executeCommandLine( Commandline cli, InvocationRequest request, int timeoutInSeconds )
         throws CommandLineException
     {
-        int result = Integer.MIN_VALUE;
+        int result;
 
         InputStream inputStream = request.getInputStream( this.inputStream );
         InvocationOutputHandler outputHandler = request.getOutputHandler( this.outputHandler );

@@ -25,6 +25,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
 
 import org.apache.maven.shared.utils.StringUtils;
@@ -113,7 +114,7 @@ public class DefaultInvokerTest
         request.setBaseDirectory( basedir );
         request.setPomFileName( "pom with spaces.xml" );
         request.setDebug( true );
-        request.setGoals( Arrays.asList( "clean" ) );
+        request.setGoals( Collections.singletonList( "clean" ) );
         request.setProperties( getProperties() );
         
         InvocationResult result = invoker.execute( request );
@@ -135,7 +136,7 @@ public class DefaultInvokerTest
         request.setBaseDirectory( basedir );
         request.setPomFileName( "pom with spaces & special char.xml" );
         request.setDebug( true );
-        request.setGoals( Arrays.asList( "clean" ) );
+        request.setGoals( Collections.singletonList( "clean" ) );
         request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
@@ -157,7 +158,7 @@ public class DefaultInvokerTest
         request.setBaseDirectory( basedir );
         request.setUserSettingsFile( new File( basedir, "settings with spaces.xml" ) );
         request.setDebug( true );
-        request.setGoals( Arrays.asList( "validate" ) );
+        request.setGoals( Collections.singletonList( "validate" ) );
         request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
@@ -179,7 +180,7 @@ public class DefaultInvokerTest
         request.setBaseDirectory( basedir );
         request.setLocalRepositoryDirectory( new File( basedir, "repo with spaces" ) );
         request.setDebug( true );
-        request.setGoals( Arrays.asList( "validate" ) );
+        request.setGoals( Collections.singletonList( "validate" ) );
         request.setProperties( getProperties() );
 
         InvocationResult result = invoker.execute( request );
@@ -205,7 +206,7 @@ public class DefaultInvokerTest
         props.setProperty( "key with spaces", "value" );
         request.setProperties( props );
         request.setDebug( true );
-        request.setGoals( Arrays.asList( "validate" ) );
+        request.setGoals( Collections.singletonList( "validate" ) );
 
         InvocationResult result = invoker.execute( request );
 
@@ -213,7 +214,6 @@ public class DefaultInvokerTest
     }
 
     private Invoker newInvoker()
-        throws IOException
     {
         Invoker invoker = new DefaultInvoker();
 
@@ -229,7 +229,6 @@ public class DefaultInvokerTest
     }
 
     private File findMavenHome()
-        throws IOException
     {
         String mavenHome = System.getProperty( "maven.home" );
 
@@ -241,7 +240,7 @@ public class DefaultInvokerTest
         if ( mavenHome == null )
         {
             throw new IllegalStateException( "Cannot find Maven application "
-                + "directory. Either specify \'maven.home\' system property, or M2_HOME environment variable." );
+                + "directory. Either specify 'maven.home' system property, or M2_HOME environment variable." );
         }
 
         return new File( mavenHome );

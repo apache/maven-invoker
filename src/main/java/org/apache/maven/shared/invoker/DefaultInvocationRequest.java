@@ -444,7 +444,7 @@ public class DefaultInvocationRequest
     {
         if ( this.shellEnvironments == null )
         {
-            this.shellEnvironments = new HashMap<String, String>();
+            this.shellEnvironments = new HashMap<>();
         }
         this.shellEnvironments.put( name, value );
         return this;
