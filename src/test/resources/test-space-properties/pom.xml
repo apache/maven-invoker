@@ -28,9 +28,9 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.1</version>
+        <version>3.0.0</version>
         <configuration>
-          <tasks>
+          <target>
             <property name="prop0" value="${key}"/>
             <echo>${prop0}</echo>
             <property name="prop1" value="${key with spaces}"/>
@@ -49,7 +49,7 @@ under the License.
                 </not>
               </condition>
             </fail>
-          </tasks>
+          </target>
         </configuration>
         <executions>
           <execution>
