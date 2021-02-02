@@ -26,7 +26,7 @@ under the License.
     <groupId>org.apache.maven.shared</groupId>
     <artifactId>maven-shared-components</artifactId>
     <version>34</version>
-    <relativePath>../../pom/maven/maven-shared-components/pom.xml</relativePath>
+    <relativePath/>
   </parent>
 
 
@@ -44,7 +44,7 @@ under the License.
   </scm>
   <issueManagement>
     <system>jira</system>
-    <url>https://issues.apache.org/jira/browse/MSHARED/component/12326433</url>
+    <url>https://issues.apache.org/jira/issues/?jql=project%20%3D%20MSHARED%20AND%20component%20%3D%20maven-invoker</url>
   </issueManagement>
   <ciManagement>
     <system>Jenkins</system>
@@ -68,6 +68,7 @@ under the License.
 
   <properties>
     <javaVersion>7</javaVersion>
+    <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2020-04-04T09:03:59Z</project.build.outputTimestamp>
   </properties>
 
@@ -149,6 +150,7 @@ under the License.
       </build>
     </profile>
     <profile>
+      <id>java7tlsCentral</id>
       <activation>
         <property>
           <name>https.protocols</name>
