@@ -25,18 +25,20 @@ import java.io.InputStream;
 import org.apache.maven.shared.utils.cli.CommandLineException;
 import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.cli.Commandline;
-import org.codehaus.plexus.component.annotations.Component;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Class intended to be used by clients who wish to invoke a forked Maven process from their applications
  * 
  * @author jdcasey
  */
-@Component( role = Invoker.class, hint = "default" )
+@Named
+@Singleton
 public class DefaultInvoker
     implements Invoker
 {
-
     public static final String ROLE_HINT = "default";
 
     private static final InvokerLogger DEFAULT_LOGGER = new SystemOutLogger();

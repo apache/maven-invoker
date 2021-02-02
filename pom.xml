@@ -68,6 +68,7 @@ under the License.
 
   <properties>
     <javaVersion>7</javaVersion>
+    <mavenVersion>3.1.1</mavenVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2020-04-04T09:03:59Z</project.build.outputTimestamp>
   </properties>
@@ -79,8 +80,9 @@ under the License.
       <version>3.2.1</version>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-component-annotations</artifactId>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -110,13 +112,14 @@ under the License.
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-component-metadata</artifactId>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>sisu-maven-plugin</artifactId>
+        <version>0.3.4</version>
         <executions>
           <execution>
-            <id>create-component-descriptor</id>
+            <id>generate-index</id>
             <goals>
-              <goal>generate-metadata</goal>
+              <goal>main-index</goal>
             </goals>
           </execution>
         </executions>
