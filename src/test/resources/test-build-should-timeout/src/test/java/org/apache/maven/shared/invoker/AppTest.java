@@ -31,7 +31,7 @@ public class AppTest
      * Not ending test
      * @throws InterruptedException 
      */
-    @Test( timeout = 7_000 ) // shoudl be killed in 4 sec by Invoker - Workaround for Windows MSHARED-867
+    @Test( timeout = 7000 ) // should be killed in 4 sec by Invoker - Workaround for Windows MSHARED-867
     public void testApp() throws InterruptedException
     {
         while ( true )
