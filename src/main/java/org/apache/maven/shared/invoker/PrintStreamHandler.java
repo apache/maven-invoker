@@ -22,7 +22,7 @@ package org.apache.maven.shared.invoker;
 import java.io.PrintStream;
 
 /**
- * Offers an output handler that writes to a print stream like {@link System#out}.
+ * Offers an output handler that writes to a print stream like {@link java.lang.System#out}.
  *
  * @since 2.0.9
  */
@@ -41,7 +41,7 @@ public class PrintStreamHandler
     private boolean alwaysFlush;
 
     /**
-     * Creates a new output handler that writes to {@link System#out}.
+     * Creates a new output handler that writes to {@link java.lang.System#out}.
      */
     public PrintStreamHandler()
     {
@@ -50,7 +50,7 @@ public class PrintStreamHandler
 
     /**
      * Creates a new output handler that writes to the specified print stream.
-     * 
+     *
      * @param out The print stream to write to, must not be <code>null</code>.
      * @param alwaysFlush A flag whether the print stream should be flushed after each line.
      */
@@ -64,6 +64,7 @@ public class PrintStreamHandler
         this.alwaysFlush = alwaysFlush;
     }
 
+    /** {@inheritDoc} */
     public void consumeLine( String line )
     {
         if ( line == null )

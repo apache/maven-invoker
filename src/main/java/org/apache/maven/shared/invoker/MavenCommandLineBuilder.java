@@ -35,7 +35,7 @@ import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.cli.Commandline;
 
 /**
- *
+ * <p>MavenCommandLineBuilder class.</p>
  */
 public class MavenCommandLineBuilder
 {
@@ -54,6 +54,13 @@ public class MavenCommandLineBuilder
 
     private Properties systemEnvVars;
 
+    /**
+     * <p>build.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @return a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
+     */
     public Commandline build( InvocationRequest request )
         throws CommandLineConfigurationException
     {
@@ -110,6 +117,11 @@ public class MavenCommandLineBuilder
         return cli;
     }
 
+    /**
+     * <p>checkRequiredState.</p>
+     *
+     * @throws java.io.IOException if any.
+     */
     protected void checkRequiredState()
         throws IOException
     {
@@ -131,6 +143,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setSettingsLocation.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setSettingsLocation( InvocationRequest request, Commandline cli )
     {
         File userSettingsFile = request.getUserSettingsFile();
@@ -171,6 +189,12 @@ public class MavenCommandLineBuilder
 
     }
 
+    /**
+     * <p>setToolchainsLocation.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setToolchainsLocation( InvocationRequest request, Commandline cli )
     {
         File toolchainsFile = request.getToolchainsFile();
@@ -192,6 +216,13 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setShellEnvironment.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
+     */
     protected void setShellEnvironment( InvocationRequest request, Commandline cli )
         throws CommandLineConfigurationException
     {
@@ -232,6 +263,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setProfiles.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setProfiles( InvocationRequest request, Commandline cli )
     {
         List<String> profiles = request.getProfiles();
@@ -244,6 +281,13 @@ public class MavenCommandLineBuilder
 
     }
 
+    /**
+     * <p>setGoals.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
+     */
     protected void setGoals( InvocationRequest request, Commandline cli ) throws CommandLineConfigurationException
     {
         List<String> goals = request.getGoals();
@@ -261,6 +305,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setProperties.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setProperties( InvocationRequest request, Commandline cli )
     {
         Properties properties = request.getProperties();
@@ -278,6 +328,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setPomLocation.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setPomLocation( InvocationRequest request, Commandline cli )
     {
         boolean pomSpecified = false;
@@ -337,6 +393,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setEnvironmentPaths.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setEnvironmentPaths( InvocationRequest request, Commandline cli )
     {
         File workingDirectory = request.getBaseDirectory();
@@ -403,6 +465,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setReactorBehavior.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setReactorBehavior( InvocationRequest request, Commandline cli )
     {
         // NOTE: The default is "fail-fast"
@@ -445,6 +513,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setFlags.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setFlags( InvocationRequest request, Commandline cli )
     {
         if ( request.isBatchMode() )
@@ -508,6 +582,12 @@ public class MavenCommandLineBuilder
         }
     }
 
+    /**
+     * <p>setThreads.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
     protected void setThreads( InvocationRequest request, Commandline cli )
     {
         String threads = request.getThreads();
@@ -519,6 +599,13 @@ public class MavenCommandLineBuilder
 
     }
 
+    /**
+     * <p>findMavenExecutable.</p>
+     *
+     * @return a {@link java.io.File} object.
+     * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
+     * @throws java.io.IOException if any.
+     */
     protected File findMavenExecutable()
         throws CommandLineConfigurationException, IOException
     {
@@ -606,41 +693,81 @@ public class MavenCommandLineBuilder
         return this.systemEnvVars;
     }
 
+    /**
+     * <p>Getter for the field <code>localRepositoryDirectory</code>.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getLocalRepositoryDirectory()
     {
         return localRepositoryDirectory;
     }
 
+    /**
+     * <p>Setter for the field <code>localRepositoryDirectory</code>.</p>
+     *
+     * @param localRepositoryDirectory a {@link java.io.File} object.
+     */
     public void setLocalRepositoryDirectory( File localRepositoryDirectory )
     {
         this.localRepositoryDirectory = localRepositoryDirectory;
     }
 
+    /**
+     * <p>Getter for the field <code>logger</code>.</p>
+     *
+     * @return a {@link org.apache.maven.shared.invoker.InvokerLogger} object.
+     */
     public InvokerLogger getLogger()
     {
         return logger;
     }
 
+    /**
+     * <p>Setter for the field <code>logger</code>.</p>
+     *
+     * @param logger a {@link org.apache.maven.shared.invoker.InvokerLogger} object.
+     */
     public void setLogger( InvokerLogger logger )
     {
         this.logger = logger;
     }
 
+    /**
+     * <p>Getter for the field <code>mavenHome</code>.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getMavenHome()
     {
         return mavenHome;
     }
 
+    /**
+     * <p>Setter for the field <code>mavenHome</code>.</p>
+     *
+     * @param mavenHome a {@link java.io.File} object.
+     */
     public void setMavenHome( File mavenHome )
     {
         this.mavenHome = mavenHome;
     }
 
+    /**
+     * <p>Getter for the field <code>workingDirectory</code>.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getWorkingDirectory()
     {
         return workingDirectory;
     }
 
+    /**
+     * <p>Setter for the field <code>workingDirectory</code>.</p>
+     *
+     * @param workingDirectory a {@link java.io.File} object.
+     */
     public void setWorkingDirectory( File workingDirectory )
     {
         this.workingDirectory = workingDirectory;
@@ -648,7 +775,7 @@ public class MavenCommandLineBuilder
 
     /**
      * {@code mavenExecutable} can either be relative to ${maven.home}/bin/ or absolute
-     * 
+     *
      * @param mavenExecutable the executable
      */
     public void setMavenExecutable( File mavenExecutable )
@@ -656,6 +783,11 @@ public class MavenCommandLineBuilder
         this.mavenExecutable = mavenExecutable;
     }
 
+    /**
+     * <p>Getter for the field <code>mavenExecutable</code>.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getMavenExecutable()
     {
         return mavenExecutable;

@@ -20,7 +20,7 @@ package org.apache.maven.shared.invoker;
  */
 
 /**
- * Offers a logger that writes to {@link System#out}.
+ * Offers a logger that writes to {@link java.lang.System#out}.
  *
  */
 public class SystemOutLogger

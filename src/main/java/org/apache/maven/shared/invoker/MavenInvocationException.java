@@ -23,9 +23,8 @@ package org.apache.maven.shared.invoker;
  * Signals an error during the construction of the command line used to invoke Maven, e.g. illegal invocation arguments.
  * This should not be confused with a failure of the invoked Maven build itself which will be reported by means of a
  * non-zero exit code.
- * 
- * @see InvocationResult#getExitCode()
  *
+ * @see InvocationResult#getExitCode()
  */
 public class MavenInvocationException
     extends Exception
@@ -35,7 +34,7 @@ public class MavenInvocationException
 
     /**
      * Creates a new exception using the specified detail message and cause.
-     * 
+     *
      * @param message The detail message for this exception, may be <code>null</code>.
      * @param cause The nested exception, may be <code>null</code>.
      */
@@ -46,7 +45,7 @@ public class MavenInvocationException
 
     /**
      * Creates a new exception using the specified detail message.
-     * 
+     *
      * @param message The detail message for this exception, may be <code>null</code>.
      */
     public MavenInvocationException( String message )

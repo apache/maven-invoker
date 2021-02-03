@@ -107,170 +107,250 @@ public class DefaultInvocationRequest
 
     private boolean quiet;
 
+    /**
+     * <p>getBaseDirectory.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getBaseDirectory()
     {
         return basedir;
     }
 
+    /** {@inheritDoc} */
     public File getBaseDirectory( File defaultDirectory )
     {
         return basedir == null ? defaultDirectory : basedir;
     }
 
+    /** {@inheritDoc} */
     public InvocationOutputHandler getErrorHandler( InvocationOutputHandler defaultHandler )
     {
         return errorHandler == null ? defaultHandler : errorHandler;
     }
 
+    /**
+     * <p>getReactorFailureBehavior.</p>
+     *
+     * @return a ReactorFailureBehavior object.
+     */
     public ReactorFailureBehavior getReactorFailureBehavior()
     {
         return failureBehavior;
     }
 
+    /**
+     * <p>Getter for the field <code>goals</code>.</p>
+     *
+     * @return a {@link java.util.List} object.
+     */
     public List<String> getGoals()
     {
         return goals;
     }
 
+    /** {@inheritDoc} */
     public InputStream getInputStream( InputStream defaultStream )
     {
         return inputStream == null ? defaultStream : inputStream;
     }
 
+    /** {@inheritDoc} */
     public File getLocalRepositoryDirectory( File defaultDirectory )
     {
         return localRepository == null ? defaultDirectory : localRepository;
     }
 
+    /** {@inheritDoc} */
     public InvocationOutputHandler getOutputHandler( InvocationOutputHandler defaultHandler )
     {
         return outputHandler == null ? defaultHandler : outputHandler;
     }
 
+    /**
+     * <p>Getter for the field <code>pomFile</code>.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getPomFile()
     {
         return pomFile;
     }
 
+    /**
+     * <p>Getter for the field <code>properties</code>.</p>
+     *
+     * @return a {@link java.util.Properties} object.
+     */
     public Properties getProperties()
     {
         return properties;
     }
 
+    /**
+     * <p>isDebug.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isDebug()
     {
         return debug;
     }
 
+    /**
+     * <p>isBatchMode.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isBatchMode()
     {
         return interactive;
     }
 
+    /**
+     * <p>isOffline.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isOffline()
     {
         return offline;
     }
 
+    /**
+     * <p>isShowErrors.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isShowErrors()
     {
         return showErrors;
     }
 
+    /**
+     * <p>isUpdateSnapshots.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isUpdateSnapshots()
     {
         return updateSnapshots;
     }
 
+    /**
+     * <p>isRecursive.</p>
+     *
+     * @return a boolean.
+     */
     public boolean isRecursive()
     {
         return recursive;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setRecursive( boolean recursive )
     {
         this.recursive = recursive;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setBaseDirectory( File basedir )
     {
         this.basedir = basedir;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setDebug( boolean debug )
     {
         this.debug = debug;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setErrorHandler( InvocationOutputHandler errorHandler )
     {
         this.errorHandler = errorHandler;
         return this;
     }
 
+    /**
+     * <p>setReactorFailureBehavior.</p>
+     *
+     * @param failureBehavior a ReactorFailureBehavior object.
+     * @return a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     */
     public InvocationRequest setReactorFailureBehavior( ReactorFailureBehavior failureBehavior )
     {
         this.failureBehavior = failureBehavior;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setGoals( List<String> goals )
     {
         this.goals = goals;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setInputStream( InputStream inputStream )
     {
         this.inputStream = inputStream;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setBatchMode( boolean interactive )
     {
         this.interactive = interactive;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setLocalRepositoryDirectory( File localRepository )
     {
         this.localRepository = localRepository;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setOffline( boolean offline )
     {
         this.offline = offline;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setOutputHandler( InvocationOutputHandler outputHandler )
     {
         this.outputHandler = outputHandler;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setPomFile( File pomFile )
     {
         this.pomFile = pomFile;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setProperties( Properties properties )
     {
         this.properties = properties;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setShowErrors( boolean showErrors )
     {
         this.showErrors = showErrors;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setUpdateSnapshots( boolean updateSnapshots )
     {
         this.updateSnapshots = updateSnapshots;
@@ -278,27 +358,34 @@ public class DefaultInvocationRequest
     }
 
     /**
+     * <p>isShellEnvironmentInherited.</p>
+     *
      * @see MavenCommandLineBuilder#setShellEnvironment(InvocationRequest, Commandline)
+     * @return a boolean.
      */
     public boolean isShellEnvironmentInherited()
     {
         return shellEnvironmentInherited;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setShellEnvironmentInherited( boolean shellEnvironmentInherited )
     {
         this.shellEnvironmentInherited = shellEnvironmentInherited;
         return this;
     }
 
+    /**
+     * <p>Getter for the field <code>javaHome</code>.</p>
+     *
+     * @return a {@link java.io.File} object.
+     */
     public File getJavaHome()
     {
         return javaHome;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setJavaHome( File javaHome )
     {
         this.javaHome = javaHome;
@@ -307,15 +394,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.io.File} object.
      */
     public File getUserSettingsFile()
     {
         return userSettings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setUserSettingsFile( File userSettings )
     {
         this.userSettings = userSettings;
@@ -324,15 +411,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.io.File} object.
      */
     public File getGlobalSettingsFile()
     {
         return globalSettings;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setGlobalSettingsFile( File globalSettings )
     {
         this.globalSettings = globalSettings;
@@ -341,15 +428,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.io.File} object.
      */
     public File getToolchainsFile()
     {
         return toolchains;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setToolchainsFile( File toolchains )
     {
         this.toolchains = toolchains;
@@ -358,15 +445,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.io.File} object.
      */
     public File getGlobalToolchainsFile()
     {
         return globalToolchains;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setGlobalToolchainsFile( File toolchains )
     {
         this.globalToolchains = toolchains;
@@ -376,6 +463,8 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a CheckSumPolicy object.
      */
     public CheckSumPolicy getGlobalChecksumPolicy()
     {
@@ -384,6 +473,9 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @param globalChecksumPolicy a CheckSumPolicy object.
+     * @return a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      */
     public InvocationRequest setGlobalChecksumPolicy( CheckSumPolicy globalChecksumPolicy )
     {
@@ -393,15 +485,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
      */
     public String getPomFileName()
     {
         return pomFilename;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setPomFileName( String pomFilename )
     {
         this.pomFilename = pomFilename;
@@ -410,15 +502,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.util.List} object.
      */
     public List<String> getProfiles()
     {
         return profiles;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setProfiles( List<String> profiles )
     {
         this.profiles = profiles;
@@ -427,21 +519,22 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a boolean.
      */
     public boolean isNonPluginUpdates()
     {
         return nonPluginUpdates;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setNonPluginUpdates( boolean nonPluginUpdates )
     {
         this.nonPluginUpdates = nonPluginUpdates;
         return this;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest addShellEnvironment( String name, String value )
     {
         if ( this.shellEnvironments == null )
@@ -452,16 +545,27 @@ public class DefaultInvocationRequest
         return this;
     }
 
+    /**
+     * <p>Getter for the field <code>shellEnvironments</code>.</p>
+     *
+     * @return a {@link java.util.Map} object.
+     */
     public Map<String, String> getShellEnvironments()
     {
         return shellEnvironments == null ? Collections.<String, String>emptyMap() : shellEnvironments;
     }
 
+    /**
+     * <p>Getter for the field <code>mavenOpts</code>.</p>
+     *
+     * @return a {@link java.lang.String} object.
+     */
     public String getMavenOpts()
     {
         return mavenOpts;
     }
 
+    /** {@inheritDoc} */
     public InvocationRequest setMavenOpts( String mavenOpts )
     {
         this.mavenOpts = mavenOpts;
@@ -469,16 +573,17 @@ public class DefaultInvocationRequest
     }
 
     /**
+     * <p>isShowVersion.</p>
+     *
      * @see org.apache.maven.shared.invoker.InvocationRequest#isShowVersion()
+     * @return a boolean.
      */
     public boolean isShowVersion()
     {
         return this.showVersion;
     }
 
-    /**
-     * @see org.apache.maven.shared.invoker.InvocationRequest#setShowVersion(boolean)
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setShowVersion( boolean showVersion )
     {
         this.showVersion = showVersion;
@@ -487,15 +592,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
      */
     public String getThreads()
     {
         return threads;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setThreads( String threads )
     {
         this.threads = threads;
@@ -504,15 +609,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.util.List} object.
      */
     public List<String> getProjects()
     {
         return projects;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setProjects( List<String> projects )
     {
         this.projects = projects;
@@ -521,15 +626,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a boolean.
      */
     public boolean isAlsoMake()
     {
         return alsoMake;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setAlsoMake( boolean alsoMake )
     {
         this.alsoMake = alsoMake;
@@ -538,15 +643,15 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a boolean.
      */
     public boolean isAlsoMakeDependents()
     {
         return alsoMakeDependents;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setAlsoMakeDependents( boolean alsoMakeDependents )
     {
         this.alsoMakeDependents = alsoMakeDependents;
@@ -555,24 +660,22 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
      */
     public String getResumeFrom()
     {
         return resumeFrom;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setResumeFrom( String resumeFrom )
     {
         this.resumeFrom = resumeFrom;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setBuilder( String id )
     {
         this.builderId = id;
@@ -581,6 +684,8 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a {@link java.lang.String} object.
      */
     public String getBuilder()
     {
@@ -588,12 +693,14 @@ public class DefaultInvocationRequest
     }
 
 
+    /** {@inheritDoc} */
     @Override
     public int getTimeoutInSeconds()
     {
         return timeoutInSeconds;
     }
 
+    /** {@inheritDoc} */
     @Override
     public void setTimeoutInSeconds( int timeoutInSeconds )
     {
@@ -602,15 +709,16 @@ public class DefaultInvocationRequest
 
     /**
      * {@inheritDoc}
+     *
+     * @return a boolean.
+     * @since 3.1.0
      */
     public boolean isQuiet()
     {
         return quiet;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     public InvocationRequest setQuiet( boolean quiet )
     {
         this.quiet = quiet;

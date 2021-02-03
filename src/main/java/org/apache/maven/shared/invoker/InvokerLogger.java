@@ -20,8 +20,8 @@ package org.apache.maven.shared.invoker;
  */
 
 /**
- * A logger used by {@link Invoker} instances to output diagnostic messages.
- * 
+ * A logger used by {@link org.apache.maven.shared.invoker.Invoker} instances to output diagnostic messages.
+ *
  * @see Invoker#setLogger(InvokerLogger)
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  */
@@ -55,14 +55,14 @@ public interface InvokerLogger
 
     /**
      * Logs the specified debug message.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      */
     void debug( String message );
 
     /**
      * Logs the specified debug message and the accompanying exception.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
@@ -70,7 +70,7 @@ public interface InvokerLogger
 
     /**
      * Tests whether debug output is enabled for this logger.
-     * 
+     *
      * @return <code>true</code> if messages with priority "debug" or above are logged, <code>false</code>
      *         otherwise.
      */
@@ -78,14 +78,14 @@ public interface InvokerLogger
 
     /**
      * Logs the specified info message.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      */
     void info( String message );
 
     /**
      * Logs the specified info message and the accompanying exception.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
@@ -93,21 +93,21 @@ public interface InvokerLogger
 
     /**
      * Tests whether info output is enabled for this logger.
-     * 
+     *
      * @return <code>true</code> if messages with priority "info" or above are logged, <code>false</code> otherwise.
      */
     boolean isInfoEnabled();
 
     /**
      * Logs the specified warning message.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      */
     void warn( String message );
 
     /**
      * Logs the specified warning message and the accompanying exception.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
@@ -115,21 +115,21 @@ public interface InvokerLogger
 
     /**
      * Tests whether warn output is enabled for this logger.
-     * 
+     *
      * @return <code>true</code> if messages with priority "warn" or above are logged, <code>false</code> otherwise.
      */
     boolean isWarnEnabled();
 
     /**
      * Logs the specified error message.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      */
     void error( String message );
 
     /**
      * Logs the specified error message and the accompanying exception.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
@@ -137,7 +137,7 @@ public interface InvokerLogger
 
     /**
      * Tests whether error output is enabled for this logger.
-     * 
+     *
      * @return <code>true</code> if messages with priority "error" or above are logged, <code>false</code>
      *         otherwise.
      */
@@ -145,14 +145,14 @@ public interface InvokerLogger
 
     /**
      * Logs the specified fatal error message.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      */
     void fatalError( String message );
 
     /**
      * Logs the specified fatal error message and the accompanying exception.
-     * 
+     *
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
@@ -160,7 +160,7 @@ public interface InvokerLogger
 
     /**
      * Tests whether fatal error output is enabled for this logger.
-     * 
+     *
      * @return <code>true</code> if messages with priority "fatal" or above are logged, <code>false</code>
      *         otherwise.
      */
@@ -168,7 +168,7 @@ public interface InvokerLogger
 
     /**
      * Sets the logger's threshold.
-     * 
+     *
      * @param threshold The logger's threshold, must be one of {@link #DEBUG}, {@link #INFO}, {@link #WARN},
      *            {@link #ERROR} and {@link #FATAL}.
      */
@@ -176,7 +176,7 @@ public interface InvokerLogger
 
     /**
      * Gets the logger's threshold.
-     * 
+     *
      * @return The logger's threshold, one of {@link #DEBUG}, {@link #INFO}, {@link #WARN}, {@link #ERROR} and
      *         {@link #FATAL}.
      */

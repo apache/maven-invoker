@@ -20,7 +20,7 @@ package org.apache.maven.shared.invoker;
  */
 
 /**
- * Offers an output handler that writes to {@link System#out}.
+ * Offers an output handler that writes to {@link java.lang.System#out}.
  *
  */
 public class SystemOutHandler
@@ -37,7 +37,7 @@ public class SystemOutHandler
 
     /**
      * Creates a new output handler.
-     * 
+     *
      * @param alwaysFlush A flag whether the print stream should be flushed after each line.
      */
     public SystemOutHandler( boolean alwaysFlush )

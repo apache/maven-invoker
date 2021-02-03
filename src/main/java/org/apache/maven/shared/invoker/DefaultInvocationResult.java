@@ -48,11 +48,21 @@ public final class DefaultInvocationResult
         // hide constructor
     }
 
+    /**
+     * <p>Getter for the field <code>exitCode</code>.</p>
+     *
+     * @return a int.
+     */
     public int getExitCode()
     {
         return exitCode;
     }
 
+    /**
+     * <p>Getter for the field <code>executionException</code>.</p>
+     *
+     * @return a {@link org.apache.maven.shared.utils.cli.CommandLineException} object.
+     */
     public CommandLineException getExecutionException()
     {
         return executionException;
