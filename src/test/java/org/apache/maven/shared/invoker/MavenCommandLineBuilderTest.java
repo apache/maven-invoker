@@ -346,6 +346,14 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
+    public void testShouldSetBuilderIdOptionsFromRequest()
+    {
+        mclb.setFlags( newRequest().setBuilder( "builder-id-123" ), cli );
+
+        assertArgumentsPresentInOrder( cli, "-b", "builder-id-123" );
+    }
+
+    @Test
     public void testAlsoMake()
     {
 

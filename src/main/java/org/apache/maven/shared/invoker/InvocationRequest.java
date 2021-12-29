@@ -717,11 +717,11 @@ public interface InvocationRequest
     InvocationRequest setResumeFrom( String resumeFrom );
 
     /**
-     * The id of the build strategy to use. equivalent of {@code --builder id}. <b>Note. This is available since Maven
-     * 3.2.1</b>
+     * The id of the build strategy to use. equivalent of {@code -b id} or {@code --builder id}.
+     * <b>Note. This is available since Maven 3.2.1</b>
      *
      * @param id The builder id.
-     * @return {@link InvocationRequest} FIXME: How to identify if this is a valid command line option?
+     * @return {@link InvocationRequest}
      * @since 3.0.0
      */
     InvocationRequest setBuilder( String id );

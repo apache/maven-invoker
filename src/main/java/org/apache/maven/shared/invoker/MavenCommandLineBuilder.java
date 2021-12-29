@@ -573,6 +573,7 @@ public class MavenCommandLineBuilder
 
         if ( request.getBuilder() != null )
         {
+            cli.createArg().setValue( "-b" );
             cli.createArg().setValue( request.getBuilder() );
         }
 
