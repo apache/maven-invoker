@@ -127,7 +127,10 @@ public interface Invoker
      * @param workingDirectory The working directory for the Maven invocation, may be <code>null</code> to derive the
      *            working directory from the base directory of the processed POM.
      * @return This invoker instance.
+     *
+     * @deprecated Please use {@link InvocationRequest#setBaseDirectory(File)}
      */
+    @Deprecated
     Invoker setWorkingDirectory( File workingDirectory );
 
     /**
@@ -137,7 +140,10 @@ public interface Invoker
      * @param inputStream The input stream used to provide input for the invoked Maven build, may be <code>null</code>
      *            if not required.
      * @return This invoker instance.
+     *
+     * @deprecated Please use {@link InvocationRequest#setInputStream(InputStream)}
      */
+    @Deprecated
     Invoker setInputStream( InputStream inputStream );
 
     /**
@@ -145,7 +151,10 @@ public interface Invoker
      *
      * @param outputHandler The output handler, may be <code>null</code> if the output is not of interest.
      * @return This invoker instance.
+     *
+     * @deprecated Please use {@link InvocationRequest#setOutputHandler(InvocationOutputHandler)}
      */
+    @Deprecated
     Invoker setOutputHandler( InvocationOutputHandler outputHandler );
 
     /**
@@ -153,6 +162,9 @@ public interface Invoker
      *
      * @param errorHandler The error handler, may be <code>null</code> if the output is not of interest.
      * @return This invoker instance.
+     *
+     * @deprecated Pleas use {@link InvocationRequest#setErrorHandler(InvocationOutputHandler)}
      */
+    @Deprecated
     Invoker setErrorHandler( InvocationOutputHandler errorHandler );
 }
