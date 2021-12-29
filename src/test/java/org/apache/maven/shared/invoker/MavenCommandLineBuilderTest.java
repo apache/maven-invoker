@@ -320,6 +320,22 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
+    public void testShouldSetNonRecursiveFlagsFromRequest()
+    {
+        mclb.setFlags( newRequest().setRecursive( false ), cli );
+
+        assertArgumentsPresent( cli, Collections.singleton( "-N" ));
+    }
+
+    @Test
+    public void testShouldSetShowVersionFlagsFromRequest()
+    {
+        mclb.setFlags( newRequest().setShowVersion( true ), cli );
+
+        assertArgumentsPresent( cli, Collections.singleton( "-V" ));
+    }
+
+    @Test
     public void testDebugOptionShouldMaskShowErrorsOption()
     {
 
