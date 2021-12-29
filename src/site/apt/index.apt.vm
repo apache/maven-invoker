@@ -50,15 +50,9 @@ ${project.name}
   * Global Options:
   
     * Maven-Home Location (location of Maven application directory)
-  
-    * Global Checksum policy (fail/warn, global across defined repositories)
-    
+
     * Local Repository Location
-    
-    * Working Directory
-    
-    * Input/Output Handlers
-    
+
     * API Logger
     
     * Maven Executable
