@@ -45,7 +45,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeThat;
+import static org.junit.Assume.assumeTrue;
 
 public class MavenCommandLineBuilderTest
 {
@@ -228,7 +228,7 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
-    public void testShouldFailIfLoggerSetToNull() throws Exception
+    public void testShouldFailIfLoggerSetToNull()
     {
         mclb.setLogger( null );
 
@@ -259,10 +259,32 @@ public class MavenCommandLineBuilderTest
         }
 
         mclb.setMavenHome( dummyMavenHomeBin.getParentFile() );
+        mclb.setupMavenExecutable( newRequest() );
 
-        File mavenExe = mclb.findMavenExecutable();
+        assertEquals( check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath() );
+    }
 
-        assertEquals( check.getCanonicalPath(), mavenExe.getCanonicalPath() );
+    @Test
+    public void testShouldFindDummyMavenExecutableWithMavenHomeFromRequest()
+        throws Exception
+    {
+        File dummyMavenHomeBin = temporaryFolder.newFolder( "invoker-tests", "dummy-maven-home", "bin" );
+
+        File check;
+        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
+        {
+            check = createDummyFile( dummyMavenHomeBin, "mvn.bat" );
+        }
+        else
+        {
+            check = createDummyFile( dummyMavenHomeBin, "mvn" );
+        }
+
+        // default value should be not used
+        mclb.setMavenHome( new File( "not-present-1234" ) );
+        mclb.build( newRequest().setMavenHome( dummyMavenHomeBin.getParentFile() ) );
+
+        assertEquals( check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath() );
     }
 
     @Test
@@ -869,16 +891,49 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
-    public void testMvnCommand()
+    public void testMvnExecutableFromInvoker()
         throws Exception
     {
-        assumeThat( "Test only works when called with surefire", System.getProperty( "maven.home" ),
-                    is( notNullValue() ) );
+        assumeTrue( "Test only works when maven home can be assigned",
+            System.getProperty( "maven.home" ) != null || System.getenv( "M2_HOME" ) != null );
+
         File mavenExecutable = new File( "mvnDebug" );
+
         mclb.setMavenExecutable( mavenExecutable );
-        File executable = mclb.findMavenExecutable();
-        assertTrue( "Expected executable to exist", executable.exists() );
-        assertTrue( "Expected executable to be absolute", executable.isAbsolute() );
+        mclb.build( newRequest() );
+
+        assertTrue( "Expected executable to exist", mclb.getMavenExecutable().exists() );
+        assertTrue( "Expected executable to be absolute", mclb.getMavenExecutable().isAbsolute() );
+        assertTrue( "Expected mvnDebug as command mvnDebug", mclb.getMavenExecutable().getName().contains( "mvnDebug" ) );
+    }
+
+    @Test
+    public void testMvnExecutableFormRequest()
+        throws Exception
+    {
+        assumeTrue( "Test only works when maven home can be assigned",
+            System.getProperty( "maven.home" ) != null || System.getenv( "M2_HOME" ) != null );
+
+        File mavenExecutable = new File( "mvnDebug" );
+
+        mclb.build( newRequest().setMavenExecutable( mavenExecutable ) );
+
+        assertTrue( "Expected executable to exist", mclb.getMavenExecutable().exists() );
+        assertTrue( "Expected executable to be absolute", mclb.getMavenExecutable().isAbsolute() );
+        assertTrue( "Expected mvnDebug as command", mclb.getMavenExecutable().getName().contains( "mvnDebug" ) );
+    }
+
+    @Test
+    public void testDefaultMavenCommand()
+        throws Exception
+    {
+        assumeTrue( "Test only works when maven home can be assigned",
+            System.getProperty( "maven.home" ) != null || System.getenv( "M2_HOME" ) != null );
+
+        mclb.build( newRequest() );
+
+        assertTrue( "Expected executable to exist", mclb.getMavenExecutable().exists() );
+        assertTrue( "Expected executable to be absolute", mclb.getMavenExecutable().isAbsolute() );
     }
 
     @Test

@@ -107,6 +107,10 @@ public class DefaultInvocationRequest
 
     private boolean quiet;
 
+    private File mavenHome;
+
+    private File mavenExecutable;
+
     /**
      * <p>getBaseDirectory.</p>
      *
@@ -722,6 +726,44 @@ public class DefaultInvocationRequest
     public InvocationRequest setQuiet( boolean quiet )
     {
         this.quiet = quiet;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public File getMavenHome()
+    {
+        return mavenHome;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public InvocationRequest setMavenHome( File mavenHome )
+    {
+        this.mavenHome = mavenHome;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public File getMavenExecutable()
+    {
+        return mavenExecutable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public InvocationRequest setMavenExecutable( File mavenExecutable )
+    {
+        this.mavenExecutable = mavenExecutable;
         return this;
     }
 }
