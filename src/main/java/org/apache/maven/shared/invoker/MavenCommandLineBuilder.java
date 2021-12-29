@@ -64,26 +64,22 @@ public class MavenCommandLineBuilder
     public Commandline build( InvocationRequest request )
         throws CommandLineConfigurationException
     {
+
+        setupMavenHome( request );
+        checkRequiredState();
+
         try
         {
-            checkRequiredState();
+           setupMavenExecutable( request );
         }
         catch ( IOException e )
         {
             throw new CommandLineConfigurationException( e.getMessage(), e );
         }
-        File mvn;
-        try
-        {
-            mvn = findMavenExecutable();
-        }
-        catch ( IOException e )
-        {
-            throw new CommandLineConfigurationException( e.getMessage(), e );
-        }
+
         Commandline cli = new Commandline();
 
-        cli.setExecutable( mvn.getAbsolutePath() );
+        cli.setExecutable( mavenExecutable.getAbsolutePath() );
 
         // handling for OS-level envars
         setShellEnvironment( request, cli );
@@ -119,27 +115,12 @@ public class MavenCommandLineBuilder
 
     /**
      * <p>checkRequiredState.</p>
-     *
-     * @throws java.io.IOException if any.
      */
     protected void checkRequiredState()
-        throws IOException
     {
         if ( logger == null )
         {
             throw new IllegalStateException( "A logger instance is required." );
-        }
-
-        if ( ( mavenHome == null ) && ( System.getProperty( "maven.home" ) == null ) )
-        // can be restored with 1.5
-        // && ( System.getenv( "M2_HOME" ) != null ) )
-        {
-            if ( !getSystemEnvVars().containsKey( "M2_HOME" ) )
-            {
-                throw new IllegalStateException( "Maven application directory was not "
-                    + "specified, and ${maven.home} is not provided in the system "
-                    + "properties. Specify at least one of these." );
-            }
         }
     }
 
@@ -221,10 +202,8 @@ public class MavenCommandLineBuilder
      *
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
-     * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
      */
     protected void setShellEnvironment( InvocationRequest request, Commandline cli )
-        throws CommandLineConfigurationException
     {
         if ( request.isShellEnvironmentInherited() )
         {
@@ -599,46 +578,61 @@ public class MavenCommandLineBuilder
 
     }
 
-    /**
-     * <p>findMavenExecutable.</p>
-     *
-     * @return a {@link java.io.File} object.
-     * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
-     * @throws java.io.IOException if any.
-     */
-    protected File findMavenExecutable()
-        throws CommandLineConfigurationException, IOException
+    void setupMavenHome( InvocationRequest request )
     {
+        if ( request.getMavenHome() != null )
+        {
+            mavenHome = request.getMavenHome();
+        }
+
         if ( mavenHome == null )
         {
             String mavenHomeProperty = System.getProperty( "maven.home" );
+            if ( mavenHomeProperty == null && getSystemEnvVars().getProperty( "M2_HOME" ) != null )
+            {
+                mavenHomeProperty = getSystemEnvVars().getProperty( "M2_HOME" );
+            }
+
             if ( mavenHomeProperty != null )
             {
                 mavenHome = new File( mavenHomeProperty );
-                if ( !mavenHome.isDirectory() )
-                {
-                    File binDir = mavenHome.getParentFile();
-                    if ( binDir != null && "bin".equals( binDir.getName() ) )
-                    {
-                        // ah, they specified the mvn
-                        // executable instead...
-                        mavenHome = binDir.getParentFile();
-                    }
-                    else
-                    {
-                        throw new IllegalStateException( "${maven.home} is not specified as a directory: '"
-                            + mavenHomeProperty + "'." );
-                    }
-                }
-            }
-
-            if ( ( mavenHome == null ) && ( getSystemEnvVars().getProperty( "M2_HOME" ) != null ) )
-            {
-                mavenHome = new File( getSystemEnvVars().getProperty( "M2_HOME" ) );
             }
         }
 
-        logger.debug( "Using ${maven.home} of: '" + mavenHome + "'." );
+        if ( mavenHome != null && !mavenHome.isDirectory() )
+        {
+            File binDir = mavenHome.getParentFile();
+            if ( binDir != null && "bin".equals( binDir.getName() ) )
+            {
+                // ah, they specified the mvn
+                // executable instead...
+                mavenHome = binDir.getParentFile();
+            }
+        }
+
+        if ( mavenHome != null && !mavenHome.isDirectory() )
+        {
+            throw new IllegalStateException( "maven home is not specified as a directory: '" + mavenHome + "'." );
+        }
+
+        logger.debug( "Using maven.home of: '" + mavenHome + "'." );
+    }
+
+
+    /**
+     * <p>setupMavenExecutable.</p>
+     *
+     * @param request a Invoker request
+     * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
+     * @throws java.io.IOException if any.
+     */
+    protected void setupMavenExecutable( InvocationRequest request )
+        throws CommandLineConfigurationException, IOException
+    {
+        if ( request.getMavenExecutable() != null )
+        {
+            mavenExecutable = request.getMavenExecutable();
+        }
 
         if ( mavenExecutable == null || !mavenExecutable.isAbsolute() )
         {
@@ -679,8 +673,6 @@ public class MavenCommandLineBuilder
                 throw new CommandLineConfigurationException( "Maven executable not found at: " + mavenExecutable );
             }
         }
-
-        return mavenExecutable;
     }
 
     private Properties getSystemEnvVars()

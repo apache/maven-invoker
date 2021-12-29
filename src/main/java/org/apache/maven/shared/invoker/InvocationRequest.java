@@ -763,4 +763,45 @@ public interface InvocationRequest
      */
     void setTimeoutInSeconds( int timeoutInSeconds );
 
+    /**
+     * Gets the path to the base directory of the Maven installation used to invoke Maven.
+     *
+     * @return The path to the base directory of the Maven installation or <code>null</code> if using the default
+     *         Maven installation.
+     *
+     * @since 3.1.1
+     */
+    File getMavenHome();
+
+    /**
+     * Sets the path to the base directory of the Maven installation used to invoke Maven. This parameter may be left
+     * unspecified to use the default Maven installation which will be discovered by evaluating the system property
+     * <code>maven.home</code> and the environment variable <code>M2_HOME</code>.
+     *
+     * @param mavenHome The path to the base directory of the Maven installation, may be <code>null</code> to use the
+     *            default Maven installation.
+     * @return This invocation request
+     *
+     * @since 3.1.1
+     */
+    InvocationRequest setMavenHome( File mavenHome );
+
+    /**
+     * Get the customized File of the Maven executable.
+     *
+     * @return the custom Maven executable, otherwise {@code null}
+     *
+     * @since 3.1.1
+     */
+    File getMavenExecutable();
+
+    /**
+     * {@code mavenExecutable} can either be a file relative to ${maven.home}/bin/ or an absolute file.
+     *
+     * @param mavenExecutable the executable
+     * @return This invocation request
+     *
+     * @since 3.1.1
+     */
+    InvocationRequest setMavenExecutable( File mavenExecutable );
 }
