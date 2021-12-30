@@ -45,6 +45,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeThat;
 import static org.junit.Assume.assumeTrue;
 
 public class MavenCommandLineBuilderTest
@@ -796,41 +797,6 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
-    public void testShouldSetEnvVar_MAVEN_TERMINATE_CMD()
-        throws Exception
-    {
-        setupTempMavenHomeIfMissing( false );
-
-        InvocationRequest request = newRequest();
-
-        File projectDir = temporaryFolder.newFolder( "invoker-tests", "maven-terminate-cmd-options-set" );
-
-        request.setBaseDirectory( projectDir );
-
-        createDummyFile( projectDir, "pom.xml" );
-
-        List<String> goals = new ArrayList<>();
-
-        goals.add( "clean" );
-        request.setGoals( goals );
-
-        Commandline commandline = mclb.build( request );
-
-        String[] environmentVariables = commandline.getEnvironmentVariables();
-        String envVarMavenTerminateCmd = null;
-        for ( String envVar : environmentVariables )
-        {
-            if ( envVar.startsWith( "MAVEN_TERMINATE_CMD=" ) )
-            {
-                envVarMavenTerminateCmd = envVar;
-                break;
-            }
-        }
-        assertEquals( "MAVEN_TERMINATE_CMD=on", envVarMavenTerminateCmd );
-
-    }
-
-    @Test
     public void testShouldInsertActivatedProfiles()
         throws Exception
     {
@@ -853,49 +819,11 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
-    public void testShouldSetEnvVar_M2_HOME()
-        throws Exception
-    {
-        Assume.assumeNotNull( System.getenv( "M2_HOME" ) );
-
-        setupTempMavenHomeIfMissing( true );
-
-        InvocationRequest request = newRequest();
-
-        File projectDir = temporaryFolder.newFolder( "invoker-tests/maven-terminate-cmd-options-set" );
-
-        request.setBaseDirectory( projectDir );
-
-        createDummyFile( projectDir, "pom.xml" );
-
-        List<String> goals = new ArrayList<>();
-
-        goals.add( "clean" );
-        request.setGoals( goals );
-
-        File mavenHome2 = new File( System.getProperty( "maven.home" ) );
-        mclb.setMavenHome( mavenHome2 );
-
-        Commandline commandline = mclb.build( request );
-
-        String[] environmentVariables = commandline.getEnvironmentVariables();
-        String m2Home = null;
-        for ( String envVar : environmentVariables )
-        {
-            if ( envVar.startsWith( "M2_HOME=" ) )
-            {
-                m2Home = envVar;
-            }
-        }
-        assertEquals( "M2_HOME=" + mavenHome2.getAbsolutePath(), m2Home );
-    }
-
-    @Test
     public void testMvnExecutableFromInvoker()
         throws Exception
     {
-        assumeTrue( "Test only works when maven home can be assigned",
-            System.getProperty( "maven.home" ) != null || System.getenv( "M2_HOME" ) != null );
+        assumeThat( "Test only works when maven.home is set",
+            System.getProperty( "maven.home" ), is(notNullValue()));
 
         File mavenExecutable = new File( "mvnDebug" );
 
@@ -911,8 +839,8 @@ public class MavenCommandLineBuilderTest
     public void testMvnExecutableFormRequest()
         throws Exception
     {
-        assumeTrue( "Test only works when maven home can be assigned",
-            System.getProperty( "maven.home" ) != null || System.getenv( "M2_HOME" ) != null );
+        assumeThat( "Test only works when maven.home is set",
+            System.getProperty( "maven.home" ), is(notNullValue()));
 
         File mavenExecutable = new File( "mvnDebug" );
 
@@ -927,8 +855,8 @@ public class MavenCommandLineBuilderTest
     public void testDefaultMavenCommand()
         throws Exception
     {
-        assumeTrue( "Test only works when maven home can be assigned",
-            System.getProperty( "maven.home" ) != null || System.getenv( "M2_HOME" ) != null );
+        assumeThat( "Test only works when maven.home is set",
+            System.getProperty( "maven.home" ), is(notNullValue()));
 
         mclb.build( newRequest() );
 

@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.Properties;
 
 import org.apache.maven.shared.utils.StringUtils;
-import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +38,7 @@ public class DefaultInvokerTest
 
     @Test
     public void testBuildShouldSucceed()
-        throws IOException, MavenInvocationException, URISyntaxException
+        throws MavenInvocationException, URISyntaxException
     {
         File basedir = getBasedirForBuild();
 
@@ -58,7 +57,7 @@ public class DefaultInvokerTest
 
     @Test
     public void testBuildShouldFail()
-        throws IOException, MavenInvocationException, URISyntaxException
+        throws MavenInvocationException, URISyntaxException
     {
         File basedir = getBasedirForBuild();
 
@@ -77,7 +76,7 @@ public class DefaultInvokerTest
 
     @Test
     public void testBuildShouldTimeout()
-        throws IOException, MavenInvocationException, URISyntaxException
+        throws MavenInvocationException, URISyntaxException
     {
         File basedir = getBasedirForBuild();
 
@@ -239,13 +238,8 @@ public class DefaultInvokerTest
 
         if ( mavenHome == null )
         {
-            mavenHome = CommandLineUtils.getSystemEnvVars().getProperty( "M2_HOME" );
-        }
-
-        if ( mavenHome == null )
-        {
             throw new IllegalStateException( "Cannot find Maven application "
-                + "directory. Either specify 'maven.home' system property, or M2_HOME environment variable." );
+                + "directory. Specify 'maven.home' system property" );
         }
 
         return new File( mavenHome );
