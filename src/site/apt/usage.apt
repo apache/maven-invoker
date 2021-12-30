@@ -67,7 +67,7 @@ if ( result.getExitCode() != 0 )
   This will retrieve the exit code from the invocation result, and throw
   an exception if it's not <<<0>>> (the traditional all-clear code). Note that
   we could capture the build output by adding an <<<InvocationOutputHandler>>>
-  instance to either the <<<invoker>>> or the <<<request>>>.
+  instance to the <<<request>>>.
   
 * Caching the Invoker
 
@@ -127,7 +127,7 @@ public void publishSite( File siteDirectory ) throws PublishException
 
   You can use the method <<<Invoker.setMavenHome()>>> to specify which Maven executable it should use.
   If you don't provide an explicit value for this setting, the <<<Invoker>>> will automatically try to detect
-  a Maven installation by evaluating the system property <<<maven.home>>> and the environment variable <<<M2_HOME>>>.
+  a Maven installation by evaluating the system property <<<maven.home>>>.
 
   <<Note:>> If you use the invocation API in tests run by the {{{../../plugins/maven-surefire-plugin}Maven Surefire Plugin}},
   you need to tell Surefire to pass the system property <<<maven.home>>> to the tests in order for the automatic Maven

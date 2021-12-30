@@ -31,7 +31,6 @@ import org.apache.maven.shared.invoker.InvocationRequest.ReactorFailureBehavior;
 import org.apache.maven.shared.utils.Os;
 import org.apache.maven.shared.utils.StringUtils;
 import org.apache.maven.shared.utils.cli.CommandLineException;
-import org.apache.maven.shared.utils.cli.CommandLineUtils;
 import org.apache.maven.shared.utils.cli.Commandline;
 
 /**
@@ -51,8 +50,6 @@ public class MavenCommandLineBuilder
     private File mavenHome;
 
     private File mavenExecutable;
-
-    private Properties systemEnvVars;
 
     /**
      * <p>build.</p>
@@ -207,23 +204,7 @@ public class MavenCommandLineBuilder
     {
         if ( request.isShellEnvironmentInherited() )
         {
-            try
-            {
-                cli.addSystemEnvironment();
-                cli.addEnvironment( "MAVEN_TERMINATE_CMD", "on" );
-                // MSHARED-261: Ensure M2_HOME is not inherited, but gets a
-                // proper value
-                cli.addEnvironment( "M2_HOME", getMavenHome().getAbsolutePath() );
-            }
-            catch ( RuntimeException e )
-            {
-                throw e;
-            }
-            catch ( Exception e )
-            {
-                throw new IllegalStateException(
-                        "Unknown error retrieving shell environment variables. Reason: " + e.getMessage(), e );
-            }
+            cli.addSystemEnvironment();
         }
 
         if ( request.getJavaHome() != null )
@@ -585,19 +566,9 @@ public class MavenCommandLineBuilder
         {
             mavenHome = request.getMavenHome();
         }
-
-        if ( mavenHome == null )
+        else if ( System.getProperty( "maven.home" ) != null )
         {
-            String mavenHomeProperty = System.getProperty( "maven.home" );
-            if ( mavenHomeProperty == null && getSystemEnvVars().getProperty( "M2_HOME" ) != null )
-            {
-                mavenHomeProperty = getSystemEnvVars().getProperty( "M2_HOME" );
-            }
-
-            if ( mavenHomeProperty != null )
-            {
-                mavenHome = new File( mavenHomeProperty );
-            }
+            mavenHome = new File( System.getProperty( "maven.home" ) );
         }
 
         if ( mavenHome != null && !mavenHome.isDirectory() )
@@ -674,16 +645,6 @@ public class MavenCommandLineBuilder
                 throw new CommandLineConfigurationException( "Maven executable not found at: " + mavenExecutable );
             }
         }
-    }
-
-    private Properties getSystemEnvVars()
-    {
-        if ( this.systemEnvVars == null )
-        {
-            // with 1.5 replace with System.getenv()
-            this.systemEnvVars = CommandLineUtils.getSystemEnvVars();
-        }
-        return this.systemEnvVars;
     }
 
     /**

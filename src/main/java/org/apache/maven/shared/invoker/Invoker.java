@@ -80,7 +80,7 @@ public interface Invoker
     /**
      * Sets the path to the base directory of the Maven installation used to invoke Maven. This parameter may be left
      * unspecified to use the default Maven installation which will be discovered by evaluating the system property
-     * <code>maven.home</code> and the environment variable <code>M2_HOME</code>.
+     * <code>maven.home</code>.
      *
      * @param mavenHome The path to the base directory of the Maven installation, may be <code>null</code> to use the
      *            default Maven installation.
