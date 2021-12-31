@@ -560,7 +560,7 @@ public class MavenCommandLineBuilder
 
     }
 
-    void setupMavenHome( InvocationRequest request )
+    private void setupMavenHome( InvocationRequest request )
     {
         if ( request.getMavenHome() != null )
         {
@@ -584,7 +584,7 @@ public class MavenCommandLineBuilder
 
         if ( mavenHome != null && !mavenHome.isDirectory() )
         {
-            throw new IllegalStateException( "maven home is not specified as a directory: '" + mavenHome + "'." );
+            throw new IllegalStateException( "Maven home is set to: '" + mavenHome + "' which is not a directory" );
         }
 
         logger.debug( "Using maven.home of: '" + mavenHome + "'." );
