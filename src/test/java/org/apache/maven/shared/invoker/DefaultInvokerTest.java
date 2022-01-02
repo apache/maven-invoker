@@ -217,6 +217,28 @@ public class DefaultInvokerTest
         assertEquals( 0, result.getExitCode() );
     }
 
+    @Test
+    public void testPomOutsideProject() throws Exception
+    {
+        logTestStart();
+
+        File testDir = getBasedirForBuild();
+
+        File basedir = new File( testDir, "project" );
+        File pom = new File(testDir, "temp/pom.xml" );
+
+        Invoker invoker = newInvoker();
+
+        InvocationRequest request = new DefaultInvocationRequest();
+        request.setBaseDirectory( basedir );
+        request.setPomFile( pom );
+        request.setGoals( Collections.singletonList( "validate" ) );
+
+        InvocationResult result = invoker.execute( request );
+
+        assertEquals( 0, result.getExitCode() );
+    }
+
     private Invoker newInvoker()
     {
         Invoker invoker = new DefaultInvoker();

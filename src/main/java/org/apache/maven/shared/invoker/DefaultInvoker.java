@@ -68,37 +68,33 @@ public class DefaultInvoker
     {
         MavenCommandLineBuilder cliBuilder = new MavenCommandLineBuilder();
 
-        InvokerLogger logger = getLogger();
         if ( logger != null )
         {
-            cliBuilder.setLogger( getLogger() );
+            cliBuilder.setLogger( logger );
         }
 
-        File localRepo = getLocalRepositoryDirectory();
-        if ( localRepo != null )
+        if ( localRepositoryDirectory != null )
         {
-            cliBuilder.setLocalRepositoryDirectory( getLocalRepositoryDirectory() );
+            cliBuilder.setLocalRepositoryDirectory( localRepositoryDirectory );
         }
 
-        File mavenHome = getMavenHome();
         if ( mavenHome != null )
         {
-            cliBuilder.setMavenHome( getMavenHome() );
+            cliBuilder.setMavenHome( mavenHome );
         }
 
-        File mavenExecutable = getMavenExecutable();
         if ( mavenExecutable != null )
         {
             cliBuilder.setMavenExecutable( mavenExecutable );
         }
 
-        File workingDirectory = getWorkingDirectory();
         if ( workingDirectory != null )
         {
-            cliBuilder.setWorkingDirectory( getWorkingDirectory() );
+            cliBuilder.setBaseDirectory( workingDirectory );
         }
 
         Commandline cli;
+
         try
         {
             cli = cliBuilder.build( request );

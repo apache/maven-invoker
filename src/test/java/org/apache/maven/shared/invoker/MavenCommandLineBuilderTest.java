@@ -83,7 +83,7 @@ public class MavenCommandLineBuilderTest
 
         try
         {
-            mclb.setEnvironmentPaths( newRequest(), cli );
+            mclb.setLocalRepository( newRequest(), cli );
             fail( "Should not set local repo location to point to a file." );
         }
         catch ( IllegalArgumentException expected )
@@ -94,9 +94,10 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldFailToSetLocalRepoLocationFromRequestWhenItIsAFile()
     {
+        InvocationRequest request = newRequest().setLocalRepositoryDirectory( lrd );
         try
         {
-            mclb.setEnvironmentPaths( newRequest().setLocalRepositoryDirectory( lrd ), cli );
+            mclb.setLocalRepository( request, cli );
             fail( "Should not set local repo location to point to a file." );
         }
         catch ( IllegalArgumentException expected )
@@ -109,7 +110,7 @@ public class MavenCommandLineBuilderTest
     {
         File lrd = temporaryFolder.newFolder( "workdir" ).getCanonicalFile();
         mclb.setLocalRepositoryDirectory( lrd );
-        mclb.setEnvironmentPaths( newRequest(), cli );
+        mclb.setLocalRepository( newRequest(), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "maven.repo.local=" + lrd.getPath() );
     }
@@ -119,7 +120,7 @@ public class MavenCommandLineBuilderTest
         throws Exception
     {
         File lrd = temporaryFolder.newFolder( "workdir" ).getCanonicalFile();
-        mclb.setEnvironmentPaths( newRequest().setLocalRepositoryDirectory( lrd ), cli );
+        mclb.setLocalRepository( newRequest().setLocalRepositoryDirectory( lrd ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "maven.repo.local=" + lrd.getPath() );
     }
@@ -132,7 +133,7 @@ public class MavenCommandLineBuilderTest
         File glrd = temporaryFolder.newFolder( "global-workdir" ).getCanonicalFile();
 
         mclb.setLocalRepositoryDirectory( glrd );
-        mclb.setEnvironmentPaths( newRequest().setLocalRepositoryDirectory( lrd ), cli );
+        mclb.setLocalRepository( newRequest().setLocalRepositoryDirectory( lrd ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "maven.repo.local=" + lrd.getPath() );
     }
@@ -142,10 +143,11 @@ public class MavenCommandLineBuilderTest
         throws Exception
     {
         File wd = temporaryFolder.newFolder( "workdir" );
-        mclb.setWorkingDirectory( wd );
-        mclb.setEnvironmentPaths( newRequest(), cli );
 
-        assertEquals( cli.getWorkingDirectory(), wd.getCanonicalFile() );
+        mclb.setBaseDirectory( wd );
+        Commandline commandline = mclb.build( newRequest() );
+
+        assertEquals( commandline.getWorkingDirectory(), wd.getCanonicalFile() );
     }
 
     @Test
@@ -157,10 +159,9 @@ public class MavenCommandLineBuilderTest
         InvocationRequest req = newRequest();
         req.setBaseDirectory( wd );
 
+        mclb.setupBaseDirectory( req );
 
-        mclb.setEnvironmentPaths( req, cli );
-
-        assertEquals( cli.getWorkingDirectory(), wd.getCanonicalFile() );
+        assertEquals( mclb.getBaseDirectory(), wd.getCanonicalFile() );
     }
 
     @Test
@@ -170,15 +171,14 @@ public class MavenCommandLineBuilderTest
         File wd = temporaryFolder.newFolder( "workdir" );
         File gwd = temporaryFolder.newFolder( "global-workdir" );
 
-        mclb.setWorkingDirectory( gwd );
+        mclb.setBaseDirectory( gwd );
 
         InvocationRequest req = newRequest();
         req.setBaseDirectory( wd );
 
+        mclb.setupBaseDirectory( req);
 
-        mclb.setEnvironmentPaths( req, cli );
-
-        assertEquals( cli.getWorkingDirectory(), wd.getCanonicalFile() );
+        assertEquals( mclb.getBaseDirectory(), wd.getCanonicalFile() );
     }
 
     @Test
@@ -496,39 +496,15 @@ public class MavenCommandLineBuilderTest
 
         InvocationRequest req = newRequest().setPomFile( pomFile );
 
-        mclb.setEnvironmentPaths( req, cli );
-        mclb.setPomLocation( req, cli );
+        Commandline commandline = mclb.build( req );
 
-        assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
-
-        Set<String> args = new HashSet<>();
-        args.add( "-f" );
-        args.add( "non-standard-pom.xml" );
-
-        assertArgumentsPresent( cli, args );
-    }
-
-    @Test
-    public void testShouldSpecifyFileOptionUsingNonStandardPomInBasedir()
-        throws Exception
-    {
-        File projectDir = temporaryFolder.newFolder( "invoker-tests", "file-option-nonstd-basedir" );
-
-        File basedir = createDummyFile( projectDir, "non-standard-pom.xml" ).getCanonicalFile();
-
-
-        InvocationRequest req = newRequest().setBaseDirectory( basedir );
-
-        mclb.setEnvironmentPaths( req, cli );
-        mclb.setPomLocation( req, cli );
-
-        assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
+        assertEquals( projectDir.getCanonicalFile(), commandline.getWorkingDirectory() );
 
         Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "non-standard-pom.xml" );
 
-        assertArgumentsPresent( cli, args );
+        assertArgumentsPresent( commandline, args );
     }
 
     @Test
@@ -542,16 +518,39 @@ public class MavenCommandLineBuilderTest
 
         InvocationRequest req = newRequest().setPomFile( pomFile );
 
-        mclb.setEnvironmentPaths( req, cli );
-        mclb.setPomLocation( req, cli );
+        Commandline commandline = mclb.build( req );
 
-        assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
+        assertEquals( projectDir.getCanonicalFile(), commandline.getWorkingDirectory() );
 
         Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "pom.xml" );
 
-        assertArgumentsNotPresent( cli, args );
+        assertArgumentsNotPresent( commandline, args );
+    }
+
+    @Test
+    public void testShouldSetPomForOutsideWorkspace()
+        throws Exception
+    {
+        File projectDir = temporaryFolder.newFolder( "invoker-tests", "std-pom-file-location" );
+
+        File outsidePom = temporaryFolder.newFile( "pom.xml" );
+
+
+        InvocationRequest req = newRequest()
+            .setBaseDirectory( projectDir )
+            .setPomFile( outsidePom );
+
+        Commandline commandline = mclb.build( req );
+
+        assertEquals( projectDir.getCanonicalFile(), commandline.getWorkingDirectory() );
+
+        Set<String> args = new HashSet<>();
+        args.add( "-f" );
+        args.add( outsidePom.getCanonicalPath() );
+
+        assertArgumentsPresent( commandline, args );
     }
 
     @Test
@@ -565,16 +564,15 @@ public class MavenCommandLineBuilderTest
 
         InvocationRequest req = newRequest().setBaseDirectory( basedir );
 
-        mclb.setEnvironmentPaths( req, cli );
-        mclb.setPomLocation( req, cli );
+        Commandline commandline = mclb.build( req );
 
-        assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
+        assertEquals( projectDir.getCanonicalFile(), commandline.getWorkingDirectory() );
 
         Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "pom.xml" );
 
-        assertArgumentsNotPresent( cli, args );
+        assertArgumentsNotPresent( commandline, args );
     }
 
     @Test
@@ -586,16 +584,15 @@ public class MavenCommandLineBuilderTest
 
         InvocationRequest req = newRequest().setBaseDirectory( projectDir );
 
-        mclb.setEnvironmentPaths( req, cli );
-        mclb.setPomLocation( req, cli );
+        Commandline commandline = mclb.build( req );
 
-        assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
+        assertEquals( projectDir.getCanonicalFile(), commandline.getWorkingDirectory() );
 
         Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "pom.xml" );
 
-        assertArgumentsNotPresent( cli, args );
+        assertArgumentsNotPresent( commandline, args );
     }
 
     @Test
@@ -604,19 +601,17 @@ public class MavenCommandLineBuilderTest
     {
         File projectDir = temporaryFolder.newFolder( "invoker-tests", "std-basedir-with-pom-filename" );
 
-
         InvocationRequest req = newRequest().setBaseDirectory( projectDir ).setPomFileName( "non-standard-pom.xml" );
 
-        mclb.setEnvironmentPaths( req, cli );
-        mclb.setPomLocation( req, cli );
+        Commandline commandline = mclb.build( req );
 
-        assertEquals( projectDir.getCanonicalFile(), cli.getWorkingDirectory() );
+        assertEquals( projectDir.getCanonicalFile(), commandline.getWorkingDirectory() );
 
         Set<String> args = new HashSet<>();
         args.add( "-f" );
         args.add( "non-standard-pom.xml" );
 
-        assertArgumentsPresent( cli, args );
+        assertArgumentsPresent( commandline, args );
     }
 
     @Test

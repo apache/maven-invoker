@@ -43,7 +43,7 @@ public class MavenCommandLineBuilder
 
     private InvokerLogger logger = DEFAULT_LOGGER;
 
-    private File workingDirectory;
+    private File baseDirectory;
 
     private File localRepositoryDirectory;
 
@@ -89,10 +89,15 @@ public class MavenCommandLineBuilder
         // includes/excludes, etc.
         setReactorBehavior( request, cli );
 
-        // working directory and local repository location
-        setEnvironmentPaths( request, cli );
+        // discover value for working directory
+        setupBaseDirectory( request );
 
-        // pom-file and basedir handling
+        cli.setWorkingDirectory( baseDirectory );
+
+        // local repository location
+        setLocalRepository( request, cli );
+
+        // pom-file handling
         setPomLocation( request, cli );
 
         setSettingsLocation( request, cli );
@@ -296,52 +301,33 @@ public class MavenCommandLineBuilder
      */
     protected void setPomLocation( InvocationRequest request, Commandline cli )
     {
-        boolean pomSpecified = false;
-
         File pom = request.getPomFile();
         String pomFilename = request.getPomFileName();
-        File baseDirectory = request.getBaseDirectory();
 
-        if ( pom != null )
+        if ( pom == null )
         {
-            pomSpecified = true;
-        }
-        else if ( baseDirectory != null )
-        {
-            if ( baseDirectory.isDirectory() )
+            if ( pomFilename != null )
             {
-                if ( pomFilename != null )
-                {
-                    pom = new File( baseDirectory, pomFilename );
-
-                    pomSpecified = true;
-                }
-                else
-                {
-                    pom = new File( baseDirectory, "pom.xml" );
-                }
+                pom = new File( baseDirectory, pomFilename );
             }
             else
             {
-                logger.warn( "Base directory is a file. Using base directory as POM location." );
-
-                pom = baseDirectory;
-
-                pomSpecified = true;
+                pom = new File( baseDirectory, "pom.xml" );
             }
         }
 
-        if ( pomSpecified )
+        try
         {
-            try
-            {
-                pom = pom.getCanonicalFile();
-            }
-            catch ( IOException e )
-            {
-                logger.debug( "Failed to canonicalize the POM path: " + pom + ". Using as-is.", e );
-            }
+            pom = pom.getCanonicalFile();
+        }
+        catch ( IOException e )
+        {
+            logger.debug( "Failed to canonicalize the POM path: " + pom + ". Using as-is.", e );
+        }
 
+        if ( pom.getParentFile().equals( baseDirectory ) )
+        {
+            // pom in project workspace
             if ( !"pom.xml".equals( pom.getName() ) )
             {
                 logger.debug( "Specified POM file is not named 'pom.xml'. "
@@ -351,55 +337,64 @@ public class MavenCommandLineBuilder
                 cli.createArg().setValue( pom.getName() );
             }
         }
+        else
+        {
+            cli.createArg().setValue( "-f" );
+            cli.createArg().setValue( pom.getPath() );
+        }
     }
 
-    /**
-     * <p>setEnvironmentPaths.</p>
-     *
-     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
-     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
-     */
-    protected void setEnvironmentPaths( InvocationRequest request, Commandline cli )
+    void setupBaseDirectory( InvocationRequest request )
     {
-        File workingDirectory = request.getBaseDirectory();
-
-        if ( workingDirectory == null )
+        File baseDirectoryFromRequest = null;
+        if ( request.getBaseDirectory() != null )
+        {
+            baseDirectoryFromRequest = request.getBaseDirectory();
+        }
+        else
         {
             File pomFile = request.getPomFile();
             if ( pomFile != null )
             {
-                workingDirectory = pomFile.getParentFile();
+                baseDirectoryFromRequest = pomFile.getParentFile();
             }
         }
 
-        if ( workingDirectory == null )
+        if ( baseDirectoryFromRequest != null )
         {
-            workingDirectory = this.workingDirectory;
+            baseDirectory = baseDirectoryFromRequest;
         }
 
-        if ( workingDirectory == null )
+        if ( baseDirectory == null )
         {
-            workingDirectory = new File( System.getProperty( "user.dir" ) );
+            baseDirectory = new File( System.getProperty( "user.dir" ) );
         }
-        else if ( workingDirectory.isFile() )
+        else if ( baseDirectory.isFile() )
         {
-            logger.warn( "Specified base directory (" + workingDirectory + ") is a file."
+            logger.warn( "Specified base directory (" + baseDirectory + ") is a file."
                 + " Using its parent directory..." );
 
-            workingDirectory = workingDirectory.getParentFile();
+            baseDirectory = baseDirectory.getParentFile();
         }
 
         try
         {
-            cli.setWorkingDirectory( workingDirectory.getCanonicalPath() );
+            baseDirectory = baseDirectory.getCanonicalFile();
         }
         catch ( IOException e )
         {
-            logger.debug( "Failed to canonicalize base directory: " + workingDirectory + ". Using as-is.", e );
-
-            cli.setWorkingDirectory( workingDirectory.getAbsolutePath() );
+            logger.debug( "Failed to canonicalize base directory: " + baseDirectory + ". Using as-is.", e );
         }
+    }
 
+    /**
+     * <p>setLocalRepository.</p>
+     *
+     * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
+     * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
+     */
+    protected void setLocalRepository( InvocationRequest request, Commandline cli )
+    {
         File localRepositoryDirectory = request.getLocalRepositoryDirectory( this.localRepositoryDirectory );
 
         if ( localRepositoryDirectory != null )
@@ -708,23 +703,23 @@ public class MavenCommandLineBuilder
     }
 
     /**
-     * <p>Getter for the field <code>workingDirectory</code>.</p>
+     * <p>Getter for the field <code>baseDirectory</code>.</p>
      *
      * @return a {@link java.io.File} object.
      */
-    public File getWorkingDirectory()
+    public File getBaseDirectory()
     {
-        return workingDirectory;
+        return baseDirectory;
     }
 
     /**
-     * <p>Setter for the field <code>workingDirectory</code>.</p>
+     * <p>Setter for the field <code>baseDirectory</code>.</p>
      *
-     * @param workingDirectory a {@link java.io.File} object.
+     * @param baseDirectory a {@link java.io.File} object.
      */
-    public void setWorkingDirectory( File workingDirectory )
+    public void setBaseDirectory( File baseDirectory )
     {
-        this.workingDirectory = workingDirectory;
+        this.baseDirectory = baseDirectory;
     }
 
     /**
