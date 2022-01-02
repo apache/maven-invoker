@@ -68,7 +68,6 @@ under the License.
 
   <properties>
     <javaVersion>7</javaVersion>
-    <mavenVersion>3.1.1</mavenVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2021-02-04T15:25:48Z</project.build.outputTimestamp>
   </properties>
