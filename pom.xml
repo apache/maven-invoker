@@ -31,7 +31,7 @@ under the License.
 
 
   <artifactId>maven-invoker</artifactId>
-  <version>3.1.1-SNAPSHOT</version>
+  <version>3.2.0-SNAPSHOT</version>
 
   <name>Apache Maven Invoker</name>
   <description>A component to programmatically invoke Maven.</description>
