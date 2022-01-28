@@ -25,7 +25,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.shared</groupId>
     <artifactId>maven-shared-components</artifactId>
-    <version>34</version>
+    <version>35-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -67,7 +67,7 @@ under the License.
   </contributors>
 
   <properties>
-    <javaVersion>7</javaVersion>
+    <javaVersion>8</javaVersion>
     <surefire.version>2.22.2</surefire.version>
     <project.build.outputTimestamp>2021-02-04T15:25:48Z</project.build.outputTimestamp>
   </properties>
@@ -76,7 +76,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-shared-utils</artifactId>
-      <version>3.3.4</version>
+      <version>4.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>javax.inject</groupId>
@@ -118,17 +118,6 @@ under the License.
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin> <!-- Remove once MPOM-270 fixed -->
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>extra-enforcer-rules</artifactId>
-            <version>1.5.1</version>
-          </dependency>
-        </dependencies>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
