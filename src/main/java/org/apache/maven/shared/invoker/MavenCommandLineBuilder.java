@@ -62,20 +62,17 @@ public class MavenCommandLineBuilder
         throws CommandLineConfigurationException
     {
 
-        setupMavenHome( request );
-        checkRequiredState();
-
-        try
-        {
-           setupMavenExecutable( request );
-        }
-        catch ( IOException e )
-        {
-            throw new CommandLineConfigurationException( e.getMessage(), e );
-        }
-
         Commandline cli = new Commandline();
 
+        setupMavenHome( request );
+
+        // discover value for working directory
+        setupBaseDirectory( request );
+        cli.setWorkingDirectory( baseDirectory );
+
+        checkRequiredState();
+
+        setupMavenExecutable( request );
         cli.setExecutable( mavenExecutable.getAbsolutePath() );
 
         // handling for OS-level envars
@@ -88,11 +85,6 @@ public class MavenCommandLineBuilder
         // failure behavior and [eventually] forced-reactor
         // includes/excludes, etc.
         setReactorBehavior( request, cli );
-
-        // discover value for working directory
-        setupBaseDirectory( request );
-
-        cli.setWorkingDirectory( baseDirectory );
 
         // local repository location
         setLocalRepository( request, cli );
@@ -591,10 +583,9 @@ public class MavenCommandLineBuilder
      *
      * @param request a Invoker request
      * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
-     * @throws java.io.IOException if any.
      */
     protected void setupMavenExecutable( InvocationRequest request )
-        throws CommandLineConfigurationException, IOException
+        throws CommandLineConfigurationException
     {
         if ( request.getMavenExecutable() != null )
         {
@@ -608,38 +599,63 @@ public class MavenCommandLineBuilder
             {
                 executable = mavenExecutable.getPath();
             }
-            else if ( Os.isFamily( "windows" ) )
-            {
-                if ( new File( mavenHome, "/bin/mvn.cmd" ).exists() )
-                {
-                    executable = "mvn.cmd";
-                }
-                else
-                {
-                    executable = "mvn.bat";
-                }
-            }
             else
             {
                 executable = "mvn";
             }
 
-            mavenExecutable = new File( mavenHome, "/bin/" + executable );
-
-            try
+            // firs look in project directory
+            mavenExecutable = detectMavenExecutablePerOs( baseDirectory, executable );
+            if ( mavenExecutable == null )
             {
-                mavenExecutable = mavenExecutable.getCanonicalFile();
-            }
-            catch ( IOException e )
-            {
-                logger.debug( "Failed to canonicalize maven executable: " + mavenExecutable + ". Using as-is.", e );
+                // next maven home
+                mavenExecutable = detectMavenExecutablePerOs( mavenHome, "/bin/" + executable );
             }
 
-            if ( !mavenExecutable.isFile() )
+            if ( mavenExecutable != null )
             {
-                throw new CommandLineConfigurationException( "Maven executable not found at: " + mavenExecutable );
+                try
+                {
+                    mavenExecutable = mavenExecutable.getCanonicalFile();
+                }
+                catch ( IOException e )
+                {
+                    logger.debug( "Failed to canonicalize maven executable: '" + mavenExecutable
+                        + "'. Using as-is.", e );
+                }
+            }
+            else
+            {
+                throw new CommandLineConfigurationException(
+                    "Maven executable: '" + executable + "'"
+                        + " not found at project dir: '" + baseDirectory + "' nor maven home: '" + mavenHome + "'" );
             }
         }
+    }
+
+    private File detectMavenExecutablePerOs( File baseDirectory, String executable )
+    {
+        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
+        {
+            File executableFile = new File( baseDirectory, executable + ".cmd" );
+            if ( executableFile.isFile() )
+            {
+                return executableFile;
+            }
+
+            executableFile = new File( baseDirectory, executable + ".bat" );
+            if ( executableFile.isFile() )
+            {
+                return executableFile;
+            }
+        }
+
+        File executableFile = new File( baseDirectory, executable );
+        if ( executableFile.isFile() )
+        {
+            return executableFile;
+        }
+        return null;
     }
 
     /**

@@ -28,6 +28,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
+import org.apache.maven.shared.utils.Os;
 import org.apache.maven.shared.utils.StringUtils;
 import org.junit.Test;
 
@@ -237,6 +238,42 @@ public class DefaultInvokerTest
         InvocationResult result = invoker.execute( request );
 
         assertEquals( 0, result.getExitCode() );
+    }
+
+    @Test
+    public void testMavenWrapperInProject() throws Exception
+    {
+        File basedir = getBasedirForBuild();
+
+        Invoker invoker = newInvoker();
+
+        InvocationRequest request = new DefaultInvocationRequest();
+        request.setBaseDirectory( basedir );
+        request.setGoals( Collections.singletonList( "test-wrapper-goal" ) );
+        request.setMavenExecutable( new File( "./mvnw" ) );
+
+        final StringBuilder outlines = new StringBuilder();
+        request.setOutputHandler( new InvocationOutputHandler()
+        {
+            @Override
+            public void consumeLine( String line )
+            {
+                outlines.append( line );
+            }
+        } );
+
+
+        InvocationResult result = invoker.execute( request );
+
+        assertEquals( 0, result.getExitCode() );
+        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
+        {
+            assertEquals( "Windows Wrapper executed", outlines.toString() );
+        }
+        else
+        {
+            assertEquals( "Unix Wrapper executed", outlines.toString() );
+        }
     }
 
     private Invoker newInvoker()
