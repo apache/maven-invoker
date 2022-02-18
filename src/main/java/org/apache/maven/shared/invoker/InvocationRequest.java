@@ -769,7 +769,7 @@ public interface InvocationRequest
      * @return The path to the base directory of the Maven installation or <code>null</code> if using the default
      *         Maven installation.
      *
-     * @since 3.1.1
+     * @since 3.2.0
      */
     File getMavenHome();
 
@@ -782,7 +782,7 @@ public interface InvocationRequest
      *            default Maven installation.
      * @return This invocation request
      *
-     * @since 3.1.1
+     * @since 3.2.0
      */
     InvocationRequest setMavenHome( File mavenHome );
 
@@ -791,7 +791,7 @@ public interface InvocationRequest
      *
      * @return the custom Maven executable, otherwise {@code null}
      *
-     * @since 3.1.1
+     * @since 3.2.0
      */
     File getMavenExecutable();
 
@@ -801,7 +801,7 @@ public interface InvocationRequest
      * @param mavenExecutable the executable
      * @return This invocation request
      *
-     * @since 3.1.1
+     * @since 3.2.0
      */
     InvocationRequest setMavenExecutable( File mavenExecutable );
 }
