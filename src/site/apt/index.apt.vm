@@ -102,6 +102,8 @@ ${project.name}
     
     * Toolchains location ( since Maven3 with -t )
 
+    * Additional raw cli options at the start or the end of command line
+
     []
     
   []

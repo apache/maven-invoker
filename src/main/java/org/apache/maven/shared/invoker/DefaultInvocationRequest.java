@@ -21,11 +21,14 @@ package org.apache.maven.shared.invoker;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+
+import org.apache.maven.shared.utils.StringUtils;
 
 /**
  * Specifies the parameters used to control a Maven invocation.
@@ -112,6 +115,8 @@ public class DefaultInvocationRequest
     private File mavenExecutable;
 
     private boolean noTransferProgress;
+
+    private List<String> args = new ArrayList<>();
 
     /**
      * <p>getBaseDirectory.</p>
@@ -497,6 +502,22 @@ public class DefaultInvocationRequest
     public String getPomFileName()
     {
         return pomFilename;
+    }
+
+
+    @Override
+    public InvocationRequest addArg( String arg )
+    {
+        if ( StringUtils.isNotBlank( arg ) )
+        {
+            args.add( arg );
+        }
+        return this;
+    }
+
+    public List<String> getArgs()
+    {
+        return args;
     }
 
     /** {@inheritDoc} */
