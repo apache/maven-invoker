@@ -486,6 +486,13 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
+    public void testShouldSetNoTransferProgressFlagFromRequest()
+    {
+        mclb.setFlags( newRequest().setNoTransferProgress( true ), cli );
+        assertArgumentsPresent( cli, Collections.singleton( "-ntp" ));
+    }
+
+    @Test
     public void testShouldSpecifyFileOptionUsingNonStandardPomFileLocation()
         throws Exception
     {

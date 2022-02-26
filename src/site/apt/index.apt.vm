@@ -78,8 +78,12 @@ ${project.name}
     * Update-Snapshots Flag
     
     * Debug Flag (show debug-level output)
+
+    * Quiet Flag (only show errors)
     
     * Show-Errors Flag (show exception stacktraces, but not full debug output)
+
+    * No-Transfer-Progress Flag (Do not display transfer progress when downloading or uploading)
     
     * Inherit-Shell-Environment Flag (inherit envars from the shell used to
       start the current JVM)

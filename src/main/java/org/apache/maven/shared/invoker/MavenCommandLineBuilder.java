@@ -528,6 +528,11 @@ public class MavenCommandLineBuilder
         {
             cli.createArg().setValue( "-q" );
         }
+
+        if ( request.isNoTransferProgress() )
+        {
+            cli.createArg().setValue( "-ntp" );
+        }
     }
 
     /**

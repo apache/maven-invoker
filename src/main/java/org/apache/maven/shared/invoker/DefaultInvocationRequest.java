@@ -111,6 +111,8 @@ public class DefaultInvocationRequest
 
     private File mavenExecutable;
 
+    private boolean noTransferProgress;
+
     /**
      * <p>getBaseDirectory.</p>
      *
@@ -726,6 +728,19 @@ public class DefaultInvocationRequest
     public InvocationRequest setQuiet( boolean quiet )
     {
         this.quiet = quiet;
+        return this;
+    }
+
+    @Override
+    public boolean isNoTransferProgress()
+    {
+        return noTransferProgress;
+    }
+
+    @Override
+    public InvocationRequest setNoTransferProgress( boolean noTransferProgress )
+    {
+        this.noTransferProgress = noTransferProgress;
         return this;
     }
 
