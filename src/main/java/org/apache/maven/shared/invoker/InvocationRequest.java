@@ -191,6 +191,14 @@ public interface InvocationRequest
     String getPomFileName();
 
     /**
+     * List of raw line arguments which will be passed to cli.
+     *
+     * @return a list of cli arguments
+     * @since 3.2.0
+     */
+    List<String> getArgs();
+
+    /**
      * Gets the path to the base directory of the POM for the Maven invocation. If {@link #getPomFile()} does not return
      * <code>null</code>, this setting only affects the working directory for the Maven invocation.
      *
@@ -525,6 +533,16 @@ public interface InvocationRequest
      * @return This invocation request.
      */
     InvocationRequest setPomFileName( String pomFilename );
+
+    /**
+     * Add a raw  argument to Maven  cli command at the end of other arguments.
+     * Can be called multiple time in order to add many arguments.
+     *
+     * @param arg a raw Maven arg line
+     * @return This invocation request.
+     * @since 3.2.0
+     */
+    InvocationRequest addArg( String arg );
 
     /**
      * Sets the path to the base directory of the POM for the Maven invocation. If {@link #getPomFile()} does not return

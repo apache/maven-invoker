@@ -104,6 +104,8 @@ public class MavenCommandLineBuilder
 
         setThreads( request, cli );
 
+        setArgs( request, cli );
+
         return cli;
     }
 
@@ -550,6 +552,14 @@ public class MavenCommandLineBuilder
             cli.createArg().setValue( threads );
         }
 
+    }
+
+    private void setArgs( InvocationRequest request, Commandline cli )
+    {
+        for ( String arg : request.getArgs() )
+        {
+            cli.createArg().setValue( arg );
+        }
     }
 
     private void setupMavenHome( InvocationRequest request )

@@ -40,6 +40,7 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -63,7 +64,7 @@ public class MavenCommandLineBuilderTest
         Properties p = new Properties( sysProps );
 
         System.setProperties( p );
-        
+
         lrd = temporaryFolder.newFile();
 
     }
@@ -74,7 +75,7 @@ public class MavenCommandLineBuilderTest
         System.setProperties( sysProps );
     }
 
-    
+
     @Test
     public void testShouldFailToSetLocalRepoLocationGloballyWhenItIsAFile()
     {
@@ -176,7 +177,7 @@ public class MavenCommandLineBuilderTest
         InvocationRequest req = newRequest();
         req.setBaseDirectory( wd );
 
-        mclb.setupBaseDirectory( req);
+        mclb.setupBaseDirectory( req );
 
         assertEquals( mclb.getBaseDirectory(), wd.getCanonicalFile() );
     }
@@ -337,7 +338,7 @@ public class MavenCommandLineBuilderTest
 
         mclb.setFlags( newRequest().setQuiet( true ), cli );
 
-        assertArgumentsPresent( cli, Collections.singleton( "-q" ));
+        assertArgumentsPresent( cli, Collections.singleton( "-q" ) );
     }
 
     @Test
@@ -345,7 +346,7 @@ public class MavenCommandLineBuilderTest
     {
         mclb.setFlags( newRequest().setRecursive( false ), cli );
 
-        assertArgumentsPresent( cli, Collections.singleton( "-N" ));
+        assertArgumentsPresent( cli, Collections.singleton( "-N" ) );
     }
 
     @Test
@@ -353,7 +354,7 @@ public class MavenCommandLineBuilderTest
     {
         mclb.setFlags( newRequest().setShowVersion( true ), cli );
 
-        assertArgumentsPresent( cli, Collections.singleton( "-V" ));
+        assertArgumentsPresent( cli, Collections.singleton( "-V" ) );
     }
 
     @Test
@@ -389,7 +390,7 @@ public class MavenCommandLineBuilderTest
     {
 
         mclb.setReactorBehavior( newRequest().setProjects( Collections.singletonList( "proj1" ) ).setAlsoMake( true ),
-                                cli );
+                                 cli );
 
         assertArgumentsPresentInOrder( cli, "-pl", "proj1", "-am" );
     }
@@ -471,6 +472,23 @@ public class MavenCommandLineBuilderTest
         assertArgumentsPresent( cli, Collections.singleton( "-fn" ) );
     }
 
+
+    @Test
+    public void testShouldAddArg() throws CommandLineConfigurationException
+    {
+        InvocationRequest request = newRequest()
+            .addArg( "arg1" )
+            .addArg( "arg2" )
+            .setQuiet( true )
+            .setBuilder( "bId" );
+
+        Commandline commandline = mclb.build( request );
+
+        String[] arguments = commandline.getArguments();
+
+        assertArrayEquals( Arrays.asList( "-b", "bId", "-q", "arg1",  "arg2" ).toArray(), arguments );
+    }
+
     @Test
     public void testShouldUseDefaultOfFailFastWhenSpecifiedInRequest()
     {
@@ -489,14 +507,14 @@ public class MavenCommandLineBuilderTest
     public void testShouldSetNoTransferProgressFlagFromRequest()
     {
         mclb.setFlags( newRequest().setNoTransferProgress( true ), cli );
-        assertArgumentsPresent( cli, Collections.singleton( "-ntp" ));
+        assertArgumentsPresent( cli, Collections.singleton( "-ntp" ) );
     }
 
     @Test
     public void testShouldSpecifyFileOptionUsingNonStandardPomFileLocation()
         throws Exception
     {
-        File projectDir =  temporaryFolder.newFolder( "invoker-tests", "file-option-nonstd-pom-file-location" );
+        File projectDir = temporaryFolder.newFolder( "invoker-tests", "file-option-nonstd-pom-file-location" );
 
         File pomFile = createDummyFile( projectDir, "non-standard-pom.xml" ).getCanonicalFile();
 
@@ -946,7 +964,7 @@ public class MavenCommandLineBuilderTest
         throws IOException
     {
         File dummyFile = new File( directory, filename );
-        
+
         try ( FileWriter writer = new FileWriter( dummyFile ) )
         {
             writer.write( "This is a dummy file." );
