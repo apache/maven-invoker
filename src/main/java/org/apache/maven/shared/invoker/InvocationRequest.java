@@ -319,6 +319,14 @@ public interface InvocationRequest
      */
     boolean isQuiet();
 
+    /**
+     * Get the value of the {@code no-transfer-progress} argument.
+     *
+     * @return {@code true} if the argument {@code no-transfer-progress} was specified, otherwise {@code false}
+     * @since 3.2.0
+     */
+    boolean isNoTransferProgress();
+
     // ----------------------------------------------------------------------
     // Reactor Failure Mode
     // ----------------------------------------------------------------------
@@ -735,6 +743,14 @@ public interface InvocationRequest
      * @since 3.1.0
      */
     InvocationRequest setQuiet( boolean quiet );
+
+    /**
+     * Enable no transfer progress mode. Equivalent of {@code -ntp} or {@code --no-transfer-progress}
+     * @param noTransferProgress enable no transfer progress mode
+     * @return This invocation request.
+     * @since 3.2.0
+     */
+    InvocationRequest setNoTransferProgress( boolean noTransferProgress );
 
     /**
      * Get the current set builder strategy id equivalent of {@code --builder id}. <b>Note. This is available since
