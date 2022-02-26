@@ -84,8 +84,8 @@ Additional Resources
 + [Contributing patches](https://maven.apache.org/guides/development/guide-maven-development.html#Creating_and_submitting_a_patch)
 + [Apache Maven Shared Components project page][jira]
 + [Contributor License Agreement][cla]
-+ [General GitHub documentation](https://help.github.com/)
-+ [GitHub pull request documentation](https://help.github.com/send-pull-requests/)
++ [General GitHub documentation](https://docs.github.com)
++ [GitHub pull request documentation](https://docs.github.com/pull-requests)
 + [Apache Maven Twitter Account](https://twitter.com/ASFMavenProject)
 + #Maven IRC channel on freenode.org
 
