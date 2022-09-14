@@ -259,7 +259,7 @@ public class MavenCommandLineBuilder
             }
             catch ( CommandLineException e )
             {
-                throw new CommandLineConfigurationException( "Problem to set goals: " + e.getMessage(), e );
+                throw new CommandLineConfigurationException( "Problem setting goals", e );
             }
         }
     }

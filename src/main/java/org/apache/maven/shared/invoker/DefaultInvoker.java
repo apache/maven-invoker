@@ -101,7 +101,7 @@ public class DefaultInvoker
         }
         catch ( CommandLineConfigurationException e )
         {
-            throw new MavenInvocationException( "Error configuring command-line. Reason: " + e.getMessage(), e );
+            throw new MavenInvocationException( "Error configuring command line", e );
         }
 
         DefaultInvocationResult result = new DefaultInvocationResult();
