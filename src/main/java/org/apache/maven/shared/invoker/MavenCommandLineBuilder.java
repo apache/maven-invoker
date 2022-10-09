@@ -652,7 +652,13 @@ public class MavenCommandLineBuilder
     {
         if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
         {
-            File executableFile = new File( baseDirectory, executable + ".cmd" );
+            File executableFile = new File( baseDirectory, executable + ".ps1" );
+            if ( executableFile.isFile() )
+            {
+                return executableFile;
+            }
+
+            executableFile = new File( baseDirectory, executable + ".cmd" );
             if ( executableFile.isFile() )
             {
                 return executableFile;
