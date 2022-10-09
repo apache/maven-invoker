@@ -265,6 +265,23 @@ public class MavenCommandLineBuilderTest
     }
 
     @Test
+    public void testShouldFindDummyPS1MavenExecutable()
+            throws Exception
+    {
+        File dummyMavenHomeBin = temporaryFolder.newFolder( "invoker-tests", "dummy-maven-home", "bin" );
+
+        File check;
+        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
+        {
+            check = createDummyFile( dummyMavenHomeBin, "mvn.ps1" );
+            mclb.setMavenHome( dummyMavenHomeBin.getParentFile() );
+            mclb.setupMavenExecutable( newRequest() );
+
+            assertEquals( check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath() );
+        }
+    }
+
+    @Test
     public void testShouldFindDummyMavenExecutableWithMavenHomeFromRequest()
         throws Exception
     {
