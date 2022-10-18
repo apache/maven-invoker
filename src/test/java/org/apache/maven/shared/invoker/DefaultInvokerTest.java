@@ -19,8 +19,11 @@ package org.apache.maven.shared.invoker;
  * under the License.
  */
 
+import org.apache.maven.shared.utils.Os;
+import org.apache.maven.shared.utils.StringUtils;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -28,11 +31,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
 
-import org.apache.maven.shared.utils.Os;
-import org.apache.maven.shared.utils.StringUtils;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DefaultInvokerTest
 {
@@ -121,7 +120,7 @@ public class DefaultInvokerTest
         request.setDebug( true );
         request.setGoals( Collections.singletonList( "clean" ) );
         request.setProperties( getProperties() );
-        
+
         InvocationResult result = invoker.execute( request );
 
         assertEquals( 0, result.getExitCode() );
@@ -344,7 +343,7 @@ public class DefaultInvokerTest
 
         System.out.println( "Starting: " + element.getMethodName() );
     }
-    
+
     private Properties getProperties()
     {
         Properties properties = new Properties();
@@ -353,7 +352,7 @@ public class DefaultInvokerTest
             properties.put( "maven.compiler.source", "1.7" );
             properties.put( "maven.compiler.target", "1.7" );
         }
-        
+
         String httpProtocols = System.getProperty( "https.protocols" );
         if ( httpProtocols != null )
         {
