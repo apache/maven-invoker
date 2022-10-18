@@ -19,10 +19,6 @@ package org.apache.maven.shared.invoker;
  * under the License.
  */
 
-import org.apache.maven.shared.utils.Os;
-import org.apache.maven.shared.utils.StringUtils;
-import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -30,6 +26,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
+
+import org.apache.maven.shared.utils.Os;
+import org.apache.maven.shared.utils.StringUtils;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

@@ -19,19 +19,19 @@ package org.apache.maven.shared.invoker;
  * under the License.
  */
 
-import org.apache.maven.shared.utils.Os;
-import org.apache.maven.shared.utils.cli.Commandline;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+
+import org.apache.maven.shared.utils.Os;
+import org.apache.maven.shared.utils.cli.Commandline;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
@@ -54,7 +54,7 @@ public class MavenCommandLineBuilderTest
 
         System.setProperties( p );
 
-        lrd = Files.createTempFile(temporaryFolder, "", "").toFile();
+        lrd = Files.createTempFile( temporaryFolder, "", "" ).toFile();
 
     }
 
@@ -98,7 +98,7 @@ public class MavenCommandLineBuilderTest
     @Test
     public void testShouldSetLocalRepoLocationGlobally() throws IOException
     {
-        File lrd = Files.createDirectory(temporaryFolder.resolve("workdir")).toFile().getCanonicalFile();
+        File lrd = Files.createDirectory( temporaryFolder.resolve( "workdir" )).toFile().getCanonicalFile();
         mclb.setLocalRepositoryDirectory( lrd );
         mclb.setLocalRepository( newRequest(), cli );
 
@@ -109,7 +109,7 @@ public class MavenCommandLineBuilderTest
     public void testShouldSetLocalRepoLocationFromRequest()
         throws Exception
     {
-        File lrd = Files.createDirectory(temporaryFolder.resolve("workdir")).toFile().getCanonicalFile();
+        File lrd = Files.createDirectory( temporaryFolder.resolve( "workdir" ) ).toFile().getCanonicalFile();
         mclb.setLocalRepository( newRequest().setLocalRepositoryDirectory( lrd ), cli );
 
         assertArgumentsPresentInOrder( cli, "-D", "maven.repo.local=" + lrd.getPath() );
@@ -119,8 +119,8 @@ public class MavenCommandLineBuilderTest
     public void testRequestProvidedLocalRepoLocationShouldOverrideGlobal()
         throws Exception
     {
-        File lrd = Files.createDirectory(temporaryFolder.resolve( "workdir" )).toFile().getCanonicalFile();
-        File glrd = Files.createDirectory(temporaryFolder.resolve( "global-workdir" )).toFile().getCanonicalFile();
+        File lrd = Files.createDirectory( temporaryFolder.resolve( "workdir" ) ).toFile().getCanonicalFile();
+        File glrd = Files.createDirectory( temporaryFolder.resolve( "global-workdir" ) ).toFile().getCanonicalFile();
 
         mclb.setLocalRepositoryDirectory( glrd );
         mclb.setLocalRepository( newRequest().setLocalRepositoryDirectory( lrd ), cli );
@@ -132,7 +132,7 @@ public class MavenCommandLineBuilderTest
     public void testShouldSetWorkingDirectoryGlobally()
         throws Exception
     {
-        File wd = Files.createDirectory(temporaryFolder.resolve( "workdir" )).toFile();
+        File wd = Files.createDirectory( temporaryFolder.resolve( "workdir" ) ).toFile();
 
         mclb.setBaseDirectory( wd );
         Commandline commandline = mclb.build( newRequest() );
@@ -144,7 +144,7 @@ public class MavenCommandLineBuilderTest
     public void testShouldSetWorkingDirectoryFromRequest()
         throws Exception
     {
-        File wd = Files.createDirectory(temporaryFolder.resolve( "workdir" )).toFile();
+        File wd = Files.createDirectory( temporaryFolder.resolve( "workdir" ) ).toFile();
 
         InvocationRequest req = newRequest();
         req.setBaseDirectory( wd );
@@ -158,8 +158,8 @@ public class MavenCommandLineBuilderTest
     public void testRequestProvidedWorkingDirectoryShouldOverrideGlobal()
         throws Exception
     {
-        File wd = Files.createDirectory(temporaryFolder.resolve( "workdir" )).toFile();
-        File gwd = Files.createDirectory(temporaryFolder.resolve( "global-workdir" )).toFile();
+        File wd = Files.createDirectory( temporaryFolder.resolve( "workdir" ) ).toFile();
+        File gwd = Files.createDirectory( temporaryFolder.resolve( "global-workdir" ) ).toFile();
 
         mclb.setBaseDirectory( gwd );
 
@@ -189,7 +189,7 @@ public class MavenCommandLineBuilderTest
 
         if ( forceDummy || ( mavenHome == null ) || !new File( mavenHome ).exists() )
         {
-            appDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "maven-home" )).toFile();
+            appDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" ).resolve( "maven-home" ) ).toFile();
 
             File binDir = new File( appDir, "bin" );
             binDir.mkdirs();
@@ -235,7 +235,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldFindDummyMavenExecutable()
         throws Exception
     {
-        File dummyMavenHomeBin = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "dummy-maven-home" ).resolve( "bin" )).toFile();
+        File dummyMavenHomeBin = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "dummy-maven-home" ).resolve( "bin" ) ).toFile();
 
         File check;
         if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
@@ -257,7 +258,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldFindDummyPS1MavenExecutable()
             throws Exception
     {
-        File dummyMavenHomeBin = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "dummy-maven-home" ).resolve( "bin" )).toFile();
+        File dummyMavenHomeBin = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "dummy-maven-home" ).resolve( "bin" ) ).toFile();
 
         File check;
         if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
@@ -274,7 +276,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldFindDummyMavenExecutableWithMavenHomeFromRequest()
         throws Exception
     {
-        File dummyMavenHomeBin = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "dummy-maven-home" ).resolve( "bin" )).toFile();
+        File dummyMavenHomeBin = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "dummy-maven-home" ).resolve( "bin" ) ).toFile();
 
         File check;
         if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
@@ -520,7 +523,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyFileOptionUsingNonStandardPomFileLocation()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "file-option-nonstd-pom-file-location" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "file-option-nonstd-pom-file-location" ) ).toFile();
 
         File pomFile = createDummyFile( projectDir, "non-standard-pom.xml" ).getCanonicalFile();
 
@@ -542,7 +546,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldNotSpecifyFileOptionUsingStandardPomFileLocation()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "std-pom-file-location" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "std-pom-file-location" ) ).toFile();
 
         File pomFile = createDummyFile( projectDir, "pom.xml" ).getCanonicalFile();
 
@@ -564,9 +569,10 @@ public class MavenCommandLineBuilderTest
     public void testShouldSetPomForOutsideWorkspace()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "std-pom-file-location" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "std-pom-file-location" ) ).toFile();
 
-        File outsidePom = Files.createFile(temporaryFolder.resolve( "pom.xml" )).toFile();
+        File outsidePom = Files.createFile( temporaryFolder.resolve( "pom.xml" ) ).toFile();
 
 
         InvocationRequest req = newRequest()
@@ -588,7 +594,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldNotSpecifyFileOptionUsingStandardPomInBasedir()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "std-basedir-is-pom-file" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "std-basedir-is-pom-file" ) ).toFile();
 
         File basedir = createDummyFile( projectDir, "pom.xml" ).getCanonicalFile();
 
@@ -610,7 +617,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldUseDefaultPomFileWhenBasedirSpecifiedWithoutPomFileName()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "std-basedir-no-pom-filename" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "std-basedir-no-pom-filename" ) ).toFile();
 
 
         InvocationRequest req = newRequest().setBaseDirectory( projectDir );
@@ -630,7 +638,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyPomFileWhenBasedirSpecifiedWithPomFileName()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "std-basedir-with-pom-filename" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "std-basedir-with-pom-filename" ) ).toFile();
 
         InvocationRequest req = newRequest().setBaseDirectory( projectDir ).setPomFileName( "non-standard-pom.xml" );
 
@@ -649,7 +658,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyCustomUserSettingsLocationFromRequest()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "custom-settings" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "custom-settings" ) ).toFile();
 
         File settingsFile = createDummyFile( projectDir, "settings.xml" );
 
@@ -667,7 +677,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyCustomGlobalSettingsLocationFromRequest()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "custom-settings" )).toFile().getCanonicalFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "custom-settings" ) ).toFile().getCanonicalFile();
 
         File settingsFile = createDummyFile( projectDir, "settings.xml" );
 
@@ -685,7 +696,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldSpecifyCustomToolchainsLocationFromRequest()
         throws Exception
     {
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "custom-toolchains" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "custom-toolchains" ) ).toFile();
 
         File toolchainsFile = createDummyFile( projectDir, "toolchains.xml" );
 
@@ -776,7 +788,8 @@ public class MavenCommandLineBuilderTest
 
         InvocationRequest request = newRequest();
 
-        File projectDir = Files.createDirectories(temporaryFolder.resolve( "invoker-tests" ).resolve( "typical-end-to-end-cli-build" )).toFile();
+        File projectDir = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "typical-end-to-end-cli-build" ) ).toFile();
 
         request.setBaseDirectory( projectDir );
 
@@ -846,46 +859,46 @@ public class MavenCommandLineBuilderTest
     public void testMvnExecutableFromInvoker()
         throws Exception
     {
-        assumingThat( Objects.nonNull(System.getProperty( "maven.home" )),
-                () -> System.out.println("Test only works when maven.home is set"));
+        assumingThat( Objects.nonNull( System.getProperty( "maven.home" ) ),
+            () -> System.out.println( "Test only works when maven.home is set" ) );
 
         File mavenExecutable = new File( "mvnDebug" );
 
         mclb.setMavenExecutable( mavenExecutable );
         mclb.build( newRequest() );
 
-        assertTrue(mclb.getMavenExecutable().exists(), "Expected executable to exist");
-        assertTrue(mclb.getMavenExecutable().isAbsolute(), "Expected executable to be absolute");
-        assertTrue(mclb.getMavenExecutable().getName().contains( "mvnDebug" ), "Expected mvnDebug as command mvnDebug");
+        assertTrue( mclb.getMavenExecutable().exists(), "Expected executable to exist" );
+        assertTrue( mclb.getMavenExecutable().isAbsolute(), "Expected executable to be absolute" );
+        assertTrue( mclb.getMavenExecutable().getName().contains( "mvnDebug" ), "Expected mvnDebug as command mvnDebug" );
     }
 
     @Test
     public void testMvnExecutableFormRequest()
         throws Exception
     {
-        assumingThat( Objects.nonNull(System.getProperty( "maven.home" )),
-                () -> System.out.println("Test only works when maven.home is set"));
+        assumingThat( Objects.nonNull( System.getProperty( "maven.home" ) ),
+            () -> System.out.println( "Test only works when maven.home is set" ) );
 
         File mavenExecutable = new File( "mvnDebug" );
 
         mclb.build( newRequest().setMavenExecutable( mavenExecutable ) );
 
-        assertTrue(mclb.getMavenExecutable().exists(), "Expected executable to exist");
-        assertTrue(mclb.getMavenExecutable().isAbsolute(), "Expected executable to be absolute");
-        assertTrue(mclb.getMavenExecutable().getName().contains( "mvnDebug" ), "Expected mvnDebug as command");
+        assertTrue( mclb.getMavenExecutable().exists(), "Expected executable to exist" );
+        assertTrue( mclb.getMavenExecutable().isAbsolute(), "Expected executable to be absolute" );
+        assertTrue( mclb.getMavenExecutable().getName().contains( "mvnDebug" ), "Expected mvnDebug as command" );
     }
 
     @Test
     public void testDefaultMavenCommand()
         throws Exception
     {
-        assumingThat(Objects.nonNull(System.getProperty( "maven.home" )),
-                () -> System.out.println("Test only works when maven.home is set"));
+        assumingThat(Objects.nonNull( System.getProperty( "maven.home" ) ),
+            () -> System.out.println( "Test only works when maven.home is set" ) );
 
         mclb.build( newRequest() );
 
-        assertTrue(mclb.getMavenExecutable().exists(), "Expected executable to exist");
-        assertTrue(mclb.getMavenExecutable().isAbsolute(), "Expected executable to be absolute");
+        assertTrue( mclb.getMavenExecutable().exists(), "Expected executable to exist" );
+        assertTrue( mclb.getMavenExecutable().isAbsolute(), "Expected executable to be absolute" );
     }
 
     @Test
@@ -917,8 +930,8 @@ public class MavenCommandLineBuilderTest
 
         String expectedDeclaration = varName + "=" + varValue;
 
-        assertTrue(environmentVariables.contains( expectedDeclaration ), "Environment variable setting: '" + expectedDeclaration + "' is mssing in "
-                    + environmentVariables);
+        assertTrue( environmentVariables.contains( expectedDeclaration ), "Environment variable setting: '"
+            + expectedDeclaration + "' is missing in " + environmentVariables );
     }
 
     private void assertArgumentsPresentInOrder( Commandline cli, String... expected )
@@ -940,8 +953,8 @@ public class MavenCommandLineBuilderTest
             }
         }
 
-        assertEquals(expected.size(), expectedCounter, "Arguments: " + expected + " were not found or are in the wrong order: "
-                + Arrays.asList( arguments ));
+        assertEquals( expected.size(), expectedCounter, "Arguments: " + expected + " were not found or are in the wrong order: "
+            + Arrays.asList( arguments ) );
     }
 
     private void assertArgumentsPresent( Commandline cli, Set<String> requiredArgs )
@@ -951,7 +964,7 @@ public class MavenCommandLineBuilderTest
 
         for ( String arg : requiredArgs )
         {
-            assertTrue(args.contains( arg ), "Command-line argument: '" + arg + "' is missing in " + args);
+            assertTrue( args.contains( arg ), "Command-line argument: '" + arg + "' is missing in " + args );
         }
     }
 
@@ -962,7 +975,7 @@ public class MavenCommandLineBuilderTest
 
         for ( String arg : bannedArgs )
         {
-            assertFalse(args.contains( arg ), "Command-line argument: '" + arg + "' should not be present.");
+            assertFalse( args.contains( arg ), "Command-line argument: '" + arg + "' should not be present." );
         }
     }
 
