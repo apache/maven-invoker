@@ -246,7 +246,8 @@ public class MavenCommandLineBuilderTest
     public void testShouldFindDummyMavenExecutable()
         throws Exception
     {
-        File dummyMavenHomeBin = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" ).resolve( "dummy-maven-home" ).resolve( "bin" ) ).toFile();
+        File dummyMavenHomeBin = Files.createDirectories( temporaryFolder.resolve( "invoker-tests" )
+            .resolve( "dummy-maven-home" ).resolve( "bin" ) ).toFile();
 
         File check;
         if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
