@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assumptions.assumingThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class MavenCommandLineBuilderTest
 {
@@ -870,8 +870,7 @@ public class MavenCommandLineBuilderTest
     public void testMvnExecutableFromInvoker()
         throws Exception
     {
-        assumingThat( Objects.nonNull( System.getProperty( "maven.home" ) ),
-            () -> System.out.println( "Test only works when maven.home is set" ) );
+        assumeTrue( Objects.nonNull( System.getProperty( "maven.home" ) ), "Test only works when maven.home is set" );
 
         File mavenExecutable = new File( "mvnDebug" );
 
@@ -887,8 +886,7 @@ public class MavenCommandLineBuilderTest
     public void testMvnExecutableFormRequest()
         throws Exception
     {
-        assumingThat( Objects.nonNull( System.getProperty( "maven.home" ) ),
-            () -> System.out.println( "Test only works when maven.home is set" ) );
+        assumeTrue( Objects.nonNull( System.getProperty( "maven.home" ) ), "Test only works when maven.home is set" );
 
         File mavenExecutable = new File( "mvnDebug" );
 
@@ -903,8 +901,7 @@ public class MavenCommandLineBuilderTest
     public void testDefaultMavenCommand()
         throws Exception
     {
-        assumingThat(Objects.nonNull( System.getProperty( "maven.home" ) ),
-            () -> System.out.println( "Test only works when maven.home is set" ) );
+        assumeTrue(Objects.nonNull( System.getProperty( "maven.home" ) ), "Test only works when maven.home is set" );
 
         mclb.build( newRequest() );
 
