@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import org.apache.maven.shared.utils.cli.CommandLineException;
 
@@ -26,8 +25,7 @@ import org.apache.maven.shared.utils.cli.CommandLineException;
  *
  * @author jdcasey
  */
-public interface InvocationResult
-{
+public interface InvocationResult {
 
     /**
      * Gets the exception that possibly occurred during the execution of the command line.
@@ -44,5 +42,4 @@ public interface InvocationResult
      * @return The exit code from the Maven invocation.
      */
     int getExitCode();
-
 }

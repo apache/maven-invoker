@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,21 +16,18 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 /**
  * Offers a logger that writes to {@link java.lang.System#out}.
  *
  */
-public class SystemOutLogger
-    extends PrintStreamLogger
-{
+public class SystemOutLogger extends PrintStreamLogger {
 
     /**
      * Creates a new logger with a threshold of {@link #INFO}.
      */
-    public SystemOutLogger()
-    {
-        super( System.out, INFO );
+    public SystemOutLogger() {
+        super(System.out, INFO);
     }
-
 }

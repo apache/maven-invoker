@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import org.apache.maven.shared.utils.cli.StreamConsumer;
 
@@ -25,8 +24,6 @@ import org.apache.maven.shared.utils.cli.StreamConsumer;
  * Receives the standard/error output from a Maven invocation.
  *
  */
-public interface InvocationOutputHandler
-    extends StreamConsumer
-{
+public interface InvocationOutputHandler extends StreamConsumer {
     // empty by design
 }

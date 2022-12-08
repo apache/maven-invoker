@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,8 +35,7 @@ import org.apache.maven.shared.utils.cli.Commandline;
 /**
  * <p>MavenCommandLineBuilder class.</p>
  */
-public class MavenCommandLineBuilder
-{
+public class MavenCommandLineBuilder {
 
     private static final InvokerLogger DEFAULT_LOGGER = new SystemOutLogger();
 
@@ -58,53 +56,51 @@ public class MavenCommandLineBuilder
      * @return a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
      */
-    public Commandline build( InvocationRequest request )
-        throws CommandLineConfigurationException
-    {
+    public Commandline build(InvocationRequest request) throws CommandLineConfigurationException {
 
         Commandline cli = new Commandline();
 
-        setupMavenHome( request );
+        setupMavenHome(request);
 
         // discover value for working directory
-        setupBaseDirectory( request );
-        cli.setWorkingDirectory( baseDirectory );
+        setupBaseDirectory(request);
+        cli.setWorkingDirectory(baseDirectory);
 
         checkRequiredState();
 
-        setupMavenExecutable( request );
-        cli.setExecutable( mavenExecutable.getAbsolutePath() );
+        setupMavenExecutable(request);
+        cli.setExecutable(mavenExecutable.getAbsolutePath());
 
         // handling for OS-level envars
-        setShellEnvironment( request, cli );
+        setShellEnvironment(request, cli);
 
         // interactive, offline, update-snapshots,
         // debug/show-errors, checksum policy
-        setFlags( request, cli );
+        setFlags(request, cli);
 
         // failure behavior and [eventually] forced-reactor
         // includes/excludes, etc.
-        setReactorBehavior( request, cli );
+        setReactorBehavior(request, cli);
 
         // local repository location
-        setLocalRepository( request, cli );
+        setLocalRepository(request, cli);
 
         // pom-file handling
-        setPomLocation( request, cli );
+        setPomLocation(request, cli);
 
-        setSettingsLocation( request, cli );
+        setSettingsLocation(request, cli);
 
-        setToolchainsLocation( request, cli );
+        setToolchainsLocation(request, cli);
 
-        setProperties( request, cli );
+        setProperties(request, cli);
 
-        setProfiles( request, cli );
+        setProfiles(request, cli);
 
-        setGoals( request, cli );
+        setGoals(request, cli);
 
-        setThreads( request, cli );
+        setThreads(request, cli);
 
-        setArgs( request, cli );
+        setArgs(request, cli);
 
         return cli;
     }
@@ -112,11 +108,9 @@ public class MavenCommandLineBuilder
     /**
      * <p>checkRequiredState.</p>
      */
-    protected void checkRequiredState()
-    {
-        if ( logger == null )
-        {
-            throw new IllegalStateException( "A logger instance is required." );
+    protected void checkRequiredState() {
+        if (logger == null) {
+            throw new IllegalStateException("A logger instance is required.");
         }
     }
 
@@ -126,44 +120,38 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setSettingsLocation( InvocationRequest request, Commandline cli )
-    {
+    protected void setSettingsLocation(InvocationRequest request, Commandline cli) {
         File userSettingsFile = request.getUserSettingsFile();
 
-        if ( userSettingsFile != null )
-        {
-            try
-            {
+        if (userSettingsFile != null) {
+            try {
                 userSettingsFile = userSettingsFile.getCanonicalFile();
-            }
-            catch ( IOException e )
-            {
-                logger.debug( "Failed to canonicalize user settings path: " + userSettingsFile.getAbsolutePath()
-                    + ". Using as-is.", e );
+            } catch (IOException e) {
+                logger.debug(
+                        "Failed to canonicalize user settings path: " + userSettingsFile.getAbsolutePath()
+                                + ". Using as-is.",
+                        e);
             }
 
-            cli.createArg().setValue( "-s" );
-            cli.createArg().setValue( userSettingsFile.getPath() );
+            cli.createArg().setValue("-s");
+            cli.createArg().setValue(userSettingsFile.getPath());
         }
 
         File globalSettingsFile = request.getGlobalSettingsFile();
 
-        if ( globalSettingsFile != null )
-        {
-            try
-            {
+        if (globalSettingsFile != null) {
+            try {
                 globalSettingsFile = globalSettingsFile.getCanonicalFile();
-            }
-            catch ( IOException e )
-            {
-                logger.debug( "Failed to canonicalize global settings path: " + globalSettingsFile.getAbsolutePath()
-                    + ". Using as-is.", e );
+            } catch (IOException e) {
+                logger.debug(
+                        "Failed to canonicalize global settings path: " + globalSettingsFile.getAbsolutePath()
+                                + ". Using as-is.",
+                        e);
             }
 
-            cli.createArg().setValue( "-gs" );
-            cli.createArg().setValue( globalSettingsFile.getPath() );
+            cli.createArg().setValue("-gs");
+            cli.createArg().setValue(globalSettingsFile.getPath());
         }
-
     }
 
     /**
@@ -172,24 +160,21 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setToolchainsLocation( InvocationRequest request, Commandline cli )
-    {
+    protected void setToolchainsLocation(InvocationRequest request, Commandline cli) {
         File toolchainsFile = request.getToolchainsFile();
 
-        if ( toolchainsFile != null )
-        {
-            try
-            {
+        if (toolchainsFile != null) {
+            try {
                 toolchainsFile = toolchainsFile.getCanonicalFile();
-            }
-            catch ( IOException e )
-            {
-                logger.debug( "Failed to canonicalize toolchains path: " + toolchainsFile.getAbsolutePath()
-                    + ". Using as-is.", e );
+            } catch (IOException e) {
+                logger.debug(
+                        "Failed to canonicalize toolchains path: " + toolchainsFile.getAbsolutePath()
+                                + ". Using as-is.",
+                        e);
             }
 
-            cli.createArg().setValue( "-t" );
-            cli.createArg().setValue( toolchainsFile.getPath() );
+            cli.createArg().setValue("-t");
+            cli.createArg().setValue(toolchainsFile.getPath());
         }
     }
 
@@ -199,26 +184,21 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setShellEnvironment( InvocationRequest request, Commandline cli )
-    {
-        if ( request.isShellEnvironmentInherited() )
-        {
+    protected void setShellEnvironment(InvocationRequest request, Commandline cli) {
+        if (request.isShellEnvironmentInherited()) {
             cli.addSystemEnvironment();
         }
 
-        if ( request.getJavaHome() != null )
-        {
-            cli.addEnvironment( "JAVA_HOME", request.getJavaHome().getAbsolutePath() );
+        if (request.getJavaHome() != null) {
+            cli.addEnvironment("JAVA_HOME", request.getJavaHome().getAbsolutePath());
         }
 
-        if ( request.getMavenOpts() != null )
-        {
-            cli.addEnvironment( "MAVEN_OPTS", request.getMavenOpts() );
+        if (request.getMavenOpts() != null) {
+            cli.addEnvironment("MAVEN_OPTS", request.getMavenOpts());
         }
 
-        for ( Map.Entry<String, String> entry : request.getShellEnvironments().entrySet() )
-        {
-            cli.addEnvironment( entry.getKey(), entry.getValue() );
+        for (Map.Entry<String, String> entry : request.getShellEnvironments().entrySet()) {
+            cli.addEnvironment(entry.getKey(), entry.getValue());
         }
     }
 
@@ -228,16 +208,13 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setProfiles( InvocationRequest request, Commandline cli )
-    {
+    protected void setProfiles(InvocationRequest request, Commandline cli) {
         List<String> profiles = request.getProfiles();
 
-        if ( ( profiles != null ) && !profiles.isEmpty() )
-        {
-            cli.createArg().setValue( "-P" );
-            cli.createArg().setValue( StringUtils.join( profiles.iterator(), "," ) );
+        if ((profiles != null) && !profiles.isEmpty()) {
+            cli.createArg().setValue("-P");
+            cli.createArg().setValue(StringUtils.join(profiles.iterator(), ","));
         }
-
     }
 
     /**
@@ -247,19 +224,14 @@ public class MavenCommandLineBuilder
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
      */
-    protected void setGoals( InvocationRequest request, Commandline cli ) throws CommandLineConfigurationException
-    {
+    protected void setGoals(InvocationRequest request, Commandline cli) throws CommandLineConfigurationException {
         List<String> goals = request.getGoals();
 
-        if ( ( goals != null ) && !goals.isEmpty() )
-        {
-            try
-            {
-                cli.createArg().setLine( StringUtils.join( goals.iterator(), " " ) );
-            }
-            catch ( CommandLineException e )
-            {
-                throw new CommandLineConfigurationException( "Problem setting goals", e );
+        if ((goals != null) && !goals.isEmpty()) {
+            try {
+                cli.createArg().setLine(StringUtils.join(goals.iterator(), " "));
+            } catch (CommandLineException e) {
+                throw new CommandLineConfigurationException("Problem setting goals", e);
             }
         }
     }
@@ -270,19 +242,16 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setProperties( InvocationRequest request, Commandline cli )
-    {
+    protected void setProperties(InvocationRequest request, Commandline cli) {
         Properties properties = request.getProperties();
 
-        if ( properties != null )
-        {
-            for ( Entry<Object, Object> entry : properties.entrySet() )
-            {
+        if (properties != null) {
+            for (Entry<Object, Object> entry : properties.entrySet()) {
                 String key = (String) entry.getKey();
                 String value = (String) entry.getValue();
 
-                cli.createArg().setValue( "-D" );
-                cli.createArg().setValue( key + '=' + value );
+                cli.createArg().setValue("-D");
+                cli.createArg().setValue(key + '=' + value);
             }
         }
     }
@@ -293,91 +262,67 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setPomLocation( InvocationRequest request, Commandline cli )
-    {
+    protected void setPomLocation(InvocationRequest request, Commandline cli) {
         File pom = request.getPomFile();
         String pomFilename = request.getPomFileName();
 
-        if ( pom == null )
-        {
-            if ( pomFilename != null )
-            {
-                pom = new File( baseDirectory, pomFilename );
-            }
-            else
-            {
-                pom = new File( baseDirectory, "pom.xml" );
+        if (pom == null) {
+            if (pomFilename != null) {
+                pom = new File(baseDirectory, pomFilename);
+            } else {
+                pom = new File(baseDirectory, "pom.xml");
             }
         }
 
-        try
-        {
+        try {
             pom = pom.getCanonicalFile();
-        }
-        catch ( IOException e )
-        {
-            logger.debug( "Failed to canonicalize the POM path: " + pom + ". Using as-is.", e );
+        } catch (IOException e) {
+            logger.debug("Failed to canonicalize the POM path: " + pom + ". Using as-is.", e);
         }
 
-        if ( pom.getParentFile().equals( baseDirectory ) )
-        {
+        if (pom.getParentFile().equals(baseDirectory)) {
             // pom in project workspace
-            if ( !"pom.xml".equals( pom.getName() ) )
-            {
-                logger.debug( "Specified POM file is not named 'pom.xml'. "
-                    + "Using the '-f' command-line option to accommodate non-standard filename..." );
+            if (!"pom.xml".equals(pom.getName())) {
+                logger.debug("Specified POM file is not named 'pom.xml'. "
+                        + "Using the '-f' command-line option to accommodate non-standard filename...");
 
-                cli.createArg().setValue( "-f" );
-                cli.createArg().setValue( pom.getName() );
+                cli.createArg().setValue("-f");
+                cli.createArg().setValue(pom.getName());
             }
-        }
-        else
-        {
-            cli.createArg().setValue( "-f" );
-            cli.createArg().setValue( pom.getPath() );
+        } else {
+            cli.createArg().setValue("-f");
+            cli.createArg().setValue(pom.getPath());
         }
     }
 
-    void setupBaseDirectory( InvocationRequest request )
-    {
+    void setupBaseDirectory(InvocationRequest request) {
         File baseDirectoryFromRequest = null;
-        if ( request.getBaseDirectory() != null )
-        {
+        if (request.getBaseDirectory() != null) {
             baseDirectoryFromRequest = request.getBaseDirectory();
-        }
-        else
-        {
+        } else {
             File pomFile = request.getPomFile();
-            if ( pomFile != null )
-            {
+            if (pomFile != null) {
                 baseDirectoryFromRequest = pomFile.getParentFile();
             }
         }
 
-        if ( baseDirectoryFromRequest != null )
-        {
+        if (baseDirectoryFromRequest != null) {
             baseDirectory = baseDirectoryFromRequest;
         }
 
-        if ( baseDirectory == null )
-        {
-            baseDirectory = new File( System.getProperty( "user.dir" ) );
-        }
-        else if ( baseDirectory.isFile() )
-        {
-            logger.warn( "Specified base directory (" + baseDirectory + ") is a file."
-                + " Using its parent directory..." );
+        if (baseDirectory == null) {
+            baseDirectory = new File(System.getProperty("user.dir"));
+        } else if (baseDirectory.isFile()) {
+            logger.warn(
+                    "Specified base directory (" + baseDirectory + ") is a file." + " Using its parent directory...");
 
             baseDirectory = baseDirectory.getParentFile();
         }
 
-        try
-        {
+        try {
             baseDirectory = baseDirectory.getCanonicalFile();
-        }
-        catch ( IOException e )
-        {
-            logger.debug( "Failed to canonicalize base directory: " + baseDirectory + ". Using as-is.", e );
+        } catch (IOException e) {
+            logger.debug("Failed to canonicalize base directory: " + baseDirectory + ". Using as-is.", e);
         }
     }
 
@@ -387,30 +332,26 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setLocalRepository( InvocationRequest request, Commandline cli )
-    {
-        File localRepositoryDirectory = request.getLocalRepositoryDirectory( this.localRepositoryDirectory );
+    protected void setLocalRepository(InvocationRequest request, Commandline cli) {
+        File localRepositoryDirectory = request.getLocalRepositoryDirectory(this.localRepositoryDirectory);
 
-        if ( localRepositoryDirectory != null )
-        {
-            try
-            {
+        if (localRepositoryDirectory != null) {
+            try {
                 localRepositoryDirectory = localRepositoryDirectory.getCanonicalFile();
-            }
-            catch ( IOException e )
-            {
-                logger.debug( "Failed to canonicalize local repository directory: " + localRepositoryDirectory
-                    + ". Using as-is.", e );
-            }
-
-            if ( !localRepositoryDirectory.isDirectory() )
-            {
-                throw new IllegalArgumentException( "Local repository location: '" + localRepositoryDirectory
-                    + "' is NOT a directory." );
+            } catch (IOException e) {
+                logger.debug(
+                        "Failed to canonicalize local repository directory: " + localRepositoryDirectory
+                                + ". Using as-is.",
+                        e);
             }
 
-            cli.createArg().setValue( "-D" );
-            cli.createArg().setValue( "maven.repo.local=" + localRepositoryDirectory.getPath() );
+            if (!localRepositoryDirectory.isDirectory()) {
+                throw new IllegalArgumentException(
+                        "Local repository location: '" + localRepositoryDirectory + "' is NOT a directory.");
+            }
+
+            cli.createArg().setValue("-D");
+            cli.createArg().setValue("maven.repo.local=" + localRepositoryDirectory.getPath());
         }
     }
 
@@ -420,44 +361,34 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setReactorBehavior( InvocationRequest request, Commandline cli )
-    {
+    protected void setReactorBehavior(InvocationRequest request, Commandline cli) {
         // NOTE: The default is "fail-fast"
         ReactorFailureBehavior failureBehavior = request.getReactorFailureBehavior();
 
-        if ( failureBehavior != null )
-        {
-            if ( ReactorFailureBehavior.FailAtEnd.equals( failureBehavior ) )
-            {
-                cli.createArg().setValue( "-" + ReactorFailureBehavior.FailAtEnd.getShortOption() );
+        if (failureBehavior != null) {
+            if (ReactorFailureBehavior.FailAtEnd.equals(failureBehavior)) {
+                cli.createArg().setValue("-" + ReactorFailureBehavior.FailAtEnd.getShortOption());
+            } else if (ReactorFailureBehavior.FailNever.equals(failureBehavior)) {
+                cli.createArg().setValue("-" + ReactorFailureBehavior.FailNever.getShortOption());
             }
-            else if ( ReactorFailureBehavior.FailNever.equals( failureBehavior ) )
-            {
-                cli.createArg().setValue( "-" + ReactorFailureBehavior.FailNever.getShortOption() );
-            }
-
         }
 
-        if ( StringUtils.isNotEmpty( request.getResumeFrom() ) )
-        {
-            cli.createArg().setValue( "-rf" );
-            cli.createArg().setValue( request.getResumeFrom() );
+        if (StringUtils.isNotEmpty(request.getResumeFrom())) {
+            cli.createArg().setValue("-rf");
+            cli.createArg().setValue(request.getResumeFrom());
         }
 
         List<String> projectList = request.getProjects();
-        if ( projectList != null )
-        {
-            cli.createArg().setValue( "-pl" );
-            cli.createArg().setValue( StringUtils.join( projectList.iterator(), "," ) );
+        if (projectList != null) {
+            cli.createArg().setValue("-pl");
+            cli.createArg().setValue(StringUtils.join(projectList.iterator(), ","));
 
-            if ( request.isAlsoMake() )
-            {
-                cli.createArg().setValue( "-am" );
+            if (request.isAlsoMake()) {
+                cli.createArg().setValue("-am");
             }
 
-            if ( request.isAlsoMakeDependents() )
-            {
-                cli.createArg().setValue( "-amd" );
+            if (request.isAlsoMakeDependents()) {
+                cli.createArg().setValue("-amd");
             }
         }
     }
@@ -468,72 +399,57 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setFlags( InvocationRequest request, Commandline cli )
-    {
-        if ( request.isBatchMode() )
-        {
-            cli.createArg().setValue( "-B" );
+    protected void setFlags(InvocationRequest request, Commandline cli) {
+        if (request.isBatchMode()) {
+            cli.createArg().setValue("-B");
         }
 
-        if ( request.isOffline() )
-        {
-            cli.createArg().setValue( "-o" );
+        if (request.isOffline()) {
+            cli.createArg().setValue("-o");
         }
 
-        if ( request.isUpdateSnapshots() )
-        {
-            cli.createArg().setValue( "-U" );
+        if (request.isUpdateSnapshots()) {
+            cli.createArg().setValue("-U");
         }
 
-        if ( !request.isRecursive() )
-        {
-            cli.createArg().setValue( "-N" );
+        if (!request.isRecursive()) {
+            cli.createArg().setValue("-N");
         }
 
-        if ( request.isDebug() )
-        {
-            cli.createArg().setValue( "-X" );
+        if (request.isDebug()) {
+            cli.createArg().setValue("-X");
         }
         // this is superseded by -X, if it exists.
-        else if ( request.isShowErrors() )
-        {
-            cli.createArg().setValue( "-e" );
+        else if (request.isShowErrors()) {
+            cli.createArg().setValue("-e");
         }
 
         CheckSumPolicy checksumPolicy = request.getGlobalChecksumPolicy();
-        if ( CheckSumPolicy.Fail.equals( checksumPolicy ) )
-        {
-            cli.createArg().setValue( "-C" );
-        }
-        else if ( CheckSumPolicy.Warn.equals( checksumPolicy ) )
-        {
-            cli.createArg().setValue( "-c" );
+        if (CheckSumPolicy.Fail.equals(checksumPolicy)) {
+            cli.createArg().setValue("-C");
+        } else if (CheckSumPolicy.Warn.equals(checksumPolicy)) {
+            cli.createArg().setValue("-c");
         }
 
-        if ( request.isNonPluginUpdates() )
-        {
-            cli.createArg().setValue( "-npu" );
+        if (request.isNonPluginUpdates()) {
+            cli.createArg().setValue("-npu");
         }
 
-        if ( request.isShowVersion() )
-        {
-            cli.createArg().setValue( "-V" );
+        if (request.isShowVersion()) {
+            cli.createArg().setValue("-V");
         }
 
-        if ( request.getBuilder() != null )
-        {
-            cli.createArg().setValue( "-b" );
-            cli.createArg().setValue( request.getBuilder() );
+        if (request.getBuilder() != null) {
+            cli.createArg().setValue("-b");
+            cli.createArg().setValue(request.getBuilder());
         }
 
-        if ( request.isQuiet() )
-        {
-            cli.createArg().setValue( "-q" );
+        if (request.isQuiet()) {
+            cli.createArg().setValue("-q");
         }
 
-        if ( request.isNoTransferProgress() )
-        {
-            cli.createArg().setValue( "-ntp" );
+        if (request.isNoTransferProgress()) {
+            cli.createArg().setValue("-ntp");
         }
     }
 
@@ -543,55 +459,42 @@ public class MavenCommandLineBuilder
      * @param request a {@link org.apache.maven.shared.invoker.InvocationRequest} object.
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
-    protected void setThreads( InvocationRequest request, Commandline cli )
-    {
+    protected void setThreads(InvocationRequest request, Commandline cli) {
         String threads = request.getThreads();
-        if ( StringUtils.isNotEmpty( threads ) )
-        {
-            cli.createArg().setValue( "-T" );
-            cli.createArg().setValue( threads );
-        }
-
-    }
-
-    private void setArgs( InvocationRequest request, Commandline cli )
-    {
-        for ( String arg : request.getArgs() )
-        {
-            cli.createArg().setValue( arg );
+        if (StringUtils.isNotEmpty(threads)) {
+            cli.createArg().setValue("-T");
+            cli.createArg().setValue(threads);
         }
     }
 
-    private void setupMavenHome( InvocationRequest request )
-    {
-        if ( request.getMavenHome() != null )
-        {
+    private void setArgs(InvocationRequest request, Commandline cli) {
+        for (String arg : request.getArgs()) {
+            cli.createArg().setValue(arg);
+        }
+    }
+
+    private void setupMavenHome(InvocationRequest request) {
+        if (request.getMavenHome() != null) {
             mavenHome = request.getMavenHome();
-        }
-        else if ( System.getProperty( "maven.home" ) != null )
-        {
-            mavenHome = new File( System.getProperty( "maven.home" ) );
+        } else if (System.getProperty("maven.home") != null) {
+            mavenHome = new File(System.getProperty("maven.home"));
         }
 
-        if ( mavenHome != null && !mavenHome.isDirectory() )
-        {
+        if (mavenHome != null && !mavenHome.isDirectory()) {
             File binDir = mavenHome.getParentFile();
-            if ( binDir != null && "bin".equals( binDir.getName() ) )
-            {
+            if (binDir != null && "bin".equals(binDir.getName())) {
                 // ah, they specified the mvn
                 // executable instead...
                 mavenHome = binDir.getParentFile();
             }
         }
 
-        if ( mavenHome != null && !mavenHome.isDirectory() )
-        {
-            throw new IllegalStateException( "Maven home is set to: '" + mavenHome + "' which is not a directory" );
+        if (mavenHome != null && !mavenHome.isDirectory()) {
+            throw new IllegalStateException("Maven home is set to: '" + mavenHome + "' which is not a directory");
         }
 
-        logger.debug( "Using maven.home of: '" + mavenHome + "'." );
+        logger.debug("Using maven.home of: '" + mavenHome + "'.");
     }
-
 
     /**
      * <p>setupMavenExecutable.</p>
@@ -599,81 +502,59 @@ public class MavenCommandLineBuilder
      * @param request a Invoker request
      * @throws org.apache.maven.shared.invoker.CommandLineConfigurationException if any.
      */
-    protected void setupMavenExecutable( InvocationRequest request )
-        throws CommandLineConfigurationException
-    {
-        if ( request.getMavenExecutable() != null )
-        {
+    protected void setupMavenExecutable(InvocationRequest request) throws CommandLineConfigurationException {
+        if (request.getMavenExecutable() != null) {
             mavenExecutable = request.getMavenExecutable();
         }
 
-        if ( mavenExecutable == null || !mavenExecutable.isAbsolute() )
-        {
+        if (mavenExecutable == null || !mavenExecutable.isAbsolute()) {
             String executable;
-            if ( mavenExecutable != null )
-            {
+            if (mavenExecutable != null) {
                 executable = mavenExecutable.getPath();
-            }
-            else
-            {
+            } else {
                 executable = "mvn";
             }
 
             // firs look in project directory
-            mavenExecutable = detectMavenExecutablePerOs( baseDirectory, executable );
-            if ( mavenExecutable == null )
-            {
+            mavenExecutable = detectMavenExecutablePerOs(baseDirectory, executable);
+            if (mavenExecutable == null) {
                 // next maven home
-                mavenExecutable = detectMavenExecutablePerOs( mavenHome, "/bin/" + executable );
+                mavenExecutable = detectMavenExecutablePerOs(mavenHome, "/bin/" + executable);
             }
 
-            if ( mavenExecutable != null )
-            {
-                try
-                {
+            if (mavenExecutable != null) {
+                try {
                     mavenExecutable = mavenExecutable.getCanonicalFile();
+                } catch (IOException e) {
+                    logger.debug("Failed to canonicalize maven executable: '" + mavenExecutable + "'. Using as-is.", e);
                 }
-                catch ( IOException e )
-                {
-                    logger.debug( "Failed to canonicalize maven executable: '" + mavenExecutable
-                        + "'. Using as-is.", e );
-                }
-            }
-            else
-            {
-                throw new CommandLineConfigurationException(
-                    "Maven executable: '" + executable + "'"
-                        + " not found at project dir: '" + baseDirectory + "' nor maven home: '" + mavenHome + "'" );
+            } else {
+                throw new CommandLineConfigurationException("Maven executable: '" + executable + "'"
+                        + " not found at project dir: '" + baseDirectory + "' nor maven home: '" + mavenHome + "'");
             }
         }
     }
 
-    private File detectMavenExecutablePerOs( File baseDirectory, String executable )
-    {
-        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            File executableFile = new File( baseDirectory, executable + ".ps1" );
-            if ( executableFile.isFile() )
-            {
+    private File detectMavenExecutablePerOs(File baseDirectory, String executable) {
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            File executableFile = new File(baseDirectory, executable + ".ps1");
+            if (executableFile.isFile()) {
                 return executableFile;
             }
 
-            executableFile = new File( baseDirectory, executable + ".cmd" );
-            if ( executableFile.isFile() )
-            {
+            executableFile = new File(baseDirectory, executable + ".cmd");
+            if (executableFile.isFile()) {
                 return executableFile;
             }
 
-            executableFile = new File( baseDirectory, executable + ".bat" );
-            if ( executableFile.isFile() )
-            {
+            executableFile = new File(baseDirectory, executable + ".bat");
+            if (executableFile.isFile()) {
                 return executableFile;
             }
         }
 
-        File executableFile = new File( baseDirectory, executable );
-        if ( executableFile.isFile() )
-        {
+        File executableFile = new File(baseDirectory, executable);
+        if (executableFile.isFile()) {
             return executableFile;
         }
         return null;
@@ -684,8 +565,7 @@ public class MavenCommandLineBuilder
      *
      * @return a {@link java.io.File} object.
      */
-    public File getLocalRepositoryDirectory()
-    {
+    public File getLocalRepositoryDirectory() {
         return localRepositoryDirectory;
     }
 
@@ -694,8 +574,7 @@ public class MavenCommandLineBuilder
      *
      * @param localRepositoryDirectory a {@link java.io.File} object.
      */
-    public void setLocalRepositoryDirectory( File localRepositoryDirectory )
-    {
+    public void setLocalRepositoryDirectory(File localRepositoryDirectory) {
         this.localRepositoryDirectory = localRepositoryDirectory;
     }
 
@@ -704,8 +583,7 @@ public class MavenCommandLineBuilder
      *
      * @return a {@link org.apache.maven.shared.invoker.InvokerLogger} object.
      */
-    public InvokerLogger getLogger()
-    {
+    public InvokerLogger getLogger() {
         return logger;
     }
 
@@ -714,8 +592,7 @@ public class MavenCommandLineBuilder
      *
      * @param logger a {@link org.apache.maven.shared.invoker.InvokerLogger} object.
      */
-    public void setLogger( InvokerLogger logger )
-    {
+    public void setLogger(InvokerLogger logger) {
         this.logger = logger;
     }
 
@@ -724,8 +601,7 @@ public class MavenCommandLineBuilder
      *
      * @return a {@link java.io.File} object.
      */
-    public File getMavenHome()
-    {
+    public File getMavenHome() {
         return mavenHome;
     }
 
@@ -734,8 +610,7 @@ public class MavenCommandLineBuilder
      *
      * @param mavenHome a {@link java.io.File} object.
      */
-    public void setMavenHome( File mavenHome )
-    {
+    public void setMavenHome(File mavenHome) {
         this.mavenHome = mavenHome;
     }
 
@@ -744,8 +619,7 @@ public class MavenCommandLineBuilder
      *
      * @return a {@link java.io.File} object.
      */
-    public File getBaseDirectory()
-    {
+    public File getBaseDirectory() {
         return baseDirectory;
     }
 
@@ -754,8 +628,7 @@ public class MavenCommandLineBuilder
      *
      * @param baseDirectory a {@link java.io.File} object.
      */
-    public void setBaseDirectory( File baseDirectory )
-    {
+    public void setBaseDirectory(File baseDirectory) {
         this.baseDirectory = baseDirectory;
     }
 
@@ -764,8 +637,7 @@ public class MavenCommandLineBuilder
      *
      * @param mavenExecutable the executable
      */
-    public void setMavenExecutable( File mavenExecutable )
-    {
+    public void setMavenExecutable(File mavenExecutable) {
         this.mavenExecutable = mavenExecutable;
     }
 
@@ -774,9 +646,7 @@ public class MavenCommandLineBuilder
      *
      * @return a {@link java.io.File} object.
      */
-    public File getMavenExecutable()
-    {
+    public File getMavenExecutable() {
         return mavenExecutable;
     }
-
 }

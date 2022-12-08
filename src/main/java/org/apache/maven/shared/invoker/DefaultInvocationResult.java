@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import org.apache.maven.shared.utils.cli.CommandLineException;
 
@@ -25,9 +24,7 @@ import org.apache.maven.shared.utils.cli.CommandLineException;
  * Describes the result of a Maven invocation.
  *
  */
-public final class DefaultInvocationResult
-    implements InvocationResult
-{
+public final class DefaultInvocationResult implements InvocationResult {
 
     /**
      * The exception that prevented to execute the command line, will be <code>null</code> if Maven could be
@@ -43,8 +40,7 @@ public final class DefaultInvocationResult
     /**
      * Creates a new invocation result
      */
-    DefaultInvocationResult()
-    {
+    DefaultInvocationResult() {
         // hide constructor
     }
 
@@ -53,8 +49,7 @@ public final class DefaultInvocationResult
      *
      * @return a int.
      */
-    public int getExitCode()
-    {
+    public int getExitCode() {
         return exitCode;
     }
 
@@ -63,29 +58,25 @@ public final class DefaultInvocationResult
      *
      * @return a {@link org.apache.maven.shared.utils.cli.CommandLineException} object.
      */
-    public CommandLineException getExecutionException()
-    {
+    public CommandLineException getExecutionException() {
         return executionException;
     }
 
     /**
      * Sets the exit code reported by the Maven invocation.
-     * 
+     *
      * @param exitCode The exit code reported by the Maven invocation.
      */
-    void setExitCode( int exitCode )
-    {
+    void setExitCode(int exitCode) {
         this.exitCode = exitCode;
     }
 
     /**
      * Sets the exception that prevented to execute the command line.
-     * 
+     *
      * @param executionException The exception that prevented to execute the command line, may be <code>null</code>.
      */
-    void setExecutionException( CommandLineException executionException )
-    {
+    void setExecutionException(CommandLineException executionException) {
         this.executionException = executionException;
     }
-
 }

@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import java.io.File;
 import java.io.InputStream;
@@ -26,8 +25,7 @@ import java.io.InputStream;
  * Provides a facade to invoke Maven.
  *
  */
-public interface Invoker
-{
+public interface Invoker {
 
     /**
      * The role name used to register implementations of this interface within Plexus.
@@ -43,8 +41,7 @@ public interface Invoker
      * @return The result of the Maven invocation, never <code>null</code>.
      * @throws MavenInvocationException if cannot configure correctly execution parameters
      */
-    InvocationResult execute( InvocationRequest request )
-        throws MavenInvocationException;
+    InvocationResult execute(InvocationRequest request) throws MavenInvocationException;
 
     /**
      * Gets the path to the base directory of the local repository to use for the Maven invocation.
@@ -86,7 +83,7 @@ public interface Invoker
      *            default Maven installation.
      * @return This invoker instance.
      */
-    Invoker setMavenHome( File mavenHome );
+    Invoker setMavenHome(File mavenHome);
 
     /**
      * Get the customized File of the Maven executable.
@@ -101,7 +98,7 @@ public interface Invoker
      * @param mavenExecutable the executable
      * @return This invoker instance
      */
-    Invoker setMavenExecutable( File mavenExecutable );
+    Invoker setMavenExecutable(File mavenExecutable);
 
     /**
      * Sets the path to the base directory of the local repository to use for the Maven invocation.
@@ -110,7 +107,7 @@ public interface Invoker
      *            use the location from the <code>settings.xml</code>.
      * @return This invoker instance.
      */
-    Invoker setLocalRepositoryDirectory( File localRepositoryDirectory );
+    Invoker setLocalRepositoryDirectory(File localRepositoryDirectory);
 
     /**
      * Sets the logger used by this invoker to output diagnostic messages.
@@ -119,7 +116,7 @@ public interface Invoker
      *            default logger.
      * @return This invoker instance.
      */
-    Invoker setLogger( InvokerLogger logger );
+    Invoker setLogger(InvokerLogger logger);
 
     /**
      * Sets the working directory for the Maven invocation.
@@ -131,7 +128,7 @@ public interface Invoker
      * @deprecated Please use {@link InvocationRequest#setBaseDirectory(File)}
      */
     @Deprecated
-    Invoker setWorkingDirectory( File workingDirectory );
+    Invoker setWorkingDirectory(File workingDirectory);
 
     /**
      * Sets the input stream used to provide input for the invoked Maven build. This is in particular useful when
@@ -144,7 +141,7 @@ public interface Invoker
      * @deprecated Please use {@link InvocationRequest#setInputStream(InputStream)}
      */
     @Deprecated
-    Invoker setInputStream( InputStream inputStream );
+    Invoker setInputStream(InputStream inputStream);
 
     /**
      * Sets the handler used to capture the standard output from the Maven build.
@@ -155,7 +152,7 @@ public interface Invoker
      * @deprecated Please use {@link InvocationRequest#setOutputHandler(InvocationOutputHandler)}
      */
     @Deprecated
-    Invoker setOutputHandler( InvocationOutputHandler outputHandler );
+    Invoker setOutputHandler(InvocationOutputHandler outputHandler);
 
     /**
      * Sets the handler used to capture the error output from the Maven build.
@@ -166,5 +163,5 @@ public interface Invoker
      * @deprecated Pleas use {@link InvocationRequest#setErrorHandler(InvocationOutputHandler)}
      */
     @Deprecated
-    Invoker setErrorHandler( InvocationOutputHandler errorHandler );
+    Invoker setErrorHandler(InvocationOutputHandler errorHandler);
 }

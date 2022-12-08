@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -28,9 +27,7 @@ import java.io.StringWriter;
  *
  * @since 2.0.9
  */
-public class PrintStreamLogger
-    implements InvokerLogger
-{
+public class PrintStreamLogger implements InvokerLogger {
 
     /**
      * The print stream to write to, never <code>null</code>.
@@ -45,9 +42,8 @@ public class PrintStreamLogger
     /**
      * Creates a new logger that writes to {@link java.lang.System#out} and has a threshold of {@link #INFO}.
      */
-    public PrintStreamLogger()
-    {
-        this( System.out, INFO );
+    public PrintStreamLogger() {
+        this(System.out, INFO);
     }
 
     /**
@@ -56,148 +52,129 @@ public class PrintStreamLogger
      * @param out The print stream to write to, must not be <code>null</code>.
      * @param threshold The threshold for the logger.
      */
-    public PrintStreamLogger( PrintStream out, int threshold )
-    {
-        if ( out == null )
-        {
-            throw new NullPointerException( "missing output stream" );
+    public PrintStreamLogger(PrintStream out, int threshold) {
+        if (out == null) {
+            throw new NullPointerException("missing output stream");
         }
         this.out = out;
-        setThreshold( threshold );
+        setThreshold(threshold);
     }
 
     /**
      * Writes the specified message and exception to the print stream.
-     * 
+     *
      * @param level The priority level of the message.
      * @param message The message to log, may be <code>null</code>.
      * @param error The exception to log, may be <code>null</code>.
      */
-    private void log( int level, String message, Throwable error )
-    {
-        if ( level > threshold )
-        {
+    private void log(int level, String message, Throwable error) {
+        if (level > threshold) {
             // don't log when it doesn't match your threshold.
             return;
         }
 
-        if ( message == null && error == null )
-        {
+        if (message == null && error == null) {
             // don't log when there's nothing to log.
             return;
         }
 
         StringBuilder buffer = new StringBuilder();
 
-        switch ( level )
-        {
-            case ( DEBUG ):
-                buffer.append( "[DEBUG]" );
+        switch (level) {
+            case (DEBUG):
+                buffer.append("[DEBUG]");
                 break;
 
-            case ( INFO ):
-                buffer.append( "[INFO]" );
+            case (INFO):
+                buffer.append("[INFO]");
                 break;
 
-            case ( WARN ):
-                buffer.append( "[WARN]" );
+            case (WARN):
+                buffer.append("[WARN]");
                 break;
 
-            case ( ERROR ):
-                buffer.append( "[ERROR]" );
+            case (ERROR):
+                buffer.append("[ERROR]");
                 break;
 
-            case ( FATAL ):
-                buffer.append( "[FATAL]" );
+            case (FATAL):
+                buffer.append("[FATAL]");
                 break;
 
             default:
         }
 
-        buffer.append( ' ' );
+        buffer.append(' ');
 
-        if ( message != null )
-        {
-            buffer.append( message );
+        if (message != null) {
+            buffer.append(message);
         }
 
-        if ( error != null )
-        {
+        if (error != null) {
             StringWriter writer = new StringWriter();
-            PrintWriter pWriter = new PrintWriter( writer );
+            PrintWriter pWriter = new PrintWriter(writer);
 
-            error.printStackTrace( pWriter );
+            error.printStackTrace(pWriter);
 
-            if ( message != null )
-            {
-                buffer.append( '\n' );
+            if (message != null) {
+                buffer.append('\n');
             }
 
-            buffer.append( "Error:\n" );
-            buffer.append( writer.toString() );
+            buffer.append("Error:\n");
+            buffer.append(writer.toString());
         }
 
-        out.println( buffer.toString() );
+        out.println(buffer.toString());
     }
 
     /** {@inheritDoc} */
-    public void debug( String message )
-    {
-        log( DEBUG, message, null );
+    public void debug(String message) {
+        log(DEBUG, message, null);
     }
 
     /** {@inheritDoc} */
-    public void debug( String message, Throwable throwable )
-    {
-        log( DEBUG, message, throwable );
+    public void debug(String message, Throwable throwable) {
+        log(DEBUG, message, throwable);
     }
 
     /** {@inheritDoc} */
-    public void info( String message )
-    {
-        log( INFO, message, null );
+    public void info(String message) {
+        log(INFO, message, null);
     }
 
     /** {@inheritDoc} */
-    public void info( String message, Throwable throwable )
-    {
-        log( INFO, message, throwable );
+    public void info(String message, Throwable throwable) {
+        log(INFO, message, throwable);
     }
 
     /** {@inheritDoc} */
-    public void warn( String message )
-    {
-        log( WARN, message, null );
+    public void warn(String message) {
+        log(WARN, message, null);
     }
 
     /** {@inheritDoc} */
-    public void warn( String message, Throwable throwable )
-    {
-        log( WARN, message, throwable );
+    public void warn(String message, Throwable throwable) {
+        log(WARN, message, throwable);
     }
 
     /** {@inheritDoc} */
-    public void error( String message )
-    {
-        log( ERROR, message, null );
+    public void error(String message) {
+        log(ERROR, message, null);
     }
 
     /** {@inheritDoc} */
-    public void error( String message, Throwable throwable )
-    {
-        log( ERROR, message, throwable );
+    public void error(String message, Throwable throwable) {
+        log(ERROR, message, throwable);
     }
 
     /** {@inheritDoc} */
-    public void fatalError( String message )
-    {
-        log( FATAL, message, null );
+    public void fatalError(String message) {
+        log(FATAL, message, null);
     }
 
     /** {@inheritDoc} */
-    public void fatalError( String message, Throwable throwable )
-    {
-        log( FATAL, message, throwable );
+    public void fatalError(String message, Throwable throwable) {
+        log(FATAL, message, throwable);
     }
 
     /**
@@ -205,8 +182,7 @@ public class PrintStreamLogger
      *
      * @return a boolean.
      */
-    public boolean isDebugEnabled()
-    {
+    public boolean isDebugEnabled() {
         return threshold >= DEBUG;
     }
 
@@ -215,8 +191,7 @@ public class PrintStreamLogger
      *
      * @return a boolean.
      */
-    public boolean isErrorEnabled()
-    {
+    public boolean isErrorEnabled() {
         return threshold >= ERROR;
     }
 
@@ -225,8 +200,7 @@ public class PrintStreamLogger
      *
      * @return a boolean.
      */
-    public boolean isFatalErrorEnabled()
-    {
+    public boolean isFatalErrorEnabled() {
         return threshold >= FATAL;
     }
 
@@ -235,8 +209,7 @@ public class PrintStreamLogger
      *
      * @return a boolean.
      */
-    public boolean isInfoEnabled()
-    {
+    public boolean isInfoEnabled() {
         return threshold >= INFO;
     }
 
@@ -245,8 +218,7 @@ public class PrintStreamLogger
      *
      * @return a boolean.
      */
-    public boolean isWarnEnabled()
-    {
+    public boolean isWarnEnabled() {
         return threshold >= WARN;
     }
 
@@ -255,15 +227,12 @@ public class PrintStreamLogger
      *
      * @return a int.
      */
-    public int getThreshold()
-    {
+    public int getThreshold() {
         return threshold;
     }
 
     /** {@inheritDoc} */
-    public void setThreshold( int threshold )
-    {
+    public void setThreshold(int threshold) {
         this.threshold = threshold;
     }
-
 }

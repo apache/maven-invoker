@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,14 +16,13 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 /**
  * Signals an error during the construction of the command line used to invoke Maven.
  *
  */
-public class CommandLineConfigurationException
-    extends Exception
-{
+public class CommandLineConfigurationException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,9 +32,8 @@ public class CommandLineConfigurationException
      * @param message The detail message for this exception, may be <code>null</code>.
      * @param cause The nested exception, may be <code>null</code>.
      */
-    public CommandLineConfigurationException( String message, Throwable cause )
-    {
-        super( message, cause );
+    public CommandLineConfigurationException(String message, Throwable cause) {
+        super(message, cause);
     }
 
     /**
@@ -45,9 +41,7 @@ public class CommandLineConfigurationException
      *
      * @param message The detail message for this exception, may be <code>null</code>.
      */
-    public CommandLineConfigurationException( String message )
-    {
-        super( message );
+    public CommandLineConfigurationException(String message) {
+        super(message);
     }
-
 }
