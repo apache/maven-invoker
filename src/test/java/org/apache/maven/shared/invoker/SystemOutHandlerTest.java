@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,40 +16,35 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import org.junit.jupiter.api.Test;
 
-public class SystemOutHandlerTest
-{
+public class SystemOutHandlerTest {
 
     @Test
-    public void testConsumeWithoutAlwaysFlush()
-    {
+    public void testConsumeWithoutAlwaysFlush() {
         logTestStart();
-        new SystemOutHandler( false ).consumeLine( "This is a test." );
+        new SystemOutHandler(false).consumeLine("This is a test.");
     }
 
     @Test
-    public void testConsumeWithAlwaysFlush()
-    {
+    public void testConsumeWithAlwaysFlush() {
         logTestStart();
-        new SystemOutHandler( true ).consumeLine( "This is a test." );
+        new SystemOutHandler(true).consumeLine("This is a test.");
     }
 
     @Test
-    public void testConsumeNullLine()
-    {
+    public void testConsumeNullLine() {
         logTestStart();
-        new SystemOutHandler().consumeLine( null );
+        new SystemOutHandler().consumeLine(null);
     }
 
     // this is just a debugging helper for separating unit test output...
-    private void logTestStart()
-    {
+    private void logTestStart() {
         NullPointerException npe = new NullPointerException();
         StackTraceElement element = npe.getStackTrace()[1];
 
-        System.out.println( "Starting: " + element.getMethodName() );
+        System.out.println("Starting: " + element.getMethodName());
     }
-
 }

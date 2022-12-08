@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 /**
  * Signals an error during the construction of the command line used to invoke Maven, e.g. illegal invocation arguments.
@@ -26,9 +25,7 @@ package org.apache.maven.shared.invoker;
  *
  * @see InvocationResult#getExitCode()
  */
-public class MavenInvocationException
-    extends Exception
-{
+public class MavenInvocationException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
@@ -38,9 +35,8 @@ public class MavenInvocationException
      * @param message The detail message for this exception, may be <code>null</code>.
      * @param cause The nested exception, may be <code>null</code>.
      */
-    public MavenInvocationException( String message, Throwable cause )
-    {
-        super( message, cause );
+    public MavenInvocationException(String message, Throwable cause) {
+        super(message, cause);
     }
 
     /**
@@ -48,9 +44,7 @@ public class MavenInvocationException
      *
      * @param message The detail message for this exception, may be <code>null</code>.
      */
-    public MavenInvocationException( String message )
-    {
-        super( message );
+    public MavenInvocationException(String message) {
+        super(message);
     }
-
 }

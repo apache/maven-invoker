@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 /**
  * A logger used by {@link org.apache.maven.shared.invoker.Invoker} instances to output diagnostic messages.
@@ -25,8 +24,7 @@ package org.apache.maven.shared.invoker;
  * @see Invoker#setLogger(InvokerLogger)
  * @author <a href="mailto:jason@maven.org">Jason van Zyl</a>
  */
-public interface InvokerLogger
-{
+public interface InvokerLogger {
 
     /**
      * The threshold for debug output.
@@ -58,7 +56,7 @@ public interface InvokerLogger
      *
      * @param message The message to log, may be <code>null</code>.
      */
-    void debug( String message );
+    void debug(String message);
 
     /**
      * Logs the specified debug message and the accompanying exception.
@@ -66,7 +64,7 @@ public interface InvokerLogger
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
-    void debug( String message, Throwable throwable );
+    void debug(String message, Throwable throwable);
 
     /**
      * Tests whether debug output is enabled for this logger.
@@ -81,7 +79,7 @@ public interface InvokerLogger
      *
      * @param message The message to log, may be <code>null</code>.
      */
-    void info( String message );
+    void info(String message);
 
     /**
      * Logs the specified info message and the accompanying exception.
@@ -89,7 +87,7 @@ public interface InvokerLogger
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
-    void info( String message, Throwable throwable );
+    void info(String message, Throwable throwable);
 
     /**
      * Tests whether info output is enabled for this logger.
@@ -103,7 +101,7 @@ public interface InvokerLogger
      *
      * @param message The message to log, may be <code>null</code>.
      */
-    void warn( String message );
+    void warn(String message);
 
     /**
      * Logs the specified warning message and the accompanying exception.
@@ -111,7 +109,7 @@ public interface InvokerLogger
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
-    void warn( String message, Throwable throwable );
+    void warn(String message, Throwable throwable);
 
     /**
      * Tests whether warn output is enabled for this logger.
@@ -125,7 +123,7 @@ public interface InvokerLogger
      *
      * @param message The message to log, may be <code>null</code>.
      */
-    void error( String message );
+    void error(String message);
 
     /**
      * Logs the specified error message and the accompanying exception.
@@ -133,7 +131,7 @@ public interface InvokerLogger
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
-    void error( String message, Throwable throwable );
+    void error(String message, Throwable throwable);
 
     /**
      * Tests whether error output is enabled for this logger.
@@ -148,7 +146,7 @@ public interface InvokerLogger
      *
      * @param message The message to log, may be <code>null</code>.
      */
-    void fatalError( String message );
+    void fatalError(String message);
 
     /**
      * Logs the specified fatal error message and the accompanying exception.
@@ -156,7 +154,7 @@ public interface InvokerLogger
      * @param message The message to log, may be <code>null</code>.
      * @param throwable The exception to log, may be <code>null</code>.
      */
-    void fatalError( String message, Throwable throwable );
+    void fatalError(String message, Throwable throwable);
 
     /**
      * Tests whether fatal error output is enabled for this logger.
@@ -172,7 +170,7 @@ public interface InvokerLogger
      * @param threshold The logger's threshold, must be one of {@link #DEBUG}, {@link #INFO}, {@link #WARN},
      *            {@link #ERROR} and {@link #FATAL}.
      */
-    void setThreshold( int threshold );
+    void setThreshold(int threshold);
 
     /**
      * Gets the logger's threshold.
@@ -181,5 +179,4 @@ public interface InvokerLogger
      *         {@link #FATAL}.
      */
     int getThreshold();
-
 }

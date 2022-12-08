@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,21 +16,19 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 /**
  * Offers an output handler that writes to {@link java.lang.System#out}.
  *
  */
-public class SystemOutHandler
-    extends PrintStreamHandler
-{
+public class SystemOutHandler extends PrintStreamHandler {
 
     /**
      * Creates a new output handler.
      */
-    public SystemOutHandler()
-    {
-        this( false );
+    public SystemOutHandler() {
+        this(false);
     }
 
     /**
@@ -40,9 +36,7 @@ public class SystemOutHandler
      *
      * @param alwaysFlush A flag whether the print stream should be flushed after each line.
      */
-    public SystemOutHandler( boolean alwaysFlush )
-    {
-        super( System.out, alwaysFlush );
+    public SystemOutHandler(boolean alwaysFlush) {
+        super(System.out, alwaysFlush);
     }
-
 }

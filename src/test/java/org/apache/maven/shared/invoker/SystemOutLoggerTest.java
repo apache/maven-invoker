@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,271 +16,238 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import org.junit.jupiter.api.Test;
+package org.apache.maven.shared.invoker;
 
 import java.net.MalformedURLException;
+
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SystemOutLoggerTest
-{
+public class SystemOutLoggerTest {
 
     private static final Throwable EXCEPTION =
-        new MalformedURLException( "This is meant to happen. It's part of the test." );
+            new MalformedURLException("This is meant to happen. It's part of the test.");
 
     private static final String MESSAGE = "This is a test message.";
 
     @Test
-    public void testDebugWithMessageOnly()
-    {
+    public void testDebugWithMessageOnly() {
         logTestStart();
-        new SystemOutLogger().debug( MESSAGE );
+        new SystemOutLogger().debug(MESSAGE);
     }
 
     @Test
-    public void testDebugWithMessageAndError()
-    {
+    public void testDebugWithMessageAndError() {
         logTestStart();
-        new SystemOutLogger().debug( MESSAGE, EXCEPTION );
+        new SystemOutLogger().debug(MESSAGE, EXCEPTION);
     }
 
     @Test
-    public void testDebugWithNullMessageAndNoError()
-    {
+    public void testDebugWithNullMessageAndNoError() {
         logTestStart();
-        new SystemOutLogger().debug( null );
+        new SystemOutLogger().debug(null);
     }
 
     @Test
-    public void testDebugWithNullMessageError()
-    {
+    public void testDebugWithNullMessageError() {
         logTestStart();
-        new SystemOutLogger().debug( null, EXCEPTION );
+        new SystemOutLogger().debug(null, EXCEPTION);
     }
 
     @Test
-    public void testDebugWithMessageNullError()
-    {
+    public void testDebugWithMessageNullError() {
         logTestStart();
-        new SystemOutLogger().debug( MESSAGE, null );
+        new SystemOutLogger().debug(MESSAGE, null);
     }
 
     @Test
-    public void testInfoWithMessageOnly()
-    {
+    public void testInfoWithMessageOnly() {
         logTestStart();
-        new SystemOutLogger().info( MESSAGE );
+        new SystemOutLogger().info(MESSAGE);
     }
 
     @Test
-    public void testInfoWithMessageAndError()
-    {
+    public void testInfoWithMessageAndError() {
         logTestStart();
-        new SystemOutLogger().info( MESSAGE, EXCEPTION );
+        new SystemOutLogger().info(MESSAGE, EXCEPTION);
     }
 
     @Test
-    public void testInfoWithNullMessageAndNoError()
-    {
+    public void testInfoWithNullMessageAndNoError() {
         logTestStart();
-        new SystemOutLogger().info( null );
+        new SystemOutLogger().info(null);
     }
 
     @Test
-    public void testInfoWithNullMessageError()
-    {
+    public void testInfoWithNullMessageError() {
         logTestStart();
-        new SystemOutLogger().info( null, EXCEPTION );
+        new SystemOutLogger().info(null, EXCEPTION);
     }
 
     @Test
-    public void testInfoWithMessageNullError()
-    {
+    public void testInfoWithMessageNullError() {
         logTestStart();
-        new SystemOutLogger().info( MESSAGE, null );
+        new SystemOutLogger().info(MESSAGE, null);
     }
 
     @Test
-    public void testWarnWithMessageOnly()
-    {
+    public void testWarnWithMessageOnly() {
         logTestStart();
-        new SystemOutLogger().warn( MESSAGE );
+        new SystemOutLogger().warn(MESSAGE);
     }
 
     @Test
-    public void testWarnWithMessageAndError()
-    {
+    public void testWarnWithMessageAndError() {
         logTestStart();
-        new SystemOutLogger().warn( MESSAGE, EXCEPTION );
+        new SystemOutLogger().warn(MESSAGE, EXCEPTION);
     }
 
     @Test
-    public void testWarnWithNullMessageAndNoError()
-    {
+    public void testWarnWithNullMessageAndNoError() {
         logTestStart();
-        new SystemOutLogger().warn( null );
+        new SystemOutLogger().warn(null);
     }
 
     @Test
-    public void testWarnWithNullMessageError()
-    {
+    public void testWarnWithNullMessageError() {
         logTestStart();
-        new SystemOutLogger().warn( null, EXCEPTION );
+        new SystemOutLogger().warn(null, EXCEPTION);
     }
 
     @Test
-    public void testWarnWithMessageNullError()
-    {
+    public void testWarnWithMessageNullError() {
         logTestStart();
-        new SystemOutLogger().warn( MESSAGE, null );
+        new SystemOutLogger().warn(MESSAGE, null);
     }
 
     @Test
-    public void testErrorWithMessageOnly()
-    {
+    public void testErrorWithMessageOnly() {
         logTestStart();
-        new SystemOutLogger().error( MESSAGE );
+        new SystemOutLogger().error(MESSAGE);
     }
 
     @Test
-    public void testErrorWithMessageAndError()
-    {
+    public void testErrorWithMessageAndError() {
         logTestStart();
-        new SystemOutLogger().error( MESSAGE, EXCEPTION );
+        new SystemOutLogger().error(MESSAGE, EXCEPTION);
     }
 
     @Test
-    public void testErrorWithNullMessageAndNoError()
-    {
+    public void testErrorWithNullMessageAndNoError() {
         logTestStart();
-        new SystemOutLogger().error( null );
+        new SystemOutLogger().error(null);
     }
 
     @Test
-    public void testErrorWithNullMessageError()
-    {
+    public void testErrorWithNullMessageError() {
         logTestStart();
-        new SystemOutLogger().error( null, EXCEPTION );
+        new SystemOutLogger().error(null, EXCEPTION);
     }
 
     @Test
-    public void testErrorWithMessageNullError()
-    {
+    public void testErrorWithMessageNullError() {
         logTestStart();
-        new SystemOutLogger().error( MESSAGE, null );
+        new SystemOutLogger().error(MESSAGE, null);
     }
 
     @Test
-    public void testFatalErrorWithMessageOnly()
-    {
+    public void testFatalErrorWithMessageOnly() {
         logTestStart();
-        new SystemOutLogger().fatalError( MESSAGE );
+        new SystemOutLogger().fatalError(MESSAGE);
     }
 
     @Test
-    public void testFatalErrorWithMessageAndError()
-    {
+    public void testFatalErrorWithMessageAndError() {
         logTestStart();
-        new SystemOutLogger().fatalError( MESSAGE, EXCEPTION );
+        new SystemOutLogger().fatalError(MESSAGE, EXCEPTION);
     }
 
     @Test
-    public void testFatalErrorWithNullMessageAndNoError()
-    {
+    public void testFatalErrorWithNullMessageAndNoError() {
         logTestStart();
-        new SystemOutLogger().fatalError( null );
+        new SystemOutLogger().fatalError(null);
     }
 
     @Test
-    public void testFatalErrorWithNullMessageError()
-    {
+    public void testFatalErrorWithNullMessageError() {
         logTestStart();
-        new SystemOutLogger().fatalError( null, EXCEPTION );
+        new SystemOutLogger().fatalError(null, EXCEPTION);
     }
 
     @Test
-    public void testFatalErrorWithMessageNullError()
-    {
+    public void testFatalErrorWithMessageNullError() {
         logTestStart();
-        new SystemOutLogger().fatalError( MESSAGE, null );
+        new SystemOutLogger().fatalError(MESSAGE, null);
     }
 
     @Test
-    public void testDefaultThresholdInfo()
-    {
-        assertEquals( InvokerLogger.INFO, new SystemOutLogger().getThreshold() );
+    public void testDefaultThresholdInfo() {
+        assertEquals(InvokerLogger.INFO, new SystemOutLogger().getThreshold());
     }
 
     @Test
-    public void testThresholdDebug()
-    {
+    public void testThresholdDebug() {
         InvokerLogger logger = new SystemOutLogger();
-        logger.setThreshold( InvokerLogger.DEBUG );
-        assertTrue( logger.isDebugEnabled() );
-        assertTrue( logger.isInfoEnabled() );
-        assertTrue( logger.isWarnEnabled() );
-        assertTrue( logger.isErrorEnabled() );
-        assertTrue( logger.isFatalErrorEnabled() );
+        logger.setThreshold(InvokerLogger.DEBUG);
+        assertTrue(logger.isDebugEnabled());
+        assertTrue(logger.isInfoEnabled());
+        assertTrue(logger.isWarnEnabled());
+        assertTrue(logger.isErrorEnabled());
+        assertTrue(logger.isFatalErrorEnabled());
     }
 
     @Test
-    public void testThresholdInfo()
-    {
+    public void testThresholdInfo() {
         InvokerLogger logger = new SystemOutLogger();
-        logger.setThreshold( InvokerLogger.INFO );
-        assertFalse( logger.isDebugEnabled() );
-        assertTrue( logger.isInfoEnabled() );
-        assertTrue( logger.isWarnEnabled() );
-        assertTrue( logger.isErrorEnabled() );
-        assertTrue( logger.isFatalErrorEnabled() );
+        logger.setThreshold(InvokerLogger.INFO);
+        assertFalse(logger.isDebugEnabled());
+        assertTrue(logger.isInfoEnabled());
+        assertTrue(logger.isWarnEnabled());
+        assertTrue(logger.isErrorEnabled());
+        assertTrue(logger.isFatalErrorEnabled());
     }
 
     @Test
-    public void testThresholdWarn()
-    {
+    public void testThresholdWarn() {
         InvokerLogger logger = new SystemOutLogger();
-        logger.setThreshold( InvokerLogger.WARN );
-        assertFalse( logger.isDebugEnabled() );
-        assertFalse( logger.isInfoEnabled() );
-        assertTrue( logger.isWarnEnabled() );
-        assertTrue( logger.isErrorEnabled() );
-        assertTrue( logger.isFatalErrorEnabled() );
+        logger.setThreshold(InvokerLogger.WARN);
+        assertFalse(logger.isDebugEnabled());
+        assertFalse(logger.isInfoEnabled());
+        assertTrue(logger.isWarnEnabled());
+        assertTrue(logger.isErrorEnabled());
+        assertTrue(logger.isFatalErrorEnabled());
     }
 
     @Test
-    public void testThresholdError()
-    {
+    public void testThresholdError() {
         InvokerLogger logger = new SystemOutLogger();
-        logger.setThreshold( InvokerLogger.ERROR );
-        assertFalse( logger.isDebugEnabled() );
-        assertFalse( logger.isInfoEnabled() );
-        assertFalse( logger.isWarnEnabled() );
-        assertTrue( logger.isErrorEnabled() );
-        assertTrue( logger.isFatalErrorEnabled() );
+        logger.setThreshold(InvokerLogger.ERROR);
+        assertFalse(logger.isDebugEnabled());
+        assertFalse(logger.isInfoEnabled());
+        assertFalse(logger.isWarnEnabled());
+        assertTrue(logger.isErrorEnabled());
+        assertTrue(logger.isFatalErrorEnabled());
     }
 
     @Test
-    public void testThresholdFatal()
-    {
+    public void testThresholdFatal() {
         InvokerLogger logger = new SystemOutLogger();
-        logger.setThreshold( InvokerLogger.FATAL );
-        assertFalse( logger.isDebugEnabled() );
-        assertFalse( logger.isInfoEnabled() );
-        assertFalse( logger.isWarnEnabled() );
-        assertFalse( logger.isErrorEnabled() );
-        assertTrue( logger.isFatalErrorEnabled() );
+        logger.setThreshold(InvokerLogger.FATAL);
+        assertFalse(logger.isDebugEnabled());
+        assertFalse(logger.isInfoEnabled());
+        assertFalse(logger.isWarnEnabled());
+        assertFalse(logger.isErrorEnabled());
+        assertTrue(logger.isFatalErrorEnabled());
     }
 
     // this is just a debugging helper for separating unit test output...
-    private void logTestStart()
-    {
+    private void logTestStart() {
         NullPointerException npe = new NullPointerException();
         StackTraceElement element = npe.getStackTrace()[1];
 
-        System.out.println( "Starting: " + element.getMethodName() );
+        System.out.println("Starting: " + element.getMethodName());
     }
-
 }

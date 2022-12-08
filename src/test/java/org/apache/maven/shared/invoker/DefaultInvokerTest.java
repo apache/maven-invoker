@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import java.io.File;
 import java.net.URI;
@@ -33,67 +32,61 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DefaultInvokerTest
-{
+public class DefaultInvokerTest {
 
     @Test
-    public void testBuildShouldSucceed()
-        throws MavenInvocationException, URISyntaxException
-    {
+    public void testBuildShouldSucceed() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setDebug( true );
-        request.setGoals( Arrays.asList( "clean", "package" ) );
-        request.setProperties( getProperties() );
+        request.setBaseDirectory(basedir);
+        request.setDebug(true);
+        request.setGoals(Arrays.asList("clean", "package"));
+        request.setProperties(getProperties());
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 0, result.getExitCode() );
+        assertEquals(0, result.getExitCode());
     }
 
     @Test
-    public void testBuildShouldFail()
-        throws MavenInvocationException, URISyntaxException
-    {
+    public void testBuildShouldFail() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setDebug( true );
-        request.setGoals( Arrays.asList( "clean", "package" ) );
-        request.setProperties( getProperties() );
+        request.setBaseDirectory(basedir);
+        request.setDebug(true);
+        request.setGoals(Arrays.asList("clean", "package"));
+        request.setProperties(getProperties());
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 1, result.getExitCode() );
+        assertEquals(1, result.getExitCode());
     }
 
     @Test
-    public void testBuildShouldTimeout()
-        throws MavenInvocationException, URISyntaxException
-    {
+    public void testBuildShouldTimeout() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setDebug( true );
-        request.setGoals( Arrays.asList( "clean", "package" ) );
-        request.setTimeoutInSeconds( 4 );
-        request.setProperties( getProperties() );
+        request.setBaseDirectory(basedir);
+        request.setDebug(true);
+        request.setGoals(Arrays.asList("clean", "package"));
+        request.setTimeoutInSeconds(4);
+        request.setProperties(getProperties());
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
         // We check the exception to be sure the failure is based on timeout.
-        assertEquals( "Error while executing external command, process killed.",
-                      result.getExecutionException().getMessage() );
+        assertEquals(
+                "Error while executing external command, process killed.",
+                result.getExecutionException().getMessage());
 
         // WARN - Windows issue MSHARED-867 - Maven and child surefire test process stays alive on Windows
         // workaround implemented in this test to timeout test after 15 sec
@@ -105,9 +98,7 @@ public class DefaultInvokerTest
     }
 
     @Test
-    public void testSpacePom()
-        throws Exception
-    {
+    public void testSpacePom() throws Exception {
         logTestStart();
 
         File basedir = getBasedirForBuild();
@@ -115,21 +106,19 @@ public class DefaultInvokerTest
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setPomFileName( "pom with spaces.xml" );
-        request.setDebug( true );
-        request.setGoals( Collections.singletonList( "clean" ) );
-        request.setProperties( getProperties() );
+        request.setBaseDirectory(basedir);
+        request.setPomFileName("pom with spaces.xml");
+        request.setDebug(true);
+        request.setGoals(Collections.singletonList("clean"));
+        request.setProperties(getProperties());
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 0, result.getExitCode() );
+        assertEquals(0, result.getExitCode());
     }
 
     @Test
-    public void testSpaceAndSpecialCharPom()
-        throws Exception
-    {
+    public void testSpaceAndSpecialCharPom() throws Exception {
         logTestStart();
 
         File basedir = getBasedirForBuild();
@@ -137,21 +126,19 @@ public class DefaultInvokerTest
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setPomFileName( "pom with spaces & special char.xml" );
-        request.setDebug( true );
-        request.setGoals( Collections.singletonList( "clean" ) );
-        request.setProperties( getProperties() );
+        request.setBaseDirectory(basedir);
+        request.setPomFileName("pom with spaces & special char.xml");
+        request.setDebug(true);
+        request.setGoals(Collections.singletonList("clean"));
+        request.setProperties(getProperties());
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 0, result.getExitCode() );
+        assertEquals(0, result.getExitCode());
     }
 
     @Test
-    public void testSpaceSettings()
-        throws Exception
-    {
+    public void testSpaceSettings() throws Exception {
         logTestStart();
 
         File basedir = getBasedirForBuild();
@@ -159,21 +146,19 @@ public class DefaultInvokerTest
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setUserSettingsFile( new File( basedir, "settings with spaces.xml" ) );
-        request.setDebug( true );
-        request.setGoals( Collections.singletonList( "validate" ) );
-        request.setProperties( getProperties() );
+        request.setBaseDirectory(basedir);
+        request.setUserSettingsFile(new File(basedir, "settings with spaces.xml"));
+        request.setDebug(true);
+        request.setGoals(Collections.singletonList("validate"));
+        request.setProperties(getProperties());
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 0, result.getExitCode() );
+        assertEquals(0, result.getExitCode());
     }
 
     @Test
-    public void testSpaceLocalRepo()
-        throws Exception
-    {
+    public void testSpaceLocalRepo() throws Exception {
         logTestStart();
 
         File basedir = getBasedirForBuild();
@@ -181,21 +166,19 @@ public class DefaultInvokerTest
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setLocalRepositoryDirectory( new File( basedir, "repo with spaces" ) );
-        request.setDebug( true );
-        request.setGoals( Collections.singletonList( "validate" ) );
-        request.setProperties( getProperties() );
+        request.setBaseDirectory(basedir);
+        request.setLocalRepositoryDirectory(new File(basedir, "repo with spaces"));
+        request.setDebug(true);
+        request.setGoals(Collections.singletonList("validate"));
+        request.setProperties(getProperties());
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 0, result.getExitCode() );
+        assertEquals(0, result.getExitCode());
     }
 
     @Test
-    public void testSpaceProperties()
-        throws Exception
-    {
+    public void testSpaceProperties() throws Exception {
         logTestStart();
 
         File basedir = getBasedirForBuild();
@@ -203,160 +186,139 @@ public class DefaultInvokerTest
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
+        request.setBaseDirectory(basedir);
 
         Properties props = getProperties();
-        props.setProperty( "key", "value with spaces" );
-        props.setProperty( "key with spaces", "value" );
-        request.setProperties( props );
-        request.setDebug( true );
-        request.setGoals( Collections.singletonList( "validate" ) );
+        props.setProperty("key", "value with spaces");
+        props.setProperty("key with spaces", "value");
+        request.setProperties(props);
+        request.setDebug(true);
+        request.setGoals(Collections.singletonList("validate"));
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 0, result.getExitCode() );
+        assertEquals(0, result.getExitCode());
     }
 
     @Test
-    public void testPomOutsideProject() throws Exception
-    {
+    public void testPomOutsideProject() throws Exception {
         logTestStart();
 
         File testDir = getBasedirForBuild();
 
-        File basedir = new File( testDir, "project" );
-        File pom = new File(testDir, "temp/pom.xml" );
+        File basedir = new File(testDir, "project");
+        File pom = new File(testDir, "temp/pom.xml");
 
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setPomFile( pom );
-        request.setGoals( Collections.singletonList( "validate" ) );
+        request.setBaseDirectory(basedir);
+        request.setPomFile(pom);
+        request.setGoals(Collections.singletonList("validate"));
 
-        InvocationResult result = invoker.execute( request );
+        InvocationResult result = invoker.execute(request);
 
-        assertEquals( 0, result.getExitCode() );
+        assertEquals(0, result.getExitCode());
     }
 
     @Test
-    public void testMavenWrapperInProject() throws Exception
-    {
+    public void testMavenWrapperInProject() throws Exception {
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
 
         InvocationRequest request = new DefaultInvocationRequest();
-        request.setBaseDirectory( basedir );
-        request.setGoals( Collections.singletonList( "test-wrapper-goal" ) );
-        request.setMavenExecutable( new File( "./mvnw" ) );
+        request.setBaseDirectory(basedir);
+        request.setGoals(Collections.singletonList("test-wrapper-goal"));
+        request.setMavenExecutable(new File("./mvnw"));
 
         final StringBuilder outlines = new StringBuilder();
-        request.setOutputHandler( new InvocationOutputHandler()
-        {
+        request.setOutputHandler(new InvocationOutputHandler() {
             @Override
-            public void consumeLine( String line )
-            {
-                outlines.append( line );
+            public void consumeLine(String line) {
+                outlines.append(line);
             }
-        } );
+        });
 
+        InvocationResult result = invoker.execute(request);
 
-        InvocationResult result = invoker.execute( request );
-
-        assertEquals( 0, result.getExitCode() );
-        if ( Os.isFamily( Os.FAMILY_WINDOWS ) )
-        {
-            assertEquals( "Windows Wrapper executed", outlines.toString() );
-        }
-        else
-        {
-            assertEquals( "Unix Wrapper executed", outlines.toString() );
+        assertEquals(0, result.getExitCode());
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            assertEquals("Windows Wrapper executed", outlines.toString());
+        } else {
+            assertEquals("Unix Wrapper executed", outlines.toString());
         }
     }
 
-    private Invoker newInvoker()
-    {
+    private Invoker newInvoker() {
         Invoker invoker = new DefaultInvoker();
 
-        invoker.setMavenHome( findMavenHome() );
+        invoker.setMavenHome(findMavenHome());
 
         InvokerLogger logger = new SystemOutLogger();
-        logger.setThreshold( InvokerLogger.DEBUG );
-        invoker.setLogger( logger );
+        logger.setThreshold(InvokerLogger.DEBUG);
+        invoker.setLogger(logger);
 
-        invoker.setLocalRepositoryDirectory( findLocalRepo() );
+        invoker.setLocalRepositoryDirectory(findLocalRepo());
 
         return invoker;
     }
 
-    private File findMavenHome()
-    {
-        String mavenHome = System.getProperty( "maven.home" );
+    private File findMavenHome() {
+        String mavenHome = System.getProperty("maven.home");
 
-        if ( mavenHome == null )
-        {
-            throw new IllegalStateException( "Cannot find Maven application "
-                + "directory. Specify 'maven.home' system property" );
+        if (mavenHome == null) {
+            throw new IllegalStateException(
+                    "Cannot find Maven application " + "directory. Specify 'maven.home' system property");
         }
 
-        return new File( mavenHome );
+        return new File(mavenHome);
     }
 
-    private File findLocalRepo()
-    {
-        String basedir = System.getProperty( "maven.repo.local", "" );
+    private File findLocalRepo() {
+        String basedir = System.getProperty("maven.repo.local", "");
 
-        if ( StringUtils.isNotEmpty( basedir ) )
-        {
-            return new File( basedir );
+        if (StringUtils.isNotEmpty(basedir)) {
+            return new File(basedir);
         }
 
         return null;
     }
 
-    private File getBasedirForBuild()
-        throws URISyntaxException
-    {
+    private File getBasedirForBuild() throws URISyntaxException {
         StackTraceElement element = new NullPointerException().getStackTrace()[1];
         String methodName = element.getMethodName();
 
-        String dirName = StringUtils.addAndDeHump( methodName );
+        String dirName = StringUtils.addAndDeHump(methodName);
 
         ClassLoader cloader = Thread.currentThread().getContextClassLoader();
-        URL dirResource = cloader.getResource( dirName );
+        URL dirResource = cloader.getResource(dirName);
 
-        if ( dirResource == null )
-        {
-            throw new IllegalStateException( "Project: " + dirName + " for test method: " + methodName
-                + " is missing." );
+        if (dirResource == null) {
+            throw new IllegalStateException("Project: " + dirName + " for test method: " + methodName + " is missing.");
         }
 
-        return new File( new URI( dirResource.toString() ).getPath() );
+        return new File(new URI(dirResource.toString()).getPath());
     }
 
     // this is just a debugging helper for separating unit test output...
-    private void logTestStart()
-    {
+    private void logTestStart() {
         NullPointerException npe = new NullPointerException();
         StackTraceElement element = npe.getStackTrace()[1];
 
-        System.out.println( "Starting: " + element.getMethodName() );
+        System.out.println("Starting: " + element.getMethodName());
     }
 
-    private Properties getProperties()
-    {
+    private Properties getProperties() {
         Properties properties = new Properties();
-        if ( !System.getProperty( "java.version" ).startsWith( "1." ) )
-        {
-            properties.put( "maven.compiler.source", "1.7" );
-            properties.put( "maven.compiler.target", "1.7" );
+        if (!System.getProperty("java.version").startsWith("1.")) {
+            properties.put("maven.compiler.source", "1.7");
+            properties.put("maven.compiler.target", "1.7");
         }
 
-        String httpProtocols = System.getProperty( "https.protocols" );
-        if ( httpProtocols != null )
-        {
-            properties.put( "https.protocols", httpProtocols );
+        String httpProtocols = System.getProperty("https.protocols");
+        if (httpProtocols != null) {
+            properties.put("https.protocols", httpProtocols);
         }
         return properties;
     }

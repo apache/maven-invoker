@@ -1,5 +1,3 @@
-package org.apache.maven.shared.invoker;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -18,6 +16,7 @@ package org.apache.maven.shared.invoker;
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.apache.maven.shared.invoker;
 
 import java.io.PrintStream;
 
@@ -26,9 +25,7 @@ import java.io.PrintStream;
  *
  * @since 2.0.9
  */
-public class PrintStreamHandler
-    implements InvocationOutputHandler
-{
+public class PrintStreamHandler implements InvocationOutputHandler {
 
     /**
      * The print stream to write to, never <code>null</code>.
@@ -43,9 +40,8 @@ public class PrintStreamHandler
     /**
      * Creates a new output handler that writes to {@link java.lang.System#out}.
      */
-    public PrintStreamHandler()
-    {
-        this( System.out, false );
+    public PrintStreamHandler() {
+        this(System.out, false);
     }
 
     /**
@@ -54,32 +50,24 @@ public class PrintStreamHandler
      * @param out The print stream to write to, must not be <code>null</code>.
      * @param alwaysFlush A flag whether the print stream should be flushed after each line.
      */
-    public PrintStreamHandler( PrintStream out, boolean alwaysFlush )
-    {
-        if ( out == null )
-        {
-            throw new NullPointerException( "missing output stream" );
+    public PrintStreamHandler(PrintStream out, boolean alwaysFlush) {
+        if (out == null) {
+            throw new NullPointerException("missing output stream");
         }
         this.out = out;
         this.alwaysFlush = alwaysFlush;
     }
 
     /** {@inheritDoc} */
-    public void consumeLine( String line )
-    {
-        if ( line == null )
-        {
+    public void consumeLine(String line) {
+        if (line == null) {
             out.println();
-        }
-        else
-        {
-            out.println( line );
+        } else {
+            out.println(line);
         }
 
-        if ( alwaysFlush )
-        {
+        if (alwaysFlush) {
             out.flush();
         }
     }
-
 }
