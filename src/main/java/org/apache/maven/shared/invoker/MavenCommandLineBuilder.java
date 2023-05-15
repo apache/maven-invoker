@@ -461,7 +461,7 @@ public class MavenCommandLineBuilder {
      */
     protected void setThreads(InvocationRequest request, Commandline cli) {
         String threads = request.getThreads();
-        if (StringUtils.isNotEmpty(threads)) {
+        if (threads != null && !threads.isEmpty()) {
             cli.createArg().setValue("-T");
             cli.createArg().setValue(threads);
         }
