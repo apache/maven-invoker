@@ -278,7 +278,7 @@ public class DefaultInvokerTest {
     private File findLocalRepo() {
         String basedir = System.getProperty("maven.repo.local", "");
 
-        if (StringUtils.isNotEmpty(basedir)) {
+        if (basedir != null && !basedir.isEmpty()) {
             return new File(basedir);
         }
 
