@@ -31,6 +31,7 @@ import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultInvokerTest {
 
@@ -84,15 +85,13 @@ public class DefaultInvokerTest {
         InvocationResult result = invoker.execute(request);
 
         // We check the exception to be sure the failure is based on timeout.
-        assertEquals(
-                "Error while executing external command, process killed.",
-                result.getExecutionException().getMessage());
+        assertTrue(result.getExecutionException().getMessage().contains("timed out"));
 
         // WARN - Windows issue MSHARED-867 - Maven and child surefire test process stays alive on Windows
         // workaround implemented in this test to timeout test after 15 sec
         // please also check timeout logic in maven-shared-utils
 
-        // exitCode can't be used cause in case of an timeout it's not correctly
+        // exitCode can't be used because in case of a timeout it's not correctly
         // set in DefaultInvoker. Need to think about this.
         // assertEquals( 1, result.getExitCode() );
     }
