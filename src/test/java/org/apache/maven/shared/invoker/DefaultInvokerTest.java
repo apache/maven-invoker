@@ -98,8 +98,6 @@ public class DefaultInvokerTest {
 
     @Test
     public void testSpacePom() throws Exception {
-        logTestStart();
-
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
@@ -118,8 +116,6 @@ public class DefaultInvokerTest {
 
     @Test
     public void testSpaceAndSpecialCharPom() throws Exception {
-        logTestStart();
-
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
@@ -138,8 +134,6 @@ public class DefaultInvokerTest {
 
     @Test
     public void testSpaceSettings() throws Exception {
-        logTestStart();
-
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
@@ -158,8 +152,6 @@ public class DefaultInvokerTest {
 
     @Test
     public void testSpaceLocalRepo() throws Exception {
-        logTestStart();
-
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
@@ -178,8 +170,6 @@ public class DefaultInvokerTest {
 
     @Test
     public void testSpaceProperties() throws Exception {
-        logTestStart();
-
         File basedir = getBasedirForBuild();
 
         Invoker invoker = newInvoker();
@@ -201,8 +191,6 @@ public class DefaultInvokerTest {
 
     @Test
     public void testPomOutsideProject() throws Exception {
-        logTestStart();
-
         File testDir = getBasedirForBuild();
 
         File basedir = new File(testDir, "project");
@@ -298,14 +286,6 @@ public class DefaultInvokerTest {
         }
 
         return new File(new URI(dirResource.toString()).getPath());
-    }
-
-    // this is just a debugging helper for separating unit test output...
-    private void logTestStart() {
-        NullPointerException npe = new NullPointerException();
-        StackTraceElement element = npe.getStackTrace()[1];
-
-        System.out.println("Starting: " + element.getMethodName());
     }
 
     private Properties getProperties() {
