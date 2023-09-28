@@ -106,13 +106,10 @@ under the License.
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <redirectTestOutputToFile>true</redirectTestOutputToFile>
-          <systemProperties>
+          <systemPropertyVariables>
             <!-- required for maven-invoker to locate Maven installation -->
-            <property>
-              <name>maven.home</name>
-              <value>${maven.home}</value>
-            </property>
-          </systemProperties>
+            <maven.home>${maven.home}</maven.home>
+          </systemPropertyVariables>
           <excludes>
             <exclude>test-build-should*/**</exclude>
           </excludes>
