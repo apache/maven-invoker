@@ -28,6 +28,7 @@ import java.util.Properties;
 
 import org.apache.maven.shared.utils.Os;
 import org.apache.maven.shared.utils.StringUtils;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,17 +36,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultInvokerTest {
 
+    private Invoker invoker = newInvoker();
+    private InvocationRequest request = new DefaultInvocationRequest();
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        request.setDebug(true);
+        request.setProperties(getProperties());
+    }
+
     @Test
     public void testBuildShouldSucceed() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
-        request.setDebug(true);
         request.setGoals(Arrays.asList("clean", "package"));
-        request.setProperties(getProperties());
 
         InvocationResult result = invoker.execute(request);
 
@@ -55,14 +59,8 @@ public class DefaultInvokerTest {
     @Test
     public void testBuildShouldFail() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
-        request.setDebug(true);
         request.setGoals(Arrays.asList("clean", "package"));
-        request.setProperties(getProperties());
 
         InvocationResult result = invoker.execute(request);
 
@@ -72,15 +70,9 @@ public class DefaultInvokerTest {
     @Test
     public void testBuildShouldTimeout() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
-        request.setDebug(true);
         request.setGoals(Arrays.asList("clean", "package"));
         request.setTimeoutInSeconds(4);
-        request.setProperties(getProperties());
 
         InvocationResult result = invoker.execute(request);
 
@@ -99,15 +91,9 @@ public class DefaultInvokerTest {
     @Test
     public void testSpacePom() throws Exception {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces.xml");
-        request.setDebug(true);
         request.setGoals(Collections.singletonList("clean"));
-        request.setProperties(getProperties());
 
         InvocationResult result = invoker.execute(request);
 
@@ -117,15 +103,9 @@ public class DefaultInvokerTest {
     @Test
     public void testSpaceAndSpecialCharPom() throws Exception {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces & special char.xml");
-        request.setDebug(true);
         request.setGoals(Collections.singletonList("clean"));
-        request.setProperties(getProperties());
 
         InvocationResult result = invoker.execute(request);
 
@@ -135,15 +115,9 @@ public class DefaultInvokerTest {
     @Test
     public void testSpaceSettings() throws Exception {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
         request.setUserSettingsFile(new File(basedir, "settings with spaces.xml"));
-        request.setDebug(true);
         request.setGoals(Collections.singletonList("validate"));
-        request.setProperties(getProperties());
 
         InvocationResult result = invoker.execute(request);
 
@@ -153,15 +127,9 @@ public class DefaultInvokerTest {
     @Test
     public void testSpaceLocalRepo() throws Exception {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
         request.setLocalRepositoryDirectory(new File(basedir, "repo with spaces"));
-        request.setDebug(true);
         request.setGoals(Collections.singletonList("validate"));
-        request.setProperties(getProperties());
 
         InvocationResult result = invoker.execute(request);
 
@@ -171,17 +139,11 @@ public class DefaultInvokerTest {
     @Test
     public void testSpaceProperties() throws Exception {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
-
         Properties props = getProperties();
         props.setProperty("key", "value with spaces");
         props.setProperty("key with spaces", "value");
         request.setProperties(props);
-        request.setDebug(true);
         request.setGoals(Collections.singletonList("validate"));
 
         InvocationResult result = invoker.execute(request);
@@ -191,15 +153,9 @@ public class DefaultInvokerTest {
 
     @Test
     public void testPomOutsideProject() throws Exception {
-        File testDir = getBasedirForBuild();
-
-        File basedir = new File(testDir, "project");
-        File pom = new File(testDir, "temp/pom.xml");
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
+        File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
+        File pom = new File(basedir, "temp/pom.xml");
         request.setPomFile(pom);
         request.setGoals(Collections.singletonList("validate"));
 
@@ -211,10 +167,6 @@ public class DefaultInvokerTest {
     @Test
     public void testMavenWrapperInProject() throws Exception {
         File basedir = getBasedirForBuild();
-
-        Invoker invoker = newInvoker();
-
-        InvocationRequest request = new DefaultInvocationRequest();
         request.setBaseDirectory(basedir);
         request.setGoals(Collections.singletonList("test-wrapper-goal"));
         request.setMavenExecutable(new File("./mvnw"));
