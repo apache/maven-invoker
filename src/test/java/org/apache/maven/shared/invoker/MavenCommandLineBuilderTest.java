@@ -299,6 +299,33 @@ public class MavenCommandLineBuilderTest {
         assertArgumentsPresent(cli, Collections.singleton("-U"));
     }
 
+    // JUnit5: test methods don't need to be public
+    @Test
+    void testShouldSetUpdateSnapshotsPolicyAlwaysFromRequest() {
+        mclb.setFlags(newRequest().setUpdateSnapshotsPolicy(UpdateSnapshotsPolicy.ALWAYS), cli);
+
+        assertArgumentsPresent(cli, Collections.singleton("-U"));
+        assertArgumentsNotPresent(cli, Collections.singleton("-nsu"));
+    }
+
+    @Test
+    void testShouldSetUpdateSnapshotsPolicyDefaultFromRequest() {
+        mclb.setFlags(newRequest().setUpdateSnapshotsPolicy(UpdateSnapshotsPolicy.DEFAULT), cli);
+
+        Set<String> args = new HashSet<>();
+        args.add("-U");
+        args.add("-nsu");
+        assertArgumentsNotPresent(cli, args);
+    }
+
+    @Test
+    void testShouldSetUpdateSnapshotsPolicyNeverFromRequest() {
+        mclb.setFlags(newRequest().setUpdateSnapshotsPolicy(UpdateSnapshotsPolicy.NEVER), cli);
+
+        assertArgumentsPresent(cli, Collections.singleton("-nsu"));
+        assertArgumentsNotPresent(cli, Collections.singleton("-U"));
+    }
+
     @Test
     public void testShouldSetDebugFlagFromRequest() {
 

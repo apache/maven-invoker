@@ -408,8 +408,12 @@ public class MavenCommandLineBuilder {
             cli.createArg().setValue("-o");
         }
 
-        if (request.isUpdateSnapshots()) {
+        if (request.getUpdateSnapshotsPolicy() == UpdateSnapshotsPolicy.ALWAYS) {
             cli.createArg().setValue("-U");
+        }
+
+        if (request.getUpdateSnapshotsPolicy() == UpdateSnapshotsPolicy.NEVER) {
+            cli.createArg().setValue("-nsu");
         }
 
         if (!request.isRecursive()) {
