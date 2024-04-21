@@ -63,7 +63,7 @@ public class DefaultInvocationRequest implements InvocationRequest {
 
     private boolean showErrors;
 
-    private boolean updateSnapshots;
+    private UpdateSnapshotsPolicy updateSnapshotsPolicy = UpdateSnapshotsPolicy.DEFAULT;
 
     private boolean shellEnvironmentInherited = true;
 
@@ -227,7 +227,11 @@ public class DefaultInvocationRequest implements InvocationRequest {
      * @return a boolean.
      */
     public boolean isUpdateSnapshots() {
-        return updateSnapshots;
+        return updateSnapshotsPolicy == UpdateSnapshotsPolicy.ALWAYS;
+    }
+
+    public UpdateSnapshotsPolicy getUpdateSnapshotsPolicy() {
+        return updateSnapshotsPolicy;
     }
 
     /**
@@ -330,7 +334,12 @@ public class DefaultInvocationRequest implements InvocationRequest {
 
     /** {@inheritDoc} */
     public InvocationRequest setUpdateSnapshots(boolean updateSnapshots) {
-        this.updateSnapshots = updateSnapshots;
+        return setUpdateSnapshotsPolicy(updateSnapshots ? UpdateSnapshotsPolicy.ALWAYS : UpdateSnapshotsPolicy.DEFAULT);
+    }
+
+    @Override
+    public InvocationRequest setUpdateSnapshotsPolicy(UpdateSnapshotsPolicy policy) {
+        this.updateSnapshotsPolicy = policy;
         return this;
     }
 

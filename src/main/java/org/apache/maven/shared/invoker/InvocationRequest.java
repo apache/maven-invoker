@@ -51,9 +51,18 @@ public interface InvocationRequest {
      * Indicates whether Maven should enforce an update check for plugins and snapshots. By default, no update check is
      * performed.
      *
-     * @return <code>true</code> if plugins and snapshots should be updated, <code>false</code> otherwise.
+     * @return <code>true</code> if plugins and snapshots must be updated, <code>false</code> otherwise.
+     *
+     * @see #getUpdateSnapshotsPolicy() which provides a richer variety of the update snapshots policy values.
      */
     boolean isUpdateSnapshots();
+
+    /**
+     * Indicates the update snapshots policy.
+     * @return the update snapshots policy.
+     * @see UpdateSnapshotsPolicy
+     */
+    UpdateSnapshotsPolicy getUpdateSnapshotsPolicy();
 
     /**
      * Gets the recursion behavior of a reactor invocation. By default, Maven will recursive the build into sub modules.
@@ -451,11 +460,22 @@ public interface InvocationRequest {
      * Specifies whether Maven should enforce an update check for plugins and snapshots. Equivalent of {@code -U} and
      * {@code --update-snapshots}
      *
-     * @param updateSnapshots <code>true</code> if plugins and snapshots should be updated, <code>false</code>
+     * @param updateSnapshots <code>true</code> if plugins and snapshots must be updated, <code>false</code>
      *            otherwise.
      * @return This invocation request.
+     *
+     * @see #setUpdateSnapshotsPolicy(UpdateSnapshotsPolicy) which provides a richer variety of the update snapshots policy values.
      */
     InvocationRequest setUpdateSnapshots(boolean updateSnapshots);
+
+    /**
+     * Specify the Maven update snapshots policy
+     * @param policy the policy to be set
+     * @return This invocation request.
+     *
+     * @see UpdateSnapshotsPolicy
+     */
+    InvocationRequest setUpdateSnapshotsPolicy(UpdateSnapshotsPolicy policy);
 
     /**
      * Sets the failure mode of the Maven invocation. Equivalent of {@code -ff} and {@code --fail-fast}, {@code -fae}
