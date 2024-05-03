@@ -242,10 +242,8 @@ public class DefaultInvokerTest {
 
     private Properties getProperties() {
         Properties properties = new Properties();
-        if (!System.getProperty("java.version").startsWith("1.")) {
-            properties.put("maven.compiler.source", "1.7");
-            properties.put("maven.compiler.target", "1.7");
-        }
+        properties.put("maven.compiler.source", "1.8");
+        properties.put("maven.compiler.target", "1.8");
 
         String httpProtocols = System.getProperty("https.protocols");
         if (httpProtocols != null) {

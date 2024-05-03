@@ -28,7 +28,7 @@ under the License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>${version.maven-antrun-plugin}</version>
         <configuration>
           <target>
             <property name="prop0" value="${key}"/>
