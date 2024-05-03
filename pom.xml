@@ -68,18 +68,6 @@ under the License.
     <project.build.outputTimestamp>2022-04-05T18:45:23Z</project.build.outputTimestamp>
   </properties>
 
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>5.10.2</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -99,6 +87,13 @@ under the License.
   </dependencies>
 
   <build>
+    <testResources>
+      <testResource>
+        <filtering>true</filtering>
+        <directory>${project.basedir}/src//test/resources</directory>
+      </testResource>
+    </testResources>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -108,6 +103,7 @@ under the License.
           <systemPropertyVariables>
             <!-- required for maven-invoker to locate Maven installation -->
             <maven.home>${maven.home}</maven.home>
+            <maven.repo.local>${settings.localRepository}</maven.repo.local>
           </systemPropertyVariables>
           <excludes>
             <exclude>test-build-should*/**</exclude>
@@ -120,28 +116,4 @@ under the License.
       </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>maven-repo-local</id>
-      <activation>
-        <property>
-          <name>maven.repo.local</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <systemPropertyVariables combine.children="append">
-                <maven.repo.local>${maven.repo.local}</maven.repo.local>
-              </systemPropertyVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
