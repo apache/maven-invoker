@@ -185,9 +185,7 @@ public class MavenCommandLineBuilder {
      * @param cli a {@link org.apache.maven.shared.utils.cli.Commandline} object.
      */
     protected void setShellEnvironment(InvocationRequest request, Commandline cli) {
-        if (request.isShellEnvironmentInherited()) {
-            cli.addSystemEnvironment();
-        }
+        cli.setShellEnvironmentInherited(request.isShellEnvironmentInherited());
 
         if (request.getJavaHome() != null) {
             cli.addEnvironment("JAVA_HOME", request.getJavaHome().getAbsolutePath());
@@ -213,7 +211,7 @@ public class MavenCommandLineBuilder {
 
         if ((profiles != null) && !profiles.isEmpty()) {
             cli.createArg().setValue("-P");
-            cli.createArg().setValue(StringUtils.join(profiles.iterator(), ","));
+            cli.createArg().setValue(String.join(",", profiles));
         }
     }
 
@@ -229,7 +227,7 @@ public class MavenCommandLineBuilder {
 
         if ((goals != null) && !goals.isEmpty()) {
             try {
-                cli.createArg().setLine(StringUtils.join(goals.iterator(), " "));
+                cli.createArg().setLine(String.join(" ", goals));
             } catch (CommandLineException e) {
                 throw new CommandLineConfigurationException("Problem setting goals", e);
             }
@@ -381,7 +379,7 @@ public class MavenCommandLineBuilder {
         List<String> projectList = request.getProjects();
         if (projectList != null) {
             cli.createArg().setValue("-pl");
-            cli.createArg().setValue(StringUtils.join(projectList.iterator(), ","));
+            cli.createArg().setValue(String.join(",", projectList));
 
             if (request.isAlsoMake()) {
                 cli.createArg().setValue("-am");

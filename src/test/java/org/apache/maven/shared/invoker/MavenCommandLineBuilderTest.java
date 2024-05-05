@@ -37,13 +37,15 @@ import org.apache.maven.shared.utils.cli.Commandline;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class MavenCommandLineBuilderTest {
@@ -75,21 +77,15 @@ public class MavenCommandLineBuilderTest {
 
         mclb.setLocalRepositoryDirectory(lrd);
 
-        try {
-            mclb.setLocalRepository(newRequest(), cli);
-            fail("Should not set local repo location to point to a file.");
-        } catch (IllegalArgumentException expected) {
-        }
+        InvocationRequest request = newRequest();
+        assertThrows(IllegalArgumentException.class, () -> mclb.setLocalRepository(request, cli));
     }
 
     @Test
     public void testShouldFailToSetLocalRepoLocationFromRequestWhenItIsAFile() {
         InvocationRequest request = newRequest().setLocalRepositoryDirectory(lrd);
-        try {
-            mclb.setLocalRepository(request, cli);
-            fail("Should not set local repo location to point to a file.");
-        } catch (IllegalArgumentException expected) {
-        }
+
+        assertThrows(IllegalArgumentException.class, () -> mclb.setLocalRepository(request, cli));
     }
 
     @Test
@@ -207,11 +203,7 @@ public class MavenCommandLineBuilderTest {
     public void testShouldFailIfLoggerSetToNull() {
         mclb.setLogger(null);
 
-        try {
-            mclb.checkRequiredState();
-            fail("Should not allow execution to proceed when logger is missing.");
-        } catch (IllegalStateException expected) {
-        }
+        assertThrows(IllegalStateException.class, () -> mclb.checkRequiredState());
     }
 
     @Test
@@ -236,6 +228,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
+    @EnabledOnOs(OS.WINDOWS)
     public void testShouldFindDummyPS1MavenExecutable() throws Exception {
         File dummyMavenHomeBin = Files.createDirectories(temporaryFolder
                         .resolve("invoker-tests")
@@ -243,14 +236,11 @@ public class MavenCommandLineBuilderTest {
                         .resolve("bin"))
                 .toFile();
 
-        File check;
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            check = createDummyFile(dummyMavenHomeBin, "mvn.ps1");
-            mclb.setMavenHome(dummyMavenHomeBin.getParentFile());
-            mclb.setupMavenExecutable(newRequest());
+        File check = createDummyFile(dummyMavenHomeBin, "mvn.ps1");
+        mclb.setMavenHome(dummyMavenHomeBin.getParentFile());
+        mclb.setupMavenExecutable(newRequest());
 
-            assertEquals(check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath());
-        }
+        assertEquals(check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath());
     }
 
     @Test
