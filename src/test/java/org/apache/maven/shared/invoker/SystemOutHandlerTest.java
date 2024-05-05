@@ -20,22 +20,22 @@ package org.apache.maven.shared.invoker;
 
 import org.junit.jupiter.api.Test;
 
-public class SystemOutHandlerTest {
+class SystemOutHandlerTest {
 
     @Test
-    public void testConsumeWithoutAlwaysFlush() {
+    void testConsumeWithoutAlwaysFlush() {
         logTestStart();
         new SystemOutHandler(false).consumeLine("This is a test.");
     }
 
     @Test
-    public void testConsumeWithAlwaysFlush() {
+    void testConsumeWithAlwaysFlush() {
         logTestStart();
         new SystemOutHandler(true).consumeLine("This is a test.");
     }
 
     @Test
-    public void testConsumeNullLine() {
+    void testConsumeNullLine() {
         logTestStart();
         new SystemOutHandler().consumeLine(null);
     }
