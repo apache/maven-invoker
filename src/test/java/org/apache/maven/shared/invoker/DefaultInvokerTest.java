@@ -33,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DefaultInvokerTest {
+class DefaultInvokerTest {
 
     private Invoker invoker = newInvoker();
     private InvocationRequest request = new DefaultInvocationRequest();
@@ -46,7 +46,7 @@ public class DefaultInvokerTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testBuildShouldSucceed() throws MavenInvocationException, URISyntaxException {
+    void testBuildShouldSucceed() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setGoals(Arrays.asList("clean", "package"));
@@ -57,7 +57,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testBuildShouldFail() throws MavenInvocationException, URISyntaxException {
+    void testBuildShouldFail() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.addArgs(Arrays.asList("clean", "package"));
@@ -68,7 +68,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testBuildShouldTimeout() throws MavenInvocationException, URISyntaxException {
+    void testBuildShouldTimeout() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.addArgs(Arrays.asList("clean", "package"));
@@ -89,7 +89,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testSpacePom() throws Exception {
+    void testSpacePom() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces.xml");
@@ -101,7 +101,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testSpaceAndSpecialCharPom() throws Exception {
+    void testSpaceAndSpecialCharPom() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces & special char.xml");
@@ -113,7 +113,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testSpaceSettings() throws Exception {
+    void testSpaceSettings() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setUserSettingsFile(new File(basedir, "settings with spaces.xml"));
@@ -125,7 +125,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testSpaceLocalRepo() throws Exception {
+    void testSpaceLocalRepo() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setLocalRepositoryDirectory(new File(basedir, "repo with spaces"));
@@ -137,7 +137,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testSpaceProperties() throws Exception {
+    void testSpaceProperties() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         Properties props = getProperties();
@@ -152,7 +152,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testPomOutsideProject() throws Exception {
+    void testPomOutsideProject() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         File pom = new File(basedir, "temp/pom.xml");
@@ -165,7 +165,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
-    public void testMavenWrapperInProject() throws Exception {
+    void testMavenWrapperInProject() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.addArg("test-wrapper-goal");

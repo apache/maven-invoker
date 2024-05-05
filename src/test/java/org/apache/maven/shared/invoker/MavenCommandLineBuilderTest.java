@@ -48,9 +48,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public class MavenCommandLineBuilderTest {
+class MavenCommandLineBuilderTest {
     @TempDir
-    public Path temporaryFolder;
+    private Path temporaryFolder;
 
     private Properties sysProps;
     private File lrd;
@@ -58,7 +58,7 @@ public class MavenCommandLineBuilderTest {
     private Commandline cli = new Commandline();
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         sysProps = System.getProperties();
         Properties p = new Properties(sysProps);
 
@@ -68,12 +68,12 @@ public class MavenCommandLineBuilderTest {
     }
 
     @AfterEach
-    public void tearDown() {
+    void tearDown() {
         System.setProperties(sysProps);
     }
 
     @Test
-    public void testShouldFailToSetLocalRepoLocationGloballyWhenItIsAFile() {
+    void testShouldFailToSetLocalRepoLocationGloballyWhenItIsAFile() {
 
         mclb.setLocalRepositoryDirectory(lrd);
 
@@ -82,14 +82,14 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldFailToSetLocalRepoLocationFromRequestWhenItIsAFile() {
+    void testShouldFailToSetLocalRepoLocationFromRequestWhenItIsAFile() {
         InvocationRequest request = newRequest().setLocalRepositoryDirectory(lrd);
 
         assertThrows(IllegalArgumentException.class, () -> mclb.setLocalRepository(request, cli));
     }
 
     @Test
-    public void testShouldSetLocalRepoLocationGlobally() throws IOException {
+    void testShouldSetLocalRepoLocationGlobally() throws IOException {
         File lrd = Files.createDirectory(temporaryFolder.resolve("workdir"))
                 .toFile()
                 .getCanonicalFile();
@@ -100,7 +100,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetLocalRepoLocationFromRequest() throws Exception {
+    void testShouldSetLocalRepoLocationFromRequest() throws Exception {
         File lrd = Files.createDirectory(temporaryFolder.resolve("workdir"))
                 .toFile()
                 .getCanonicalFile();
@@ -110,7 +110,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testRequestProvidedLocalRepoLocationShouldOverrideGlobal() throws Exception {
+    void testRequestProvidedLocalRepoLocationShouldOverrideGlobal() throws Exception {
         File lrd = Files.createDirectory(temporaryFolder.resolve("workdir"))
                 .toFile()
                 .getCanonicalFile();
@@ -125,7 +125,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetWorkingDirectoryGlobally() throws Exception {
+    void testShouldSetWorkingDirectoryGlobally() throws Exception {
         File wd = Files.createDirectory(temporaryFolder.resolve("workdir")).toFile();
 
         mclb.setBaseDirectory(wd);
@@ -135,7 +135,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetWorkingDirectoryFromRequest() throws Exception {
+    void testShouldSetWorkingDirectoryFromRequest() throws Exception {
         File wd = Files.createDirectory(temporaryFolder.resolve("workdir")).toFile();
 
         InvocationRequest req = newRequest();
@@ -147,7 +147,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testRequestProvidedWorkingDirectoryShouldOverrideGlobal() throws Exception {
+    void testRequestProvidedWorkingDirectoryShouldOverrideGlobal() throws Exception {
         File wd = Files.createDirectory(temporaryFolder.resolve("workdir")).toFile();
         File gwd =
                 Files.createDirectory(temporaryFolder.resolve("global-workdir")).toFile();
@@ -163,7 +163,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldUseSystemOutLoggerWhenNoneSpecified() throws Exception {
+    void testShouldUseSystemOutLoggerWhenNoneSpecified() throws Exception {
         setupTempMavenHomeIfMissing(false);
 
         mclb.checkRequiredState();
@@ -200,14 +200,14 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldFailIfLoggerSetToNull() {
+    void testShouldFailIfLoggerSetToNull() {
         mclb.setLogger(null);
 
         assertThrows(IllegalStateException.class, () -> mclb.checkRequiredState());
     }
 
     @Test
-    public void testShouldFindDummyMavenExecutable() throws Exception {
+    void testShouldFindDummyMavenExecutable() throws Exception {
         File dummyMavenHomeBin = Files.createDirectories(temporaryFolder
                         .resolve("invoker-tests")
                         .resolve("dummy-maven-home")
@@ -229,7 +229,7 @@ public class MavenCommandLineBuilderTest {
 
     @Test
     @EnabledOnOs(OS.WINDOWS)
-    public void testShouldFindDummyPS1MavenExecutable() throws Exception {
+    void testShouldFindDummyPS1MavenExecutable() throws Exception {
         File dummyMavenHomeBin = Files.createDirectories(temporaryFolder
                         .resolve("invoker-tests")
                         .resolve("dummy-maven-home")
@@ -244,7 +244,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldFindDummyMavenExecutableWithMavenHomeFromRequest() throws Exception {
+    void testShouldFindDummyMavenExecutableWithMavenHomeFromRequest() throws Exception {
         File dummyMavenHomeBin = Files.createDirectories(temporaryFolder
                         .resolve("invoker-tests")
                         .resolve("dummy-maven-home")
@@ -266,7 +266,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetBatchModeFlagFromRequest() {
+    void testShouldSetBatchModeFlagFromRequest() {
 
         mclb.setFlags(newRequest().setBatchMode(true), cli);
 
@@ -274,7 +274,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetOfflineFlagFromRequest() {
+    void testShouldSetOfflineFlagFromRequest() {
 
         mclb.setFlags(newRequest().setOffline(true), cli);
 
@@ -282,7 +282,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetUpdateSnapshotsFlagFromRequest() {
+    void testShouldSetUpdateSnapshotsFlagFromRequest() {
 
         mclb.setFlags(newRequest().setUpdateSnapshots(true), cli);
 
@@ -317,7 +317,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetDebugFlagFromRequest() {
+    void testShouldSetDebugFlagFromRequest() {
 
         mclb.setFlags(newRequest().setDebug(true), cli);
 
@@ -325,7 +325,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetErrorFlagFromRequest() {
+    void testShouldSetErrorFlagFromRequest() {
 
         mclb.setFlags(newRequest().setShowErrors(true), cli);
 
@@ -333,7 +333,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetQuietFlagFromRequest() {
+    void testShouldSetQuietFlagFromRequest() {
 
         mclb.setFlags(newRequest().setQuiet(true), cli);
 
@@ -341,21 +341,21 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetNonRecursiveFlagsFromRequest() {
+    void testShouldSetNonRecursiveFlagsFromRequest() {
         mclb.setFlags(newRequest().setRecursive(false), cli);
 
         assertArgumentsPresent(cli, Collections.singleton("-N"));
     }
 
     @Test
-    public void testShouldSetShowVersionFlagsFromRequest() {
+    void testShouldSetShowVersionFlagsFromRequest() {
         mclb.setFlags(newRequest().setShowVersion(true), cli);
 
         assertArgumentsPresent(cli, Collections.singleton("-V"));
     }
 
     @Test
-    public void testDebugOptionShouldMaskShowErrorsOption() {
+    void testDebugOptionShouldMaskShowErrorsOption() {
 
         mclb.setFlags(newRequest().setDebug(true).setShowErrors(true), cli);
 
@@ -364,14 +364,14 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetBuilderIdOptionsFromRequest() {
+    void testShouldSetBuilderIdOptionsFromRequest() {
         mclb.setFlags(newRequest().setBuilder("builder-id-123"), cli);
 
         assertArgumentsPresentInOrder(cli, "-b", "builder-id-123");
     }
 
     @Test
-    public void testAlsoMake() {
+    void testAlsoMake() {
 
         mclb.setReactorBehavior(newRequest().setAlsoMake(true), cli);
 
@@ -380,7 +380,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testProjectsAndAlsoMake() {
+    void testProjectsAndAlsoMake() {
 
         mclb.setReactorBehavior(
                 newRequest().setProjects(Collections.singletonList("proj1")).setAlsoMake(true), cli);
@@ -389,7 +389,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testAlsoMakeDependents() {
+    void testAlsoMakeDependents() {
 
         mclb.setReactorBehavior(newRequest().setAlsoMakeDependents(true), cli);
 
@@ -398,7 +398,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testProjectsAndAlsoMakeDependents() {
+    void testProjectsAndAlsoMakeDependents() {
 
         mclb.setReactorBehavior(
                 newRequest().setProjects(Collections.singletonList("proj1")).setAlsoMakeDependents(true), cli);
@@ -407,7 +407,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testProjectsAndAlsoMakeAndAlsoMakeDependents() {
+    void testProjectsAndAlsoMakeAndAlsoMakeDependents() {
 
         mclb.setReactorBehavior(
                 newRequest()
@@ -420,7 +420,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetResumeFrom() {
+    void testShouldSetResumeFrom() {
 
         mclb.setReactorBehavior(newRequest().setResumeFrom(":module3"), cli);
 
@@ -428,7 +428,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetStrictChecksumPolityFlagFromRequest() {
+    void testShouldSetStrictChecksumPolityFlagFromRequest() {
 
         mclb.setFlags(newRequest().setGlobalChecksumPolicy(InvocationRequest.CheckSumPolicy.Fail), cli);
 
@@ -436,7 +436,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetLaxChecksumPolicyFlagFromRequest() {
+    void testShouldSetLaxChecksumPolicyFlagFromRequest() {
 
         mclb.setFlags(newRequest().setGlobalChecksumPolicy(InvocationRequest.CheckSumPolicy.Warn), cli);
 
@@ -444,7 +444,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetFailAtEndFlagFromRequest() {
+    void testShouldSetFailAtEndFlagFromRequest() {
 
         mclb.setReactorBehavior(
                 newRequest().setReactorFailureBehavior(InvocationRequest.ReactorFailureBehavior.FailAtEnd), cli);
@@ -453,7 +453,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetFailNeverFlagFromRequest() {
+    void testShouldSetFailNeverFlagFromRequest() {
 
         mclb.setReactorBehavior(
                 newRequest().setReactorFailureBehavior(InvocationRequest.ReactorFailureBehavior.FailNever), cli);
@@ -462,7 +462,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldAddArg() throws CommandLineConfigurationException {
+    void testShouldAddArg() throws CommandLineConfigurationException {
         InvocationRequest request =
                 newRequest().addArg("arg1").addArg("arg2").setQuiet(true).setBuilder("bId");
 
@@ -474,7 +474,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldUseDefaultOfFailFastWhenSpecifiedInRequest() {
+    void testShouldUseDefaultOfFailFastWhenSpecifiedInRequest() {
 
         mclb.setReactorBehavior(
                 newRequest().setReactorFailureBehavior(InvocationRequest.ReactorFailureBehavior.FailFast), cli);
@@ -487,13 +487,13 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetNoTransferProgressFlagFromRequest() {
+    void testShouldSetNoTransferProgressFlagFromRequest() {
         mclb.setFlags(newRequest().setNoTransferProgress(true), cli);
         assertArgumentsPresent(cli, Collections.singleton("-ntp"));
     }
 
     @Test
-    public void testShouldSpecifyFileOptionUsingNonStandardPomFileLocation() throws Exception {
+    void testShouldSpecifyFileOptionUsingNonStandardPomFileLocation() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("file-option-nonstd-pom-file-location"))
                 .toFile();
@@ -514,7 +514,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldNotSpecifyFileOptionUsingStandardPomFileLocation() throws Exception {
+    void testShouldNotSpecifyFileOptionUsingStandardPomFileLocation() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("std-pom-file-location"))
                 .toFile();
@@ -535,7 +535,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSetPomForOutsideWorkspace() throws Exception {
+    void testShouldSetPomForOutsideWorkspace() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("std-pom-file-location"))
                 .toFile();
@@ -556,7 +556,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldNotSpecifyFileOptionUsingStandardPomInBasedir() throws Exception {
+    void testShouldNotSpecifyFileOptionUsingStandardPomInBasedir() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("std-basedir-is-pom-file"))
                 .toFile();
@@ -577,7 +577,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldUseDefaultPomFileWhenBasedirSpecifiedWithoutPomFileName() throws Exception {
+    void testShouldUseDefaultPomFileWhenBasedirSpecifiedWithoutPomFileName() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("std-basedir-no-pom-filename"))
                 .toFile();
@@ -596,7 +596,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyPomFileWhenBasedirSpecifiedWithPomFileName() throws Exception {
+    void testShouldSpecifyPomFileWhenBasedirSpecifiedWithPomFileName() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("std-basedir-with-pom-filename"))
                 .toFile();
@@ -615,7 +615,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyCustomUserSettingsLocationFromRequest() throws Exception {
+    void testShouldSpecifyCustomUserSettingsLocationFromRequest() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("custom-settings"))
                 .toFile();
@@ -632,7 +632,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyCustomGlobalSettingsLocationFromRequest() throws Exception {
+    void testShouldSpecifyCustomGlobalSettingsLocationFromRequest() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("custom-settings"))
                 .toFile()
@@ -650,7 +650,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyCustomToolchainsLocationFromRequest() throws Exception {
+    void testShouldSpecifyCustomToolchainsLocationFromRequest() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("custom-toolchains"))
                 .toFile();
@@ -667,7 +667,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyCustomPropertyFromRequest() {
+    void testShouldSpecifyCustomPropertyFromRequest() {
 
         Properties properties = new Properties();
         properties.setProperty("key", "value");
@@ -678,7 +678,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyCustomPropertyWithSpacesInValueFromRequest() {
+    void testShouldSpecifyCustomPropertyWithSpacesInValueFromRequest() {
 
         Properties properties = new Properties();
         properties.setProperty("key", "value with spaces");
@@ -689,7 +689,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyCustomPropertyWithSpacesInKeyFromRequest() {
+    void testShouldSpecifyCustomPropertyWithSpacesInKeyFromRequest() {
 
         Properties properties = new Properties();
         properties.setProperty("key with spaces", "value with spaces");
@@ -701,7 +701,7 @@ public class MavenCommandLineBuilderTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testShouldSpecifySingleGoalFromRequest() throws CommandLineConfigurationException {
+    void testShouldSpecifySingleGoalFromRequest() throws CommandLineConfigurationException {
 
         List<String> goals = new ArrayList<>();
         goals.add("test");
@@ -721,7 +721,7 @@ public class MavenCommandLineBuilderTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    public void testShouldSpecifyTwoGoalsFromRequest() throws CommandLineConfigurationException {
+    void testShouldSpecifyTwoGoalsFromRequest() throws CommandLineConfigurationException {
         List<String> goals = new ArrayList<>();
         goals.add("test");
         goals.add("clean");
@@ -745,14 +745,14 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldSpecifyThreadsFromRequest() {
+    void testShouldSpecifyThreadsFromRequest() {
         mclb.setThreads(newRequest().setThreads("2.0C"), cli);
 
         assertArgumentsPresentInOrder(cli, "-T", "2.0C");
     }
 
     @Test
-    public void testBuildTypicalMavenInvocationEndToEnd() throws Exception {
+    void testBuildTypicalMavenInvocationEndToEnd() throws Exception {
         File mavenDir = setupTempMavenHomeIfMissing(false);
 
         InvocationRequest request = newRequest();
@@ -805,7 +805,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testShouldInsertActivatedProfiles() throws Exception {
+    void testShouldInsertActivatedProfiles() throws Exception {
         setupTempMavenHomeIfMissing(false);
 
         String profile1 = "profile-1";
@@ -825,7 +825,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testMvnExecutableFromInvoker() throws Exception {
+    void testMvnExecutableFromInvoker() throws Exception {
         assumeTrue(Objects.nonNull(System.getProperty("maven.home")), "Test only works when maven.home is set");
 
         File mavenExecutable = new File("mvnDebug");
@@ -839,7 +839,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testMvnExecutableFormRequest() throws Exception {
+    void testMvnExecutableFormRequest() throws Exception {
         assumeTrue(Objects.nonNull(System.getProperty("maven.home")), "Test only works when maven.home is set");
 
         File mavenExecutable = new File("mvnDebug");
@@ -852,7 +852,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testDefaultMavenCommand() throws Exception {
+    void testDefaultMavenCommand() throws Exception {
         assumeTrue(Objects.nonNull(System.getProperty("maven.home")), "Test only works when maven.home is set");
 
         mclb.build(newRequest());
@@ -862,7 +862,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
-    public void testAddShellEnvironment() throws Exception {
+    void testAddShellEnvironment() throws Exception {
         setupTempMavenHomeIfMissing(false);
 
         InvocationRequest request = newRequest();
