@@ -20,6 +20,7 @@ package org.apache.maven.shared.invoker;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -543,7 +544,7 @@ public interface InvocationRequest {
     InvocationRequest setPomFileName(String pomFilename);
 
     /**
-     * Add a raw  argument to Maven  cli command at the end of other arguments.
+     * Add a raw argument to Maven cli command at the end of other arguments.
      * Can be called multiple time in order to add many arguments.
      *
      * @param arg a raw Maven arg line
@@ -551,6 +552,16 @@ public interface InvocationRequest {
      * @since 3.2.0
      */
     InvocationRequest addArg(String arg);
+
+    /**
+     * Add a raw arguments list to Maven cli command at the end of other arguments.
+     * Can be called multiple time in order to add many arguments.
+     *
+     * @param args a raw Maven args line
+     * @return This invocation request.
+     * @since 3.3.0
+     */
+    InvocationRequest addArgs(Collection<String> args);
 
     /**
      * Sets the path to the base directory of the POM for the Maven invocation. If {@link #getPomFile()} does not return
@@ -583,7 +594,9 @@ public interface InvocationRequest {
      *
      * @param goals The goals for the Maven invocation, may be <code>null</code> to execute the POMs default goal.
      * @return This invocation request.
+     * @deprecated simply {@link #addArg(String)} or {@link #addArgs(Collection)} should be used
      */
+    @Deprecated
     InvocationRequest setGoals(List<String> goals);
 
     /**

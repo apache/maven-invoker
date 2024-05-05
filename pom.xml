@@ -28,7 +28,7 @@ under the License.
   </parent>
 
   <artifactId>maven-invoker</artifactId>
-  <version>3.2.1-SNAPSHOT</version>
+  <version>3.3.0-SNAPSHOT</version>
 
   <name>Apache Maven Invoker</name>
   <description>A component to programmatically invoke Maven.</description>
@@ -65,7 +65,7 @@ under the License.
 
   <properties>
     <javaVersion>8</javaVersion>
-    <project.build.outputTimestamp>2022-04-05T18:45:23Z</project.build.outputTimestamp>
+    <project.build.outputTimestamp>2024-05-04T12:59:43Z</project.build.outputTimestamp>
   </properties>
 
   <dependencies>
