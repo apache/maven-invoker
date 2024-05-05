@@ -40,7 +40,7 @@ public class DefaultInvokerTest {
     private InvocationRequest request = new DefaultInvocationRequest();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         request.setDebug(true);
         request.setProperties(getProperties());
     }
@@ -172,12 +172,7 @@ public class DefaultInvokerTest {
         request.setMavenExecutable(new File("./mvnw"));
 
         final StringBuilder outlines = new StringBuilder();
-        request.setOutputHandler(new InvocationOutputHandler() {
-            @Override
-            public void consumeLine(String line) {
-                outlines.append(line);
-            }
-        });
+        request.setOutputHandler(outlines::append);
 
         InvocationResult result = invoker.execute(request);
 
