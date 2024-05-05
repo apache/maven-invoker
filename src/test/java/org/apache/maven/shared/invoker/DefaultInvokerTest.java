@@ -23,7 +23,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Properties;
 
 import org.apache.maven.shared.utils.Os;
@@ -46,6 +45,7 @@ public class DefaultInvokerTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testBuildShouldSucceed() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
@@ -60,7 +60,7 @@ public class DefaultInvokerTest {
     public void testBuildShouldFail() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
-        request.setGoals(Arrays.asList("clean", "package"));
+        request.addArgs(Arrays.asList("clean", "package"));
 
         InvocationResult result = invoker.execute(request);
 
@@ -71,7 +71,7 @@ public class DefaultInvokerTest {
     public void testBuildShouldTimeout() throws MavenInvocationException, URISyntaxException {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
-        request.setGoals(Arrays.asList("clean", "package"));
+        request.addArgs(Arrays.asList("clean", "package"));
         request.setTimeoutInSeconds(4);
 
         InvocationResult result = invoker.execute(request);
@@ -93,7 +93,7 @@ public class DefaultInvokerTest {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces.xml");
-        request.setGoals(Collections.singletonList("clean"));
+        request.addArg("clean");
 
         InvocationResult result = invoker.execute(request);
 
@@ -105,7 +105,7 @@ public class DefaultInvokerTest {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces & special char.xml");
-        request.setGoals(Collections.singletonList("clean"));
+        request.addArg("clean");
 
         InvocationResult result = invoker.execute(request);
 
@@ -117,7 +117,7 @@ public class DefaultInvokerTest {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setUserSettingsFile(new File(basedir, "settings with spaces.xml"));
-        request.setGoals(Collections.singletonList("validate"));
+        request.addArg("validate");
 
         InvocationResult result = invoker.execute(request);
 
@@ -129,7 +129,7 @@ public class DefaultInvokerTest {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setLocalRepositoryDirectory(new File(basedir, "repo with spaces"));
-        request.setGoals(Collections.singletonList("validate"));
+        request.addArg("validate");
 
         InvocationResult result = invoker.execute(request);
 
@@ -144,7 +144,7 @@ public class DefaultInvokerTest {
         props.setProperty("key", "value with spaces");
         props.setProperty("key with spaces", "value");
         request.setProperties(props);
-        request.setGoals(Collections.singletonList("validate"));
+        request.addArg("validate");
 
         InvocationResult result = invoker.execute(request);
 
@@ -157,7 +157,7 @@ public class DefaultInvokerTest {
         request.setBaseDirectory(basedir);
         File pom = new File(basedir, "temp/pom.xml");
         request.setPomFile(pom);
-        request.setGoals(Collections.singletonList("validate"));
+        request.addArg("validate");
 
         InvocationResult result = invoker.execute(request);
 
@@ -168,7 +168,7 @@ public class DefaultInvokerTest {
     public void testMavenWrapperInProject() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
-        request.setGoals(Collections.singletonList("test-wrapper-goal"));
+        request.addArg("test-wrapper-goal");
         request.setMavenExecutable(new File("./mvnw"));
 
         final StringBuilder outlines = new StringBuilder();

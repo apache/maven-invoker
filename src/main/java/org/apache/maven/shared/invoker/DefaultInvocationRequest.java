@@ -21,13 +21,12 @@ package org.apache.maven.shared.invoker;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
-import org.apache.maven.shared.utils.StringUtils;
 
 /**
  * Specifies the parameters used to control a Maven invocation.
@@ -465,9 +464,13 @@ public class DefaultInvocationRequest implements InvocationRequest {
 
     @Override
     public InvocationRequest addArg(String arg) {
-        if (StringUtils.isNotBlank(arg)) {
-            args.add(arg);
-        }
+        args.add(arg);
+        return this;
+    }
+
+    @Override
+    public InvocationRequest addArgs(Collection<String> args) {
+        this.args.addAll(args);
         return this;
     }
 

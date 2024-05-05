@@ -471,7 +471,7 @@ public class MavenCommandLineBuilder {
         }
     }
 
-    private void setArgs(InvocationRequest request, Commandline cli) {
+    protected void setArgs(InvocationRequest request, Commandline cli) {
         for (String arg : request.getArgs()) {
             cli.createArg().setValue(arg);
         }

@@ -710,6 +710,7 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     public void testShouldSpecifySingleGoalFromRequest() throws CommandLineConfigurationException {
 
         List<String> goals = new ArrayList<>();
@@ -721,12 +722,33 @@ public class MavenCommandLineBuilderTest {
     }
 
     @Test
+    void testShouldSpecifySingleGoalFromRequestArg() throws CommandLineConfigurationException {
+
+        mclb.setArgs(newRequest().addArg("test"), cli);
+
+        assertArgumentsPresent(cli, Collections.singleton("test"));
+    }
+
+    @Test
+    @SuppressWarnings("deprecation")
     public void testShouldSpecifyTwoGoalsFromRequest() throws CommandLineConfigurationException {
         List<String> goals = new ArrayList<>();
         goals.add("test");
         goals.add("clean");
 
         mclb.setGoals(newRequest().setGoals(goals), cli);
+
+        assertArgumentsPresent(cli, new HashSet<>(goals));
+        assertArgumentsPresentInOrder(cli, goals);
+    }
+
+    @Test
+    void testShouldSpecifyTwoGoalsFromRequestArgs() throws CommandLineConfigurationException {
+        List<String> goals = new ArrayList<>();
+        goals.add("test");
+        goals.add("clean");
+
+        mclb.setArgs(newRequest().addArgs(goals), cli);
 
         assertArgumentsPresent(cli, new HashSet<>(goals));
         assertArgumentsPresentInOrder(cli, goals);
@@ -777,7 +799,7 @@ public class MavenCommandLineBuilderTest {
         goals.add("deploy");
         goals.add("site-deploy");
 
-        request.setGoals(goals);
+        request.addArgs(goals);
 
         Commandline commandline = mclb.build(request);
 
