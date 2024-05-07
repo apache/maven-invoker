@@ -105,6 +105,9 @@ under the License.
             <maven.home>${maven.home}</maven.home>
             <maven.repo.local>${settings.localRepository}</maven.repo.local>
           </systemPropertyVariables>
+          <environmentVariables>
+            <INVOKER_TEST_ENV_1>test-env-value</INVOKER_TEST_ENV_1>
+          </environmentVariables>
           <excludes>
             <exclude>test-build-should*/**</exclude>
           </excludes>

@@ -29,8 +29,11 @@ import org.apache.maven.shared.utils.Os;
 import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultInvokerTest {
@@ -42,6 +45,7 @@ class DefaultInvokerTest {
     public void setUp() {
         request.setDebug(true);
         request.setProperties(getProperties());
+        request.setBatchMode(true);
     }
 
     @Test
@@ -182,6 +186,35 @@ class DefaultInvokerTest {
         } else {
             assertEquals("Unix Wrapper executed", outlines.toString());
         }
+    }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS) // mvn 3.6.3 and windows ...
+    void notInheritEnvVariables() throws Exception {
+
+        // ensure that we have env variable in current process
+        assertEquals("test-env-value", System.getenv("INVOKER_TEST_ENV_1"));
+
+        File basedir = getBasedirForBuild();
+        request.setBaseDirectory(basedir);
+        request.addArg("initialize");
+        request.setShellEnvironmentInherited(false);
+        request.addShellEnvironment("INVOKER_TEST_ENV_2", "test-env-value-2");
+        // Maven 3.6.3 required JAVA_HOME
+        request.addShellEnvironment("JAVA_HOME", System.getProperty("java.home"));
+
+        final StringBuilder outlines = new StringBuilder();
+        request.setOutputHandler(line -> outlines.append(line).append(System.lineSeparator()));
+
+        InvocationResult result = invoker.execute(request);
+
+        String output = outlines.toString();
+        assertEquals(
+                0,
+                result.getExitCode(),
+                () -> "Maven exit code: " + result.getExitCode() + System.lineSeparator() + output.trim());
+        assertFalse(output.contains("INVOKER_TEST_ENV_1"));
+        assertTrue(output.contains("INVOKER_TEST_ENV_2=test-env-value-2"));
     }
 
     private Invoker newInvoker() {
