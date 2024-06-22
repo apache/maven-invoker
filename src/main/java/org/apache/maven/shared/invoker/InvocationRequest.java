@@ -41,6 +41,15 @@ public interface InvocationRequest {
     boolean isBatchMode();
 
     /**
+     * Indicates whether Maven should ignore transitive repositories. By default, transitive repositories are not
+     * ignored.
+     *
+     * @return <code>true</code> if transitive repositories should be ignored, <code>false</code> otherwise.
+     * @since 3.4.0
+     */
+    boolean isIgnoreTransitiveRepositories();
+
+    /**
      * Gets the network mode of the Maven invocation. By default, Maven is executed in online mode.
      *
      * @return <code>true</code> if Maven should be executed in offline mode, <code>false</code> if the online mode is
@@ -790,6 +799,15 @@ public interface InvocationRequest {
      * @since 3.2.0
      */
     InvocationRequest setNoTransferProgress(boolean noTransferProgress);
+
+    /**
+     * Sets the ignore transitive repositories mode. Equivalent of {@code -itr} or {@code --ignore-transitive-repositories}
+     *
+     * @param ignoreTransitiveRepositories <code>true</code> if transitive repositories should be ignored, <code>false</code> otherwise.
+     * @return This invocation request.
+     * @since 3.4.0
+     */
+    InvocationRequest setIgnoreTransitiveRepositories(boolean ignoreTransitiveRepositories);
 
     /**
      * Get the current set builder strategy id equivalent of {@code --builder id}. <b>Note. This is available since

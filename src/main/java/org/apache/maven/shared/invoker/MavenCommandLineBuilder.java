@@ -453,6 +453,10 @@ public class MavenCommandLineBuilder {
         if (request.isNoTransferProgress()) {
             cli.createArg().setValue("-ntp");
         }
+
+        if (request.isIgnoreTransitiveRepositories()) {
+            cli.createArg().setValue("-itr");
+        }
     }
 
     /**

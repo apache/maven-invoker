@@ -493,6 +493,12 @@ class MavenCommandLineBuilderTest {
     }
 
     @Test
+    void testShouldSetIgnoreTransitiveRepositoriesFromRequest() {
+        mclb.setFlags(newRequest().setIgnoreTransitiveRepositories(true), cli);
+        assertArgumentsPresent(cli, Collections.singleton("-itr"));
+    }
+
+    @Test
     void testShouldSpecifyFileOptionUsingNonStandardPomFileLocation() throws Exception {
         File projectDir = Files.createDirectories(
                         temporaryFolder.resolve("invoker-tests").resolve("file-option-nonstd-pom-file-location"))
