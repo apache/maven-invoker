@@ -112,6 +112,8 @@ public class DefaultInvocationRequest implements InvocationRequest {
 
     private boolean noTransferProgress;
 
+    private boolean ignoreTransitiveRepositories;
+
     private List<String> args = new ArrayList<>();
 
     /**
@@ -689,6 +691,17 @@ public class DefaultInvocationRequest implements InvocationRequest {
     @Override
     public InvocationRequest setNoTransferProgress(boolean noTransferProgress) {
         this.noTransferProgress = noTransferProgress;
+        return this;
+    }
+
+    @Override
+    public boolean isIgnoreTransitiveRepositories() {
+        return ignoreTransitiveRepositories;
+    }
+
+    @Override
+    public InvocationRequest setIgnoreTransitiveRepositories(boolean ignoreTransitiveRepositories) {
+        this.ignoreTransitiveRepositories = ignoreTransitiveRepositories;
         return this;
     }
 
