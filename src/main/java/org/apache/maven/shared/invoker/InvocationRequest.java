@@ -603,9 +603,7 @@ public interface InvocationRequest {
      *
      * @param goals The goals for the Maven invocation, may be <code>null</code> to execute the POMs default goal.
      * @return This invocation request.
-     * @deprecated simply {@link #addArg(String)} or {@link #addArgs(Collection)} should be used
      */
-    @Deprecated
     InvocationRequest setGoals(List<String> goals);
 
     /**
