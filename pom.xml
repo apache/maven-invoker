@@ -23,7 +23,7 @@ under the License.
   <parent>
     <groupId>org.apache.maven.shared</groupId>
     <artifactId>maven-shared-components</artifactId>
-    <version>43</version>
+    <version>44</version>
     <relativePath />
   </parent>
 
