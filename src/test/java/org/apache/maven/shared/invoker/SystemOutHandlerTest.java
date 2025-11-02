@@ -23,19 +23,19 @@ import org.junit.jupiter.api.Test;
 class SystemOutHandlerTest {
 
     @Test
-    void testConsumeWithoutAlwaysFlush() {
+    void consumeWithoutAlwaysFlush() {
         logTestStart();
         new SystemOutHandler(false).consumeLine("This is a test.");
     }
 
     @Test
-    void testConsumeWithAlwaysFlush() {
+    void consumeWithAlwaysFlush() {
         logTestStart();
         new SystemOutHandler(true).consumeLine("This is a test.");
     }
 
     @Test
-    void testConsumeNullLine() {
+    void consumeNullLine() {
         logTestStart();
         new SystemOutHandler().consumeLine(null);
     }
