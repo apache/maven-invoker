@@ -38,11 +38,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class DefaultInvokerTest {
 
-    private Invoker invoker = newInvoker();
-    private InvocationRequest request = new DefaultInvocationRequest();
+    private final Invoker invoker = newInvoker();
+    private final InvocationRequest request = new DefaultInvocationRequest();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         request.setDebug(true);
         request.setProperties(getProperties());
         request.setBatchMode(true);
@@ -50,7 +50,7 @@ class DefaultInvokerTest {
 
     @Test
     @SuppressWarnings("deprecation")
-    void testBuildShouldSucceed() throws MavenInvocationException, URISyntaxException {
+    void buildShouldSucceed() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setGoals(Arrays.asList("clean", "package"));
@@ -61,7 +61,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testBuildShouldFail() throws MavenInvocationException, URISyntaxException {
+    void buildShouldFail() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.addArgs(Arrays.asList("clean", "package"));
@@ -72,7 +72,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testBuildShouldTimeout() throws MavenInvocationException, URISyntaxException {
+    void buildShouldTimeout() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.addArgs(Arrays.asList("clean", "package"));
@@ -93,7 +93,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testSpacePom() throws Exception {
+    void spacePom() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces.xml");
@@ -105,7 +105,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testSpaceAndSpecialCharPom() throws Exception {
+    void spaceAndSpecialCharPom() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setPomFileName("pom with spaces & special char.xml");
@@ -117,7 +117,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testSpaceSettings() throws Exception {
+    void spaceSettings() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setUserSettingsFile(new File(basedir, "settings with spaces.xml"));
@@ -129,7 +129,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testSpaceLocalRepo() throws Exception {
+    void spaceLocalRepo() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.setLocalRepositoryDirectory(new File(basedir, "repo with spaces"));
@@ -141,7 +141,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testSpaceProperties() throws Exception {
+    void spaceProperties() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         Properties props = getProperties();
@@ -156,7 +156,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testPomOutsideProject() throws Exception {
+    void pomOutsideProject() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         File pom = new File(basedir, "temp/pom.xml");
@@ -169,7 +169,7 @@ class DefaultInvokerTest {
     }
 
     @Test
-    void testMavenWrapperInProject() throws Exception {
+    void mavenWrapperInProject() throws Exception {
         File basedir = getBasedirForBuild();
         request.setBaseDirectory(basedir);
         request.addArg("test-wrapper-goal");
@@ -256,7 +256,7 @@ class DefaultInvokerTest {
         StackTraceElement element = new NullPointerException().getStackTrace()[1];
         String methodName = element.getMethodName();
 
-        String dirName = StringUtils.addAndDeHump(methodName);
+        String dirName = "test-" + StringUtils.addAndDeHump(methodName);
 
         ClassLoader cloader = Thread.currentThread().getContextClassLoader();
         URL dirResource = cloader.getResource(dirName);
