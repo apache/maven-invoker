@@ -31,7 +31,7 @@ under the License.
   <version>3.3.1-SNAPSHOT</version>
 
   <name>Apache Maven Invoker</name>
-  <description>A component to programmatically invoke Maven.</description>
+  <description>DEPRECATED: This component is deprecated and replaced by maven-executor (https://github.com/apache/maven/tree/master/impl/maven-executor). Please migrate to maven-executor for Maven 3.9+ and Maven 4+ support with improved API and features.</description>
 
   <contributors>
     <contributor>
@@ -95,6 +95,16 @@ under the License.
     </testResources>
 
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <!-- Show deprecation warnings during compilation -->
+          <compilerArgs>
+            <arg>-Xlint:deprecation</arg>
+          </compilerArgs>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>

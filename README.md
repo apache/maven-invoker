@@ -17,6 +17,21 @@
 Contributing to [Apache Maven Invoker](https://maven.apache.org/shared/maven-invoker/)
 ======================
 
+> **⚠️ DEPRECATION NOTICE**
+>
+> This project is **deprecated** and will be replaced by [**maven-executor**](https://github.com/apache/maven/tree/master/impl/maven-executor).
+>
+> **Users should migrate to maven-executor**, which offers:
+> - Unified and simpler API that doesn't require updates when Maven CLI changes
+> - Support for both Maven 3.9+ and Maven 4+
+> - Both forked and embedded execution modes
+> - Proper environment isolation
+> - Zero dependencies
+>
+> For migration guidance, see [MIGRATION.md](MIGRATION.md).
+>
+> **Related:** [Issue #164](https://github.com/apache/maven-invoker/issues/164)
+
 [![Apache License, Version 2.0, January 2004](https://img.shields.io/github/license/apache/maven.svg?label=License)][license]
 [![Maven Central](https://img.shields.io/maven-central/v/org.apache.maven.shared/maven-invoker.svg?label=Maven%20Central)](https://search.maven.org/artifact/org.apache.maven.shared/maven-invoker)
 [![Reproducible Builds](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/jvm-repo-rebuild/reproducible-central/master/content/org/apache/maven/shared/maven-invoker/badge.json)](https://github.com/jvm-repo-rebuild/reproducible-central/blob/master/content/org/apache/maven/shared/maven-invoker/README.md)

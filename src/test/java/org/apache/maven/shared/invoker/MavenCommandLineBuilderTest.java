@@ -48,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@SuppressWarnings("deprecation")
 class MavenCommandLineBuilderTest {
     @TempDir
     private Path temporaryFolder;

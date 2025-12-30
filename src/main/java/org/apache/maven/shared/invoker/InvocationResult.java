@@ -23,8 +23,15 @@ import org.apache.maven.shared.utils.cli.CommandLineException;
 /**
  * Describes the result of a Maven invocation.
  *
+ * @deprecated This interface is deprecated. Use
+ *             <a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor</a>
+ *             which returns exit codes directly.
+ *             See the <a href="https://maven.apache.org/shared/maven-invoker/migration.html">Migration Guide</a>
+ *             for details.
  * @author jdcasey
+ * @see <a href="https://github.com/apache/maven-invoker/issues/164">Issue #164</a>
  */
+@Deprecated
 public interface InvocationResult {
 
     /**

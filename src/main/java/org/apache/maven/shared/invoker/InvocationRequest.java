@@ -28,7 +28,14 @@ import java.util.Properties;
 /**
  * Specifies the parameters used to control a Maven invocation.
  *
+ * @deprecated This interface is deprecated. Use
+ *             <a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor</a>
+ *             ExecutorRequest instead, which uses a builder pattern and direct CLI arguments.
+ *             See the <a href="https://maven.apache.org/shared/maven-invoker/migration.html">Migration Guide</a>
+ *             for details.
+ * @see <a href="https://github.com/apache/maven-invoker/issues/164">Issue #164</a>
  */
+@Deprecated
 public interface InvocationRequest {
 
     /**

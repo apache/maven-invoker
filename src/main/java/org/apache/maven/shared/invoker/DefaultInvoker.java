@@ -31,8 +31,15 @@ import org.apache.maven.shared.utils.cli.Commandline;
 /**
  * Class intended to be used by clients who wish to invoke a forked Maven process from their applications
  *
+ * @deprecated This class is deprecated. Use
+ *             <a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor</a>
+ *             ForkedExecutor or EmbeddedExecutor instead.
+ *             See the <a href="https://maven.apache.org/shared/maven-invoker/migration.html">Migration Guide</a>
+ *             for details.
  * @author jdcasey
+ * @see <a href="https://github.com/apache/maven-invoker/issues/164">Issue #164</a>
  */
+@Deprecated
 @Named
 @Singleton
 public class DefaultInvoker implements Invoker {

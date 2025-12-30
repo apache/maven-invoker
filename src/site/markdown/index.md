@@ -18,6 +18,23 @@ under the License.
 -->
 # Apache Maven Invoker
 
+## *DEPRECATION NOTICE*
+
+- This project is deprecated and will be replaced by [maven-executor](https://github.com/apache/maven/tree/master/impl/maven-executor).
+
+  Users should migrate to maven-executor, which offers:
+- Unified and simpler API that doesn't require updates when Maven CLI changes
+- Support for both Maven 3.9+ and Maven 4+
+- Both forked and embedded execution modes
+- Proper environment isolation
+- Zero dependencies
+
+  See [Migration Guide](./migration.html) for details.
+
+  Related: [Issue #164](https://github.com/apache/maven-invoker/issues/164)
+
+## Overview
+
 In many cases, tools (including Maven itself) may want to fire off a Maven build in a clean environment. Why? Perhaps you want to avoid polluting the current system environment with side-effects produced by Maven plugins. Maybe you want to run the build from a different working directory than the current `${user.dir}`. Maybe you want to retain the ability to surgically kill one of many Maven builds if it hangs for some reason.
 
 This API is concerned with firing a Maven build in a new JVM. It accomplishes its task by building up a conventional Maven command line from options given in the current request, along with those global options specified in the invoker itself. Once it has the command line, the invoker will execute it, and capture the resulting exit code or any exception thrown to signal a failure to execute. Input/output control can be specified using an `InputStream` and up to two `InvocationOutputHandler`s.

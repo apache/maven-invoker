@@ -31,7 +31,14 @@ import java.util.Properties;
 /**
  * Specifies the parameters used to control a Maven invocation.
  *
+ * @deprecated This class is deprecated. Use
+ *             <a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor</a>
+ *             ExecutorRequest.builder() instead.
+ *             See the <a href="https://maven.apache.org/shared/maven-invoker/migration.html">Migration Guide</a>
+ *             for details.
+ * @see <a href="https://github.com/apache/maven-invoker/issues/164">Issue #164</a>
  */
+@Deprecated
 public class DefaultInvocationRequest implements InvocationRequest {
 
     private File basedir;

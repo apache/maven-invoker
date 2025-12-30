@@ -18,6 +18,14 @@ under the License.
 -->
 # Usage
 
+## DEPRECATION NOTICE
+
+- This project is deprecated. Please migrate to [maven-executor](https://github.com/apache/maven/tree/master/impl/maven-executor).
+
+  See [Migration Guide](./migration.html) for details.
+
+## Overview
+
 This page documents the basic usage of the Maven invocation API.
 
 ## Hello, World

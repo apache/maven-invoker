@@ -20,6 +20,7 @@ package org.apache.maven.shared.invoker;
 
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("deprecation")
 class SystemOutHandlerTest {
 
     @Test
