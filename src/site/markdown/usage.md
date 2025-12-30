@@ -1,0 +1,124 @@
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+# Usage
+
+This page documents the basic usage of the Maven invocation API.
+
+## Hello, World
+
+The simplest possible way to use the invocation API is to construct the invoker and request at the same time, and simply call `invoker.execute(request)`. In this example, we don&apos;t care about the build result:
+
+```java
+InvocationRequest request = new DefaultInvocationRequest();
+request.setPomFile(new File("/path/to/pom.xml"));
+request.setGoals(Collections.singletonList("install"));
+
+Invoker invoker = new DefaultInvoker();
+invoker.execute(request);
+```
+
+This code will execute a new Maven build to the `install` lifecycle phase for the project defined at `/path/to/pom.xml`. If the build fails, we will remain blissfully ignorant...
+
+## Checking the Exit Code
+
+If we wanted to detect a build failure in the above example, we could simply add the following lines:
+
+```java
+InvocationResult result = invoker.execute(request);
+
+if (result.getExitCode()!= 0){
+    throw new IllegalStateException("Build failed.");
+}
+```
+
+This will retrieve the exit code from the invocation result, and throw an exception if it&apos;s not `0` (the traditional all-clear code). Note that we could capture the build output by adding an `InvocationOutputHandler` instance to the `request`.
+
+## Caching the Invoker
+
+Since you can specify global options for Maven invocations via the `Invoker` configuration, it will often make sense to configure a single `Invoker` instance, and reuse it over multiple method calls:
+
+```java
+// we will always call the same goals...
+private static final List<String> PUBLISH_GOALS = Arrays.asList("clean", "site-deploy");
+
+// define a field for the Invoker instance.
+private final Invoker invoker;
+
+// now, instantiate the invoker in the class constructor...
+public SomeClass(File localRepositoryDir) {
+    Invoker newInvoker = new DefaultInvoker();
+    newInvoker.setLocalRepositoryDirectory(localRepositoryDir);
+
+    this.invoker = newInvoker;
+}
+
+// this method will be called repeatedly, and fire off new builds...
+public void publishSite(File siteDirectory) throws PublishException {
+    InvocationRequest request = new DefaultInvocationRequest();
+    request.setBaseDirectory(siteDirectory);
+    request.setInteractive(false);
+    request.setGoals(PUBLISH_GOALS);
+
+    InvocationResult result = invoker.execute(request);
+
+    if (result.getExitCode() != 0)
+    {
+        if (result.getExecutionException() != null)
+        {
+            throw new PublishException("Failed to publish site.",
+                                        result.getExecutionException());
+        }
+        else
+        {
+            throw new PublishException("Failed to publish site. Exit code: " +
+                                         result.getExitCode());
+        }
+    }
+}
+```
+
+As you can see, we&apos;re using the same local repository location (since the site-generation artifacts will most likely be common to most sites), the same invoker instance (it&apos;s configured, we may as well reuse it), and the same set of goals per build. We can actually accommodate a fairly complex configuration of the Invoker without adding complexity to the `publishSite` method in this manner.
+
+## Configuring the Maven Home Directory
+
+You can use the method `Invoker.setMavenHome()` to specify which Maven executable it should use. If you don&apos;t provide an explicit value for this setting, the `Invoker` will automatically try to detect a Maven installation by evaluating the system property `maven.home`.
+
+**Note:** If you use the invocation API in tests run by the [Maven Surefire Plugin](../../plugins/maven-surefire-plugin), you need to tell Surefire to pass the system property `maven.home` to the tests in order for the automatic Maven detection to work:
+
+```xml
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.3</version> <!-- see surefire-page for available versions -->
+        <configuration>
+          <systemPropertyVariables>
+            <maven.home>${maven.home}</maven.home>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+    ...
+  </build>
+  ...
+</project>
+```

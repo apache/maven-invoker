@@ -89,7 +89,7 @@ class DefaultInvokerTest {
 
         // exitCode can't be used because in case of a timeout it's not correctly
         // set in DefaultInvoker. Need to think about this.
-        // assertEquals( 1, result.getExitCode() );
+        // assertEquals(1, result.getExitCode());
     }
 
     @Test
