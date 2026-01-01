@@ -373,9 +373,9 @@ public interface InvocationRequest {
          */
         FailNever("fn", "fail-never");
 
-        private String shortOption;
+        private final String shortOption;
 
-        private String longOption;
+        private final String longOption;
 
         ReactorFailureBehavior(String shortOption, String longOption) {
             this.shortOption = shortOption;
