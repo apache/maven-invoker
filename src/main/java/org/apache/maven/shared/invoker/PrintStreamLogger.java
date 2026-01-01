@@ -121,10 +121,10 @@ public class PrintStreamLogger implements InvokerLogger {
             }
 
             buffer.append("Error:\n");
-            buffer.append(writer.toString());
+            buffer.append(writer);
         }
 
-        out.println(buffer.toString());
+        out.println(buffer);
     }
 
     /** {@inheritDoc} */

@@ -164,38 +164,14 @@ class MavenCommandLineBuilderTest {
 
     @Test
     void shouldUseSystemOutLoggerWhenNoneSpecified() throws Exception {
-        setupTempMavenHomeIfMissing(false);
+        setupTempMavenHomeIfMissing();
 
         mclb.checkRequiredState();
     }
 
-    private File setupTempMavenHomeIfMissing(boolean forceDummy) throws Exception {
+    private File setupTempMavenHomeIfMissing() {
         String mavenHome = System.getProperty("maven.home");
-
-        File appDir;
-
-        if (forceDummy || (mavenHome == null) || !new File(mavenHome).exists()) {
-            appDir = Files.createDirectories(
-                            temporaryFolder.resolve("invoker-tests").resolve("maven-home"))
-                    .toFile();
-
-            File binDir = new File(appDir, "bin");
-            binDir.mkdirs();
-
-            if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                createDummyFile(binDir, "mvn.bat");
-            } else {
-                createDummyFile(binDir, "mvn");
-            }
-
-            Properties props = System.getProperties();
-            props.setProperty("maven.home", appDir.getCanonicalPath());
-
-            System.setProperties(props);
-        } else {
-            appDir = new File(mavenHome);
-        }
-
+        File appDir = new File(mavenHome);
         return appDir;
     }
 
@@ -718,7 +694,7 @@ class MavenCommandLineBuilderTest {
     }
 
     @Test
-    void shouldSpecifySingleGoalFromRequestArg() throws Exception {
+    void shouldSpecifySingleGoalFromRequestArg() {
 
         mclb.setArgs(newRequest().addArg("test"), cli);
 
@@ -739,7 +715,7 @@ class MavenCommandLineBuilderTest {
     }
 
     @Test
-    void shouldSpecifyTwoGoalsFromRequestArgs() throws Exception {
+    void shouldSpecifyTwoGoalsFromRequestArgs() {
         List<String> goals = new ArrayList<>();
         goals.add("test");
         goals.add("clean");
@@ -759,7 +735,7 @@ class MavenCommandLineBuilderTest {
 
     @Test
     void buildTypicalMavenInvocationEndToEnd() throws Exception {
-        File mavenDir = setupTempMavenHomeIfMissing(false);
+        File mavenDir = setupTempMavenHomeIfMissing();
 
         InvocationRequest request = newRequest();
 
@@ -812,7 +788,7 @@ class MavenCommandLineBuilderTest {
 
     @Test
     void shouldInsertActivatedProfiles() throws Exception {
-        setupTempMavenHomeIfMissing(false);
+        setupTempMavenHomeIfMissing();
 
         String profile1 = "profile-1";
         String profile2 = "profile-2";
@@ -869,7 +845,7 @@ class MavenCommandLineBuilderTest {
 
     @Test
     void addShellEnvironment() throws Exception {
-        setupTempMavenHomeIfMissing(false);
+        setupTempMavenHomeIfMissing();
 
         InvocationRequest request = newRequest();
 

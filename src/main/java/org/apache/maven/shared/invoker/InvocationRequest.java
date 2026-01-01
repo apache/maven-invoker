@@ -423,7 +423,7 @@ public interface InvocationRequest {
         /**
          * Warn checksum failures equivalent {@code --lax-checksums}.
          */
-        Warn;
+        Warn
     }
 
     // ----------------------------------------------------------------------
