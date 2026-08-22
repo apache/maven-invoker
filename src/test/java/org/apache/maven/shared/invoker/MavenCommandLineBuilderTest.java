@@ -242,8 +242,10 @@ class MavenCommandLineBuilderTest {
     @Test
     @DisabledOnOs(OS.WINDOWS)
     void shouldExecutePowerShellScriptThroughInheritedPowerShellHost() throws Exception {
-        File baseDirectory = Files.createDirectories(temporaryFolder.resolve("project")).toFile();
-        File mavenHome = Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHome =
+                Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
         File powerShellExecutable = Files.createDirectories(temporaryFolder.resolve("PowerShell home with spaces"))
                 .resolve("pwsh")
                 .toFile();
@@ -259,7 +261,8 @@ class MavenCommandLineBuilderTest {
         }
         assertTrue(powerShellExecutable.setExecutable(true));
 
-        File outputFile = temporaryFolder.resolve("PowerShell output with spaces").toFile();
+        File outputFile =
+                temporaryFolder.resolve("PowerShell output with spaces").toFile();
         File mavenScript = temporaryFolder.resolve("mvn.ps1").toFile();
         try (FileWriter writer = new FileWriter(mavenScript)) {
             writer.write("printf '%s' \"$2\" > \"$1\"\n");
@@ -281,9 +284,12 @@ class MavenCommandLineBuilderTest {
     @Test
     @EnabledOnOs(OS.WINDOWS)
     void shouldExecutePowerShellScriptOnWindows() throws Exception {
-        File baseDirectory = Files.createDirectories(temporaryFolder.resolve("project")).toFile();
-        File mavenHome = Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
-        File outputFile = temporaryFolder.resolve("PowerShell output with spaces").toFile();
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHome =
+                Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
+        File outputFile =
+                temporaryFolder.resolve("PowerShell output with spaces").toFile();
         File mavenScript = temporaryFolder.resolve("mvn.ps1").toFile();
         try (FileWriter writer = new FileWriter(mavenScript)) {
             writer.write("param([string] $OutputFile, [string] $Value)\n"
@@ -307,8 +313,10 @@ class MavenCommandLineBuilderTest {
 
     @Test
     void shouldRejectExplicitPowerShellScriptWithoutInheritedPowerShellHost() throws Exception {
-        File baseDirectory = Files.createDirectories(temporaryFolder.resolve("project")).toFile();
-        File mavenHome = Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHome =
+                Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
         File mavenScript = createDummyFile(temporaryFolder.toFile(), "mvn.ps1").getCanonicalFile();
         mclb = new TestMavenCommandLineBuilder(null);
 
