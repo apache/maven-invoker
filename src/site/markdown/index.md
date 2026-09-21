@@ -20,7 +20,7 @@ under the License.
 
 ## *DEPRECATION NOTICE*
 
-- This project is deprecated and will be replaced by [maven-executor](https://github.com/apache/maven/tree/master/impl/maven-executor).
+- This project is deprecated and replaced by [maven-executor](https://github.com/apache/maven-executor).
 
   Users should migrate to maven-executor, which offers:
 - Unified and simpler API that doesn't require updates when Maven CLI changes

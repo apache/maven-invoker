@@ -19,7 +19,7 @@
 
 /**
  * <p><strong>DEPRECATED:</strong> This package is deprecated and will be replaced by
- * <a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor</a>.</p>
+ * <a href="https://github.com/apache/maven-executor">maven-executor</a>.</p>
  *
  * <p>The {@code maven-invoker} component provides an API for programmatically invoking Maven builds.
  * However, it is being replaced by {@code maven-executor} which offers significant improvements:</p>
@@ -51,24 +51,27 @@
  *
  * <p>New code (maven-executor):</p>
  * <pre>{@code
- * ExecutorRequest request = ExecutorRequest.builder()
+ * ExecutorRequest request = ExecutorRequest.mavenBuilder()
  *     .cwd(Paths.get("/path/to"))
- *     .command("mvn")
- *     .args(new String[]{"install"})
+ *     .arguments("install")
  *     .build();
  *
- * ForkedExecutor executor = new ForkedExecutor();
- * int exitCode = executor.execute(request);
+ * try (ForkedMavenExecutor executor = new ForkedMavenExecutor(Paths.get("/path/to/maven"))) {
+ *     ExecutorResult result = executor.execute(request);
+ *     if (!result.success()) {
+ *         throw new IllegalStateException("Build failed.");
+ *     }
+ * }
  * }</pre>
  *
  * <h2>Support</h2>
  * <ul>
  *   <li><a href="https://github.com/apache/maven-invoker/issues/164">Issue #164 - Deprecation Announcement</a></li>
- *   <li><a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor Source Code</a></li>
+ *   <li><a href="https://github.com/apache/maven-executor">maven-executor Source Code</a></li>
  *   <li><a href="https://maven.apache.org/mailing-lists.html">Maven Mailing Lists</a></li>
  * </ul>
  *
- * @deprecated Use <a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor</a>
+ * @deprecated Use <a href="https://github.com/apache/maven-executor">maven-executor</a>
  *             instead. This package will be removed in a future version.
  */
 package org.apache.maven.shared.invoker;
