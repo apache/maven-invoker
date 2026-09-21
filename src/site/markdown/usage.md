@@ -20,7 +20,7 @@ under the License.
 
 ## DEPRECATION NOTICE
 
-- This project is deprecated. Please migrate to [maven-executor](https://github.com/apache/maven/tree/master/impl/maven-executor).
+- This project is deprecated. Please migrate to [maven-executor](https://github.com/apache/maven-executor).
 
   See [Migration Guide](./migration.html) for details.
 

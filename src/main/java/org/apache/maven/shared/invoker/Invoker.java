@@ -25,7 +25,7 @@ import java.io.InputStream;
  * Provides a facade to invoke Maven.
  *
  * @deprecated This component is deprecated. Use
- *             <a href="https://github.com/apache/maven/tree/master/impl/maven-executor">maven-executor</a>
+ *             <a href="https://github.com/apache/maven-executor">maven-executor</a>
  *             instead, which provides better Maven 3.9+ and Maven 4+ support with a unified API.
  *             See the <a href="https://maven.apache.org/shared/maven-invoker/migration.html">Migration Guide</a>
  *             for details.
