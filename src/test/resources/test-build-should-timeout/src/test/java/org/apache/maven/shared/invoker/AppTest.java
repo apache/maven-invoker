@@ -27,10 +27,10 @@ import org.junit.Test;
 public class AppTest
 {
     /**
-     * Never ends on its own: the invoker's timeout has to stop this forked JVM. The heartbeat file lets the
-     * invoker test see whether it did.
+     * Runs until the invoker's timeout stops this forked JVM, which the heartbeat file lets the invoker test see;
+     * the test's own timeout is the safety net for a Java 8 invoker, which cannot reach this process.
      */
-    @Test
+    @Test(timeout = 90000)
     public void testApp() throws Exception {
         File heartbeat = new File( System.getProperty( "heartbeat" ) );
         while (true) {
