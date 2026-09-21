@@ -30,6 +30,7 @@ import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,12 +88,15 @@ class DefaultInvokerTest {
         // We check the exception to be sure the failure is based on timeout.
         assertTrue(result.getExecutionException().getMessage().contains("timed out"));
 
-        // the Surefire fork under the timed out Maven must be gone too (MSHARED-867), so its heartbeat stops
+        // the Surefire fork under the timed out Maven must be gone too (MSHARED-867), so its heartbeat stops;
+        // only Java 9+ can reach the descendants (ProcessHandle), on Java 8 the fixture ends itself
         assertTrue(heartbeat.isFile(), "the forked test never started: " + heartbeat);
-        Thread.sleep(1000L);
-        long length = heartbeat.length();
-        Thread.sleep(2000L);
-        assertEquals(length, heartbeat.length(), "the forked test JVM is still running");
+        if (JRE.currentVersion().compareTo(JRE.JAVA_8) > 0) {
+            Thread.sleep(1000L);
+            long length = heartbeat.length();
+            Thread.sleep(2000L);
+            assertEquals(length, heartbeat.length(), "the forked test JVM is still running");
+        }
 
         // exitCode can't be used because in case of a timeout it's not correctly
         // set in DefaultInvoker. Need to think about this.
