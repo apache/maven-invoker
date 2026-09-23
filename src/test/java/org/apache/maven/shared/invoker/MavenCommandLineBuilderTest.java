@@ -206,7 +206,7 @@ class MavenCommandLineBuilderTest {
     }
 
     @Test
-    void shouldFindDummyPS1MavenExecutableWhenPowerShellHostIsAvailable() throws Exception {
+    void shouldPreferPowerShellScriptOverCmdWhenPowerShellHostIsAvailable() throws Exception {
         File dummyMavenHomeBin = Files.createDirectories(temporaryFolder
                         .resolve("invoker-tests")
                         .resolve("dummy-maven-home")
@@ -214,6 +214,7 @@ class MavenCommandLineBuilderTest {
                 .toFile();
 
         File check = createDummyFile(dummyMavenHomeBin, "mvn.ps1");
+        createDummyFile(dummyMavenHomeBin, "mvn.cmd");
         mclb = new TestMavenCommandLineBuilder("powershell.exe");
         mclb.setMavenHome(dummyMavenHomeBin.getParentFile());
         mclb.setupMavenExecutable(newRequest());
