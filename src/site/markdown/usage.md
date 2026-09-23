@@ -130,3 +130,25 @@ You can use the method `Invoker.setMavenHome()` to specify which Maven executabl
   ...
 </project>
 ```
+
+## PowerShell launchers
+
+Maven Invoker supports Maven `.ps1` launchers on any platform with PowerShell, including Windows, Linux, and macOS.
+When Maven is started through a PowerShell launcher that exports `MAVEN_POWERSHELL_EXECUTABLE`, nested Maven
+invocations can reuse that PowerShell host. Installing PowerShell alone does not enable this selection.
+
+`MAVEN_POWERSHELL_EXECUTABLE` must be present in the environment of the JVM running Invoker. Its value is the absolute
+path to the PowerShell executable, without surrounding quotes or command-line arguments. For example, a Windows
+value could be `C:\Program Files\PowerShell\7\pwsh.exe`. Maven's PowerShell launcher supplies this value so that nested
+builds use the same host.
+
+Automatic launcher discovery searches the project base directory first, then the Maven home `bin` directory.
+Within each directory, an available `.ps1` launcher is preferred when `MAVEN_POWERSHELL_EXECUTABLE` is set to a
+nonblank value. This preference applies on all supported platforms. If no host is advertised or no `.ps1` launcher
+is found, discovery tries `.cmd`, then `.bat`, on Windows, followed by the executable name without an added extension.
+On Linux and macOS, it tries the executable name without an added extension. For the default executable name, these
+are `mvn.ps1`, `mvn.cmd`, `mvn.bat`, and `mvn`, respectively.
+
+An explicitly configured `.ps1` launcher also requires `MAVEN_POWERSHELL_EXECUTABLE`, on every platform. Invoker runs
+the advertised host with `-NoProfile -File`, followed by the script path and Maven arguments. If the variable is
+missing or blank, Invoker reports a configuration error instead of relying on the `.ps1` file association.

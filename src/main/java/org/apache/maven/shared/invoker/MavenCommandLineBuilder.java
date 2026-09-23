@@ -37,7 +37,11 @@ import org.apache.maven.shared.utils.cli.Commandline;
  */
 public class MavenCommandLineBuilder {
 
-    /** Set by Maven's PowerShell launcher to identify the host for nested Maven invocations. */
+    /**
+     * Environment variable set by Maven's PowerShell launcher to identify the host for nested Maven invocations.
+     * Its value is the absolute path to the PowerShell executable, without surrounding quotes or command-line
+     * arguments, and must be present in the environment of the JVM running Invoker.
+     */
     static final String MAVEN_POWERSHELL_EXECUTABLE = "MAVEN_POWERSHELL_EXECUTABLE";
 
     private static final InvokerLogger DEFAULT_LOGGER = new SystemOutLogger();
