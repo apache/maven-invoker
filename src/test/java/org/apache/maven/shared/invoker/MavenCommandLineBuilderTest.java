@@ -283,6 +283,38 @@ class MavenCommandLineBuilderTest {
 
     @Test
     @EnabledOnOs(OS.WINDOWS)
+    void shouldQuotePowerShellHostAndScriptPathsWithSpacesOnWindows() throws Exception {
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHomeBin = Files.createDirectories(
+                        temporaryFolder.resolve("Maven home with spaces").resolve("bin"))
+                .toFile();
+        File mavenScript = createDummyFile(mavenHomeBin, "mvn.ps1");
+        String powerShellExecutable = "C:\\Program Files\\PowerShell\\7\\pwsh.exe";
+
+        mclb = new TestMavenCommandLineBuilder(powerShellExecutable);
+        Commandline commandline = mclb.build(newRequest()
+                .setBaseDirectory(baseDirectory)
+                .setMavenHome(mavenHomeBin.getParentFile())
+                .setMavenExecutable(mavenScript)
+                .addArg("argument with spaces"));
+
+        assertEquals(powerShellExecutable, commandline.getExecutable());
+        assertArrayEquals(
+                new String[] {"-NoProfile", "-File", mavenScript.getAbsolutePath(), "argument with spaces"},
+                commandline.getArguments());
+        assertEquals(
+                Arrays.asList(
+                        "cmd.exe",
+                        "/X",
+                        "/C",
+                        "\"\"" + powerShellExecutable + "\" -NoProfile -File \"" + mavenScript.getAbsolutePath()
+                                + "\" \"argument with spaces\"\""),
+                commandline.getShell().getShellCommandLine(commandline.getArguments()));
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
     void shouldExecutePowerShellScriptOnWindows() throws Exception {
         File baseDirectory =
                 Files.createDirectories(temporaryFolder.resolve("project")).toFile();
