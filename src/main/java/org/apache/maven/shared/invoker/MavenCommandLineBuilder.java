@@ -58,7 +58,7 @@ public class MavenCommandLineBuilder {
      */
     public Commandline build(InvocationRequest request) throws CommandLineConfigurationException {
 
-        Commandline cli = new Commandline();
+        Commandline cli = createCommandline();
 
         setupMavenHome(request);
 
@@ -112,6 +112,17 @@ public class MavenCommandLineBuilder {
         if (logger == null) {
             throw new IllegalStateException("A logger instance is required.");
         }
+    }
+
+    /**
+     * Creates the command line that {@link #build(InvocationRequest)} fills in. Subclasses can return a
+     * {@link Commandline} of their own, for example one that keeps track of the process it starts.
+     *
+     * @return a new, empty command line
+     * @since 3.3.1
+     */
+    protected Commandline createCommandline() {
+        return new Commandline();
     }
 
     /**

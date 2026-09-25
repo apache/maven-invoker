@@ -30,6 +30,7 @@ import org.apache.maven.shared.utils.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,18 +76,27 @@ class DefaultInvokerTest {
     @Test
     void buildShouldTimeout() throws Exception {
         File basedir = getBasedirForBuild();
+        File heartbeat = new File(basedir, "target/heartbeat.txt");
         request.setBaseDirectory(basedir);
         request.addArgs(Arrays.asList("clean", "package"));
-        request.setTimeoutInSeconds(4);
+        request.addArg("-Dheartbeat=" + heartbeat.getAbsolutePath());
+        // long enough for the nested build to compile and reach the forked test, short enough for a unit test
+        request.setTimeoutInSeconds(30);
 
         InvocationResult result = invoker.execute(request);
 
         // We check the exception to be sure the failure is based on timeout.
         assertTrue(result.getExecutionException().getMessage().contains("timed out"));
 
-        // WARN - Windows issue MSHARED-867 - Maven and child surefire test process stays alive on Windows
-        // workaround implemented in this test to timeout test after 15 sec
-        // please also check timeout logic in maven-shared-utils
+        // the Surefire fork under the timed out Maven must be gone too (MSHARED-867), so its heartbeat stops;
+        // only Java 9+ can reach the descendants (ProcessHandle), on Java 8 the fixture ends itself
+        assertTrue(heartbeat.isFile(), "the forked test never started: " + heartbeat);
+        if (JRE.currentVersion().compareTo(JRE.JAVA_8) > 0) {
+            Thread.sleep(1000L);
+            long length = heartbeat.length();
+            Thread.sleep(2000L);
+            assertEquals(length, heartbeat.length(), "the forked test JVM is still running");
+        }
 
         // exitCode can't be used because in case of a timeout it's not correctly
         // set in DefaultInvoker. Need to think about this.
