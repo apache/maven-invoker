@@ -1,7 +1,3 @@
-package org.apache.maven.shared.invoker;
-
-import org.junit.Test;
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -21,21 +17,27 @@ import org.junit.Test;
  * under the License.
  */
 
-/**
- * Unit test for simple App.
- */
+package org.apache.maven.shared.invoker;
+
+import java.io.File;
+import java.io.FileOutputStream;
+
+import org.junit.Test;
+
 public class AppTest
 {
-
     /**
-     * Not ending test
-     * @throws InterruptedException
+     * Runs until the invoker's timeout stops this forked JVM, which the heartbeat file lets the invoker test see;
+     * the test's own timeout is the safety net for a Java 8 invoker, which cannot reach this process.
      */
-    @Test(timeout = 7000) // should be killed in 4 sec by Invoker - Workaround for Windows MSHARED-867
-    public void testApp() throws InterruptedException {
+    @Test(timeout = 90000)
+    public void testApp() throws Exception {
+        File heartbeat = new File( System.getProperty( "heartbeat" ) );
         while (true) {
-            Thread.sleep(1000L);
+            try ( FileOutputStream out = new FileOutputStream( heartbeat, true ) ) {
+                out.write( '.' );
+            }
+            Thread.sleep( 200L );
         }
-//        assertTrue( true);
     }
 }
