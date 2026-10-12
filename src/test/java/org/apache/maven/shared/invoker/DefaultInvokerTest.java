@@ -96,11 +96,27 @@ class DefaultInvokerTest {
             long length = heartbeat.length();
             Thread.sleep(2000L);
             assertEquals(length, heartbeat.length(), "the forked test JVM is still running");
+        } else {
+            // wait for the fixture's own timeout, so that no process of the nested build keeps files
+            // under target/ open: Windows cannot delete them, and a later clean of this project fails
+            awaitHeartbeatStopped(heartbeat);
         }
 
         // exitCode can't be used because in case of a timeout it's not correctly
         // set in DefaultInvoker. Need to think about this.
         // assertEquals(1, result.getExitCode());
+    }
+
+    private static void awaitHeartbeatStopped(File heartbeat) throws InterruptedException {
+        long deadline = System.currentTimeMillis() + 60_000L;
+        long length = -1;
+        while (heartbeat.length() != length) {
+            assertTrue(System.currentTimeMillis() < deadline, "the forked test JVM did not end: " + heartbeat);
+            length = heartbeat.length();
+            Thread.sleep(2000L);
+        }
+        // the heartbeat stops when the forked test fails on its timeout; give Maven a moment to exit after it
+        Thread.sleep(3000L);
     }
 
     @Test
