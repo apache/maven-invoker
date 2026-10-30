@@ -64,7 +64,6 @@ under the License.
   </distributionManagement>
 
   <properties>
-    <javaVersion>8</javaVersion>
     <project.build.outputTimestamp>2024-05-07T20:49:21Z</project.build.outputTimestamp>
   </properties>
 
