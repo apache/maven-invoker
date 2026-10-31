@@ -21,8 +21,10 @@ package org.apache.maven.shared.invoker;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.concurrent.TimeUnit;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 public class AppTest
 {
@@ -30,7 +32,8 @@ public class AppTest
      * Runs until the invoker's timeout stops this forked JVM, which the heartbeat file lets the invoker test see;
      * the test's own timeout is the safety net for a Java 8 invoker, which cannot reach this process.
      */
-    @Test(timeout = 45000)
+    @Test
+    @Timeout(value = 45, unit = TimeUnit.SECONDS)
     public void testApp() throws Exception {
         File heartbeat = new File( System.getProperty( "heartbeat" ) );
         while (true) {
