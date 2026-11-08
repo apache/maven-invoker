@@ -27,10 +27,10 @@ import java.util.Properties;
 
 import org.apache.maven.shared.invoker.InvocationRequest.CheckSumPolicy;
 import org.apache.maven.shared.invoker.InvocationRequest.ReactorFailureBehavior;
-import org.apache.maven.shared.utils.Os;
-import org.apache.maven.shared.utils.StringUtils;
 import org.apache.maven.shared.utils.cli.CommandLineException;
 import org.apache.maven.shared.utils.cli.Commandline;
+import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <p>MavenCommandLineBuilder class.</p>

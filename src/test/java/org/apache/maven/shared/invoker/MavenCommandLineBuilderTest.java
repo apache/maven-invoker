@@ -32,8 +32,8 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.maven.shared.utils.Os;
 import org.apache.maven.shared.utils.cli.Commandline;
+import org.codehaus.plexus.util.Os;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

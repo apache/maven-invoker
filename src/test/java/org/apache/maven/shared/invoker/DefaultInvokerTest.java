@@ -25,8 +25,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.apache.maven.shared.utils.Os;
-import org.apache.maven.shared.utils.StringUtils;
+import org.codehaus.plexus.util.Os;
+import org.codehaus.plexus.util.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
