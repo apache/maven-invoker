@@ -30,7 +30,6 @@ import org.apache.maven.shared.invoker.InvocationRequest.ReactorFailureBehavior;
 import org.apache.maven.shared.utils.cli.CommandLineException;
 import org.apache.maven.shared.utils.cli.Commandline;
 import org.codehaus.plexus.util.Os;
-import org.codehaus.plexus.util.StringUtils;
 
 /**
  * <p>MavenCommandLineBuilder class.</p>
@@ -382,7 +381,7 @@ public class MavenCommandLineBuilder {
             }
         }
 
-        if (StringUtils.isNotEmpty(request.getResumeFrom())) {
+        if (request.getResumeFrom() != null && !request.getResumeFrom().isEmpty()) {
             cli.createArg().setValue("-rf");
             cli.createArg().setValue(request.getResumeFrom());
         }
