@@ -59,6 +59,7 @@ public class PrintStreamHandler implements InvocationOutputHandler {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void consumeLine(String line) {
         if (line == null) {
             out.println();

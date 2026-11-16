@@ -56,6 +56,7 @@ public final class DefaultInvocationResult implements InvocationResult {
      *
      * @return a int.
      */
+    @Override
     public int getExitCode() {
         return exitCode;
     }
@@ -65,6 +66,7 @@ public final class DefaultInvocationResult implements InvocationResult {
      *
      * @return a {@link org.apache.maven.shared.utils.cli.CommandLineException} object.
      */
+    @Override
     public CommandLineException getExecutionException() {
         return executionException;
     }
