@@ -70,6 +70,7 @@ public class DefaultInvoker implements Invoker {
     private InvocationOutputHandler errorHandler = DEFAULT_OUTPUT_HANDLER;
 
     /** {@inheritDoc} */
+    @Override
     public InvocationResult execute(InvocationRequest request) throws MavenInvocationException {
         MavenCommandLineBuilder cliBuilder = new MavenCommandLineBuilder() {
             @Override
@@ -196,6 +197,7 @@ public class DefaultInvoker implements Invoker {
      *
      * @return a {@link java.io.File} object.
      */
+    @Override
     public File getLocalRepositoryDirectory() {
         return localRepositoryDirectory;
     }
@@ -205,17 +207,20 @@ public class DefaultInvoker implements Invoker {
      *
      * @return a {@link org.apache.maven.shared.invoker.InvokerLogger} object.
      */
+    @Override
     public InvokerLogger getLogger() {
         return logger;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setLocalRepositoryDirectory(File localRepositoryDirectory) {
         this.localRepositoryDirectory = localRepositoryDirectory;
         return this;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setLogger(InvokerLogger logger) {
         this.logger = logger != null ? logger : DEFAULT_LOGGER;
         return this;
@@ -226,11 +231,13 @@ public class DefaultInvoker implements Invoker {
      *
      * @return a {@link java.io.File} object.
      */
+    @Override
     public File getWorkingDirectory() {
         return workingDirectory;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setWorkingDirectory(File workingDirectory) {
         this.workingDirectory = workingDirectory;
         return this;
@@ -241,11 +248,13 @@ public class DefaultInvoker implements Invoker {
      *
      * @return a {@link java.io.File} object.
      */
+    @Override
     public File getMavenHome() {
         return mavenHome;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setMavenHome(File mavenHome) {
         this.mavenHome = mavenHome;
 
@@ -257,29 +266,34 @@ public class DefaultInvoker implements Invoker {
      *
      * @return a {@link java.io.File} object.
      */
+    @Override
     public File getMavenExecutable() {
         return mavenExecutable;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setMavenExecutable(File mavenExecutable) {
         this.mavenExecutable = mavenExecutable;
         return this;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setErrorHandler(InvocationOutputHandler errorHandler) {
         this.errorHandler = errorHandler;
         return this;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setInputStream(InputStream inputStream) {
         this.inputStream = inputStream;
         return this;
     }
 
     /** {@inheritDoc} */
+    @Override
     public Invoker setOutputHandler(InvocationOutputHandler outputHandler) {
         this.outputHandler = outputHandler;
         return this;

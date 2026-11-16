@@ -128,51 +128,61 @@ public class PrintStreamLogger implements InvokerLogger {
     }
 
     /** {@inheritDoc} */
+    @Override
     public void debug(String message) {
         log(DEBUG, message, null);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void debug(String message, Throwable throwable) {
         log(DEBUG, message, throwable);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void info(String message) {
         log(INFO, message, null);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void info(String message, Throwable throwable) {
         log(INFO, message, throwable);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void warn(String message) {
         log(WARN, message, null);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void warn(String message, Throwable throwable) {
         log(WARN, message, throwable);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void error(String message) {
         log(ERROR, message, null);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void error(String message, Throwable throwable) {
         log(ERROR, message, throwable);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void fatalError(String message) {
         log(FATAL, message, null);
     }
 
     /** {@inheritDoc} */
+    @Override
     public void fatalError(String message, Throwable throwable) {
         log(FATAL, message, throwable);
     }
@@ -182,6 +192,7 @@ public class PrintStreamLogger implements InvokerLogger {
      *
      * @return a boolean.
      */
+    @Override
     public boolean isDebugEnabled() {
         return threshold >= DEBUG;
     }
@@ -191,6 +202,7 @@ public class PrintStreamLogger implements InvokerLogger {
      *
      * @return a boolean.
      */
+    @Override
     public boolean isErrorEnabled() {
         return threshold >= ERROR;
     }
@@ -200,6 +212,7 @@ public class PrintStreamLogger implements InvokerLogger {
      *
      * @return a boolean.
      */
+    @Override
     public boolean isFatalErrorEnabled() {
         return threshold >= FATAL;
     }
@@ -209,6 +222,7 @@ public class PrintStreamLogger implements InvokerLogger {
      *
      * @return a boolean.
      */
+    @Override
     public boolean isInfoEnabled() {
         return threshold >= INFO;
     }
@@ -218,6 +232,7 @@ public class PrintStreamLogger implements InvokerLogger {
      *
      * @return a boolean.
      */
+    @Override
     public boolean isWarnEnabled() {
         return threshold >= WARN;
     }
@@ -227,11 +242,13 @@ public class PrintStreamLogger implements InvokerLogger {
      *
      * @return a int.
      */
+    @Override
     public int getThreshold() {
         return threshold;
     }
 
     /** {@inheritDoc} */
+    @Override
     public void setThreshold(int threshold) {
         this.threshold = threshold;
     }
