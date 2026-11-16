@@ -217,7 +217,7 @@ public class DefaultInvoker implements Invoker {
 
     /** {@inheritDoc} */
     public Invoker setLogger(InvokerLogger logger) {
-        this.logger = (logger != null) ? logger : DEFAULT_LOGGER;
+        this.logger = logger != null ? logger : DEFAULT_LOGGER;
         return this;
     }
 
