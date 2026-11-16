@@ -172,8 +172,7 @@ class MavenCommandLineBuilderTest {
 
     private File setupTempMavenHomeIfMissing() {
         String mavenHome = System.getProperty("maven.home");
-        File appDir = new File(mavenHome);
-        return appDir;
+        return new File(mavenHome);
     }
 
     @Test

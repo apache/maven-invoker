@@ -81,23 +81,23 @@ public class PrintStreamLogger implements InvokerLogger {
         StringBuilder buffer = new StringBuilder();
 
         switch (level) {
-            case (DEBUG):
+            case DEBUG:
                 buffer.append("[DEBUG]");
                 break;
 
-            case (INFO):
+            case INFO:
                 buffer.append("[INFO]");
                 break;
 
-            case (WARN):
+            case WARN:
                 buffer.append("[WARN]");
                 break;
 
-            case (ERROR):
+            case ERROR:
                 buffer.append("[ERROR]");
                 break;
 
-            case (FATAL):
+            case FATAL:
                 buffer.append("[FATAL]");
                 break;
 
