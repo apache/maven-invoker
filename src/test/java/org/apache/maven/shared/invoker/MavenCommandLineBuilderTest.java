@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.apache.maven.shared.utils.Os;
 import org.apache.maven.shared.utils.cli.Commandline;
@@ -41,6 +43,9 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -385,28 +390,31 @@ class MavenCommandLineBuilderTest {
         assertEquals(check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath());
     }
 
-    @Test
-    void shouldSetBatchModeFlagFromRequest() {
+    @ParameterizedTest
+    @MethodSource("singleFlagSetters")
+    void shouldSetFlagFromRequest(Consumer<InvocationRequest> setter, String flag) {
+        InvocationRequest request = newRequest();
+        setter.accept(request);
 
-        mclb.setFlags(newRequest().setBatchMode(true), cli);
+        mclb.setFlags(request, cli);
 
-        assertArgumentsPresent(cli, Collections.singleton("-B"));
+        assertArgumentsPresent(cli, Collections.singleton(flag));
     }
 
-    @Test
-    void shouldSetOfflineFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setOffline(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-o"));
+    static Stream<Arguments> singleFlagSetters() {
+        return Stream.of(
+                singleFlag(r -> r.setBatchMode(true), "-B"),
+                singleFlag(r -> r.setOffline(true), "-o"),
+                singleFlag(r -> r.setUpdateSnapshots(true), "-U"),
+                singleFlag(r -> r.setDebug(true), "-X"),
+                singleFlag(r -> r.setShowErrors(true), "-e"),
+                singleFlag(r -> r.setQuiet(true), "-q"),
+                singleFlag(r -> r.setRecursive(false), "-N"),
+                singleFlag(r -> r.setShowVersion(true), "-V"));
     }
 
-    @Test
-    void shouldSetUpdateSnapshotsFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setUpdateSnapshots(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-U"));
+    private static Arguments singleFlag(Consumer<InvocationRequest> setter, String expectedFlag) {
+        return Arguments.of(setter, expectedFlag);
     }
 
     // JUnit5: test methods don't need to be public
@@ -434,44 +442,6 @@ class MavenCommandLineBuilderTest {
 
         assertArgumentsPresent(cli, Collections.singleton("-nsu"));
         assertArgumentsNotPresent(cli, Collections.singleton("-U"));
-    }
-
-    @Test
-    void shouldSetDebugFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setDebug(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-X"));
-    }
-
-    @Test
-    void shouldSetErrorFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setShowErrors(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-e"));
-    }
-
-    @Test
-    void shouldSetQuietFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setQuiet(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-q"));
-    }
-
-    @Test
-    void shouldSetNonRecursiveFlagsFromRequest() {
-        mclb.setFlags(newRequest().setRecursive(false), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-N"));
-    }
-
-    @Test
-    void shouldSetShowVersionFlagsFromRequest() {
-        mclb.setFlags(newRequest().setShowVersion(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-V"));
     }
 
     @Test

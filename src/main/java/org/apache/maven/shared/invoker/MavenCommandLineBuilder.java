@@ -21,6 +21,7 @@ package org.apache.maven.shared.invoker;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -131,12 +132,12 @@ public class MavenCommandLineBuilder {
     }
 
     private boolean isPowerShellScript(File executable) {
-        return StringUtils.endsWithIgnoreCase(executable.getName(), ".ps1");
+        return executable.getName().toLowerCase(Locale.ROOT).endsWith(".ps1");
     }
 
     String getPowerShellExecutable() {
         String executable = System.getenv(MAVEN_POWERSHELL_EXECUTABLE);
-        return StringUtils.isNotBlank(executable) ? executable : null;
+        return executable != null && !executable.trim().isEmpty() ? executable : null;
     }
 
     /**
