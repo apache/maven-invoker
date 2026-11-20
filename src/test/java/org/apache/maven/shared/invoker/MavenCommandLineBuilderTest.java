@@ -31,15 +31,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import org.apache.maven.shared.utils.cli.Commandline;
 import org.codehaus.plexus.util.Os;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -204,8 +210,7 @@ class MavenCommandLineBuilderTest {
     }
 
     @Test
-    @EnabledOnOs(OS.WINDOWS)
-    void shouldFindDummyPS1MavenExecutable() throws Exception {
+    void shouldPreferPowerShellScriptOverCmdWhenPowerShellHostIsAvailable() throws Exception {
         File dummyMavenHomeBin = Files.createDirectories(temporaryFolder
                         .resolve("invoker-tests")
                         .resolve("dummy-maven-home")
@@ -213,10 +218,153 @@ class MavenCommandLineBuilderTest {
                 .toFile();
 
         File check = createDummyFile(dummyMavenHomeBin, "mvn.ps1");
+        createDummyFile(dummyMavenHomeBin, "mvn.cmd");
+        mclb = new TestMavenCommandLineBuilder("powershell.exe");
         mclb.setMavenHome(dummyMavenHomeBin.getParentFile());
         mclb.setupMavenExecutable(newRequest());
 
         assertEquals(check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath());
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void shouldUseCmdWhenPowerShellHostIsUnavailable() throws Exception {
+        File dummyMavenHomeBin = Files.createDirectories(temporaryFolder
+                        .resolve("invoker-tests")
+                        .resolve("dummy-maven-home")
+                        .resolve("bin"))
+                .toFile();
+
+        createDummyFile(dummyMavenHomeBin, "mvn.ps1");
+        File check = createDummyFile(dummyMavenHomeBin, "mvn.cmd");
+        mclb = new TestMavenCommandLineBuilder(null);
+        mclb.setMavenHome(dummyMavenHomeBin.getParentFile());
+        mclb.setupMavenExecutable(newRequest());
+
+        assertEquals(check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath());
+    }
+
+    @Test
+    @DisabledOnOs(OS.WINDOWS)
+    void shouldExecutePowerShellScriptThroughInheritedPowerShellHost() throws Exception {
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHome =
+                Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
+        File powerShellExecutable = Files.createDirectories(temporaryFolder.resolve("PowerShell home with spaces"))
+                .resolve("pwsh")
+                .toFile();
+        try (FileWriter writer = new FileWriter(powerShellExecutable)) {
+            writer.write("#!/bin/sh\n"
+                    + "test \"$1\" = '-NoProfile' || exit 91\n"
+                    + "shift\n"
+                    + "test \"$1\" = '-File' || exit 92\n"
+                    + "shift\n"
+                    + "script=$1\n"
+                    + "shift\n"
+                    + "exec /bin/sh \"$script\" \"$@\"\n");
+        }
+        assertTrue(powerShellExecutable.setExecutable(true));
+
+        File outputFile =
+                temporaryFolder.resolve("PowerShell output with spaces").toFile();
+        File mavenScript = temporaryFolder.resolve("mvn.ps1").toFile();
+        try (FileWriter writer = new FileWriter(mavenScript)) {
+            writer.write("printf '%s' \"$2\" > \"$1\"\n");
+        }
+
+        mclb = new TestMavenCommandLineBuilder(powerShellExecutable.getAbsolutePath());
+        Commandline commandline = mclb.build(newRequest()
+                .setBaseDirectory(baseDirectory)
+                .setMavenHome(mavenHome)
+                .setMavenExecutable(mavenScript)
+                .addArg(outputFile.getAbsolutePath())
+                .addArg("argument with spaces"));
+
+        Process process = commandline.execute();
+        assertEquals(0, process.waitFor());
+        assertEquals("argument with spaces", new String(Files.readAllBytes(outputFile.toPath()), "UTF-8"));
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void shouldQuotePowerShellHostAndScriptPathsWithSpacesOnWindows() throws Exception {
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHomeBin = Files.createDirectories(
+                        temporaryFolder.resolve("Maven home with spaces").resolve("bin"))
+                .toFile();
+        File mavenScript = createDummyFile(mavenHomeBin, "mvn.ps1");
+        String powerShellExecutable = "C:\\Program Files\\PowerShell\\7\\pwsh.exe";
+
+        mclb = new TestMavenCommandLineBuilder(powerShellExecutable);
+        Commandline commandline = mclb.build(newRequest()
+                .setBaseDirectory(baseDirectory)
+                .setMavenHome(mavenHomeBin.getParentFile())
+                .setMavenExecutable(mavenScript)
+                .addArg("argument with spaces"));
+
+        assertEquals(powerShellExecutable, commandline.getExecutable());
+        assertArrayEquals(
+                new String[] {"-NoProfile", "-File", mavenScript.getAbsolutePath(), "argument with spaces"},
+                commandline.getArguments());
+        assertEquals(
+                Arrays.asList(
+                        "cmd.exe",
+                        "/X",
+                        "/C",
+                        "\"\"" + powerShellExecutable + "\" -NoProfile -File \"" + mavenScript.getAbsolutePath()
+                                + "\" \"argument with spaces\"\""),
+                commandline.getShell().getShellCommandLine(commandline.getArguments()));
+    }
+
+    @Test
+    @EnabledOnOs(OS.WINDOWS)
+    void shouldExecutePowerShellScriptOnWindows() throws Exception {
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHome =
+                Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
+        File outputFile =
+                temporaryFolder.resolve("PowerShell output with spaces").toFile();
+        File mavenScript = temporaryFolder.resolve("mvn.ps1").toFile();
+        try (FileWriter writer = new FileWriter(mavenScript)) {
+            writer.write("param([string] $OutputFile, [string] $Value)\n"
+                    + "[IO.File]::WriteAllText($OutputFile, $Value)\n");
+        }
+
+        mclb = new TestMavenCommandLineBuilder("powershell.exe");
+        Commandline commandline = mclb.build(newRequest()
+                .setBaseDirectory(baseDirectory)
+                .setMavenHome(mavenHome)
+                .setMavenExecutable(mavenScript)
+                .addArg(outputFile.getAbsolutePath())
+                .addArg("argument with spaces & special character"));
+
+        Process process = commandline.execute();
+        assertEquals(0, process.waitFor());
+        assertEquals(
+                "argument with spaces & special character",
+                new String(Files.readAllBytes(outputFile.toPath()), "UTF-8"));
+    }
+
+    @Test
+    void shouldRejectExplicitPowerShellScriptWithoutInheritedPowerShellHost() throws Exception {
+        File baseDirectory =
+                Files.createDirectories(temporaryFolder.resolve("project")).toFile();
+        File mavenHome =
+                Files.createDirectories(temporaryFolder.resolve("maven-home")).toFile();
+        File mavenScript = createDummyFile(temporaryFolder.toFile(), "mvn.ps1").getCanonicalFile();
+        mclb = new TestMavenCommandLineBuilder(null);
+
+        CommandLineConfigurationException exception = assertThrows(
+                CommandLineConfigurationException.class,
+                () -> mclb.build(newRequest()
+                        .setBaseDirectory(baseDirectory)
+                        .setMavenHome(mavenHome)
+                        .setMavenExecutable(mavenScript)));
+
+        assertTrue(exception.getMessage().contains(MavenCommandLineBuilder.MAVEN_POWERSHELL_EXECUTABLE));
     }
 
     @Test
@@ -241,28 +389,31 @@ class MavenCommandLineBuilderTest {
         assertEquals(check.getCanonicalPath(), mclb.getMavenExecutable().getCanonicalPath());
     }
 
-    @Test
-    void shouldSetBatchModeFlagFromRequest() {
+    @ParameterizedTest
+    @MethodSource("singleFlagSetters")
+    void shouldSetFlagFromRequest(Consumer<InvocationRequest> setter, String flag) {
+        InvocationRequest request = newRequest();
+        setter.accept(request);
 
-        mclb.setFlags(newRequest().setBatchMode(true), cli);
+        mclb.setFlags(request, cli);
 
-        assertArgumentsPresent(cli, Collections.singleton("-B"));
+        assertArgumentsPresent(cli, Collections.singleton(flag));
     }
 
-    @Test
-    void shouldSetOfflineFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setOffline(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-o"));
+    static Stream<Arguments> singleFlagSetters() {
+        return Stream.of(
+                singleFlag(r -> r.setBatchMode(true), "-B"),
+                singleFlag(r -> r.setOffline(true), "-o"),
+                singleFlag(r -> r.setUpdateSnapshots(true), "-U"),
+                singleFlag(r -> r.setDebug(true), "-X"),
+                singleFlag(r -> r.setShowErrors(true), "-e"),
+                singleFlag(r -> r.setQuiet(true), "-q"),
+                singleFlag(r -> r.setRecursive(false), "-N"),
+                singleFlag(r -> r.setShowVersion(true), "-V"));
     }
 
-    @Test
-    void shouldSetUpdateSnapshotsFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setUpdateSnapshots(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-U"));
+    private static Arguments singleFlag(Consumer<InvocationRequest> setter, String expectedFlag) {
+        return Arguments.of(setter, expectedFlag);
     }
 
     @Test
@@ -289,44 +440,6 @@ class MavenCommandLineBuilderTest {
 
         assertArgumentsPresent(cli, Collections.singleton("-nsu"));
         assertArgumentsNotPresent(cli, Collections.singleton("-U"));
-    }
-
-    @Test
-    void shouldSetDebugFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setDebug(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-X"));
-    }
-
-    @Test
-    void shouldSetErrorFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setShowErrors(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-e"));
-    }
-
-    @Test
-    void shouldSetQuietFlagFromRequest() {
-
-        mclb.setFlags(newRequest().setQuiet(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-q"));
-    }
-
-    @Test
-    void shouldSetNonRecursiveFlagsFromRequest() {
-        mclb.setFlags(newRequest().setRecursive(false), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-N"));
-    }
-
-    @Test
-    void shouldSetShowVersionFlagsFromRequest() {
-        mclb.setFlags(newRequest().setShowVersion(true), cli);
-
-        assertArgumentsPresent(cli, Collections.singleton("-V"));
     }
 
     @Test
@@ -924,5 +1037,18 @@ class MavenCommandLineBuilderTest {
 
     private InvocationRequest newRequest() {
         return new DefaultInvocationRequest();
+    }
+
+    private static class TestMavenCommandLineBuilder extends MavenCommandLineBuilder {
+        private final String powerShellExecutable;
+
+        TestMavenCommandLineBuilder(String powerShellExecutable) {
+            this.powerShellExecutable = powerShellExecutable;
+        }
+
+        @Override
+        String getPowerShellExecutable() {
+            return powerShellExecutable;
+        }
     }
 }

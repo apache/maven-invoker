@@ -21,6 +21,7 @@ package org.apache.maven.shared.invoker;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -35,6 +36,13 @@ import org.codehaus.plexus.util.Os;
  * <p>MavenCommandLineBuilder class.</p>
  */
 public class MavenCommandLineBuilder {
+
+    /**
+     * Environment variable set by Maven's PowerShell launcher to identify the host for nested Maven invocations.
+     * Its value is the absolute path to the PowerShell executable, without surrounding quotes or command-line
+     * arguments, and must be present in the environment of the JVM running Invoker.
+     */
+    static final String MAVEN_POWERSHELL_EXECUTABLE = "MAVEN_POWERSHELL_EXECUTABLE";
 
     private static final InvokerLogger DEFAULT_LOGGER = new SystemOutLogger();
 
@@ -68,7 +76,7 @@ public class MavenCommandLineBuilder {
         checkRequiredState();
 
         setupMavenExecutable(request);
-        cli.setExecutable(mavenExecutable.getAbsolutePath());
+        configureMavenExecutable(cli);
 
         // handling for OS-level envars
         setShellEnvironment(request, cli);
@@ -102,6 +110,33 @@ public class MavenCommandLineBuilder {
         setArgs(request, cli);
 
         return cli;
+    }
+
+    private void configureMavenExecutable(Commandline cli) throws CommandLineConfigurationException {
+        if (isPowerShellScript(mavenExecutable)) {
+            String powerShellExecutable = getPowerShellExecutable();
+            if (powerShellExecutable == null) {
+                throw new CommandLineConfigurationException("Cannot execute Maven PowerShell script: '"
+                        + mavenExecutable + "'. The " + MAVEN_POWERSHELL_EXECUTABLE
+                        + " environment variable is not set.");
+            }
+
+            cli.setExecutable(powerShellExecutable);
+            cli.createArg().setValue("-NoProfile");
+            cli.createArg().setValue("-File");
+            cli.createArg().setValue(mavenExecutable.getAbsolutePath());
+        } else {
+            cli.setExecutable(mavenExecutable.getAbsolutePath());
+        }
+    }
+
+    private boolean isPowerShellScript(File executable) {
+        return executable.getName().toLowerCase(Locale.ROOT).endsWith(".ps1");
+    }
+
+    String getPowerShellExecutable() {
+        String executable = System.getenv(MAVEN_POWERSHELL_EXECUTABLE);
+        return executable != null && !executable.trim().isEmpty() ? executable : null;
     }
 
     /**
@@ -552,12 +587,15 @@ public class MavenCommandLineBuilder {
     }
 
     private File detectMavenExecutablePerOs(File baseDirectory, String executable) {
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            File executableFile = new File(baseDirectory, executable + ".ps1");
+        File executableFile;
+        if (getPowerShellExecutable() != null) {
+            executableFile = new File(baseDirectory, executable + ".ps1");
             if (executableFile.isFile()) {
                 return executableFile;
             }
+        }
 
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             executableFile = new File(baseDirectory, executable + ".cmd");
             if (executableFile.isFile()) {
                 return executableFile;
@@ -569,7 +607,7 @@ public class MavenCommandLineBuilder {
             }
         }
 
-        File executableFile = new File(baseDirectory, executable);
+        executableFile = new File(baseDirectory, executable);
         if (executableFile.isFile()) {
             return executableFile;
         }
